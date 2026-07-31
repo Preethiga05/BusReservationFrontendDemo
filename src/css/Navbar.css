@@ -1,0 +1,84 @@
+.custom-navbar{
+    background: linear-gradient(90deg,#0A4FAF,#0D6EFD,#4A90E2);
+    box-shadow: 0 6px 18px rgba(13,110,253,0.20);
+    padding: 14px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand{
+    letter-spacing: 1px;
+}
+
+.custom-nav-link{
+    color: white !important;
+    font-weight: 500;
+    margin: 0 8px;
+    transition: 0.3s;
+    position: relative;
+}
+
+.custom-nav-link:hover{
+    color: #B9E6FF !important;
+}
+
+.custom-nav-link::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.custom-nav-link:hover::after{
+    width: 100%;
+}
+
+.login-btn{
+    background-color: white;
+    color: #0D6EFD;
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-weight: 600;
+    transition: 0.3s;
+    border: none;
+}
+
+.login-btn:hover{
+    background-color: #EAF4FF;
+    color: #084298;
+    transform: translateY(-2px);
+}
+
+.navbar-toggler{
+    border: none;
+    box-shadow: none !important;
+}
+
+@media(max-width:991px){
+
+    .navbar-nav{
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .login-btn{
+        margin-top: 10px;
+    }
+
+}
+.navbar .container-fluid{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 60px;
+
+}

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import WelcomePage from "./components/Passenger/WelcomePage";
+import WelcomePage from "./pages/WelcomePage"
 
 function App() {
 
@@ -9,10 +9,7 @@ function App() {
 
             <Routes>
 
-                <Route
-                    path="/"
-                    element={<WelcomePage />}
-                />
+                <Route path="/" element={<WelcomePage />}/>
 
             </Routes>
 
