@@ -1,13 +1,10 @@
-
 import { useState, forwardRef } from "react"
-
 import DatePicker from "react-datepicker"
-
 import { format, isSameDay, addDays } from "date-fns"
-
 import "react-datepicker/dist/react-datepicker.css"
 
 import "../css/SearchForm.css"
+import { useNavigate } from "react-router"
 
 const CustomDateInput = forwardRef(function CustomDateInput(
     { value, onClick },
@@ -27,25 +24,25 @@ const CustomDateInput = forwardRef(function CustomDateInput(
             {
                 value ?
 
-                <div>
+                    <div>
 
-                    <h6>{format(new Date(value), "dd MMM''yy")}</h6>
+                        <h6>{format(new Date(value), "dd MMM''yy")}</h6>
 
-                    <small>{format(new Date(value), "EEEE")}</small>
+                        <small>{format(new Date(value), "EEEE")}</small>
 
-                </div>
+                    </div>
 
-                :
+                    :
 
-                <div>
+                    <div>
 
-                    <span className="date-placeholder">
+                        <span className="date-placeholder">
 
-                        Select Journey Date
+                            Select Journey Date
 
-                    </span>
+                        </span>
 
-                </div>
+                    </div>
             }
 
         </div>
@@ -59,6 +56,8 @@ function SearchForm() {
     const [source, setSource] = useState("")
     const [destination, setDestination] = useState("")
     const [journeyDate, setJourneyDate] = useState(null)
+
+    const navigate = useNavigate();
 
     function swapLocation() {
 
@@ -87,16 +86,25 @@ function SearchForm() {
     }
 
     function searchBus() {
+        const year = journeyDate.getFullYear();
+        const month = String(journeyDate.getMonth() + 1).padStart(2, "0");
+        const day = String(journeyDate.getDate()).padStart(2, "0");
 
-        console.log(source)
-        console.log(destination)
-        console.log(journeyDate)
+        const formattedDate = `${year}-${month}-${day}`;
+
+        navigate("/search-results", {
+            state: {
+                source,
+                destination,
+                journeyDate: formattedDate
+            }
+        });
 
     }
 
     return (
 
-       <div className="search-wrapper">
+        <div className="search-wrapper">
 
             <div className="search-card">
 
@@ -163,7 +171,7 @@ function SearchForm() {
 
                         <div className="search-box">
 
-                            
+
 
                             <DatePicker
 
