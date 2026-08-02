@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import "../css/navbar.css"
 
-function Navbar() {
+function Navbar({ openLogin }) {
 
     return (
 
@@ -46,17 +46,27 @@ function Navbar() {
                             </a>
 
                         </li>
-
-                        <li className="nav-item">
+                        <li className="nav-item me-lg-3">
 
                             <Link
-                                className="btn login-btn"
-                                to="/login"
+                                className="nav-link custom-nav-link"
+                                to="/partner-with-fastx"
                             >
-                                Login
+                                Partner With FastX
                             </Link>
 
                         </li>
+                        <li className="nav-item ms-lg-3">
+
+                            <button
+                                className="btn btn-light"
+                                onClick={openLogin}
+                            >
+                                Login
+                            </button>
+
+                        </li>
+
 
                     </ul>
 

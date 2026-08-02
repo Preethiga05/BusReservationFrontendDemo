@@ -1,0 +1,65 @@
+.executive-navbar{
+
+    height:75px;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 35px;
+
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+
+}
+
+.executive-navbar h4{
+
+    font-weight:700;
+
+    color:#0f172a;
+
+}
+
+.navbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.navbar-right i{
+
+    font-size:1.2rem;
+
+    cursor:pointer;
+
+}
+
+.profile-circle{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+}

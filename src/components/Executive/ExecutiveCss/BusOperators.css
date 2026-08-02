@@ -1,0 +1,79 @@
+.bus-operators-page{
+
+    padding:30px;
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.page-header h2{
+
+    font-weight:700;
+
+    color:#1e293b;
+
+}
+
+.page-header p{
+
+    color:#64748b;
+
+    margin:0;
+
+}
+
+.search-box{
+
+    width:280px;
+
+}
+
+.table-card{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+
+}
+
+.active-status{
+
+    background:#d1fae5;
+
+    color:#065f46;
+
+    padding:6px 15px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}
+
+.inactive-status{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+    padding:6px 15px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}

@@ -1,0 +1,128 @@
+.dashboard-home{
+
+    flex:1;
+
+    padding:30px;
+
+    background:#f5f7fb;
+
+    min-height:calc(100vh - 75px);
+
+    overflow-y:auto;
+
+}
+
+/* Section Title */
+
+.dashboard-title{
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+    margin-bottom:8px;
+
+}
+
+.dashboard-subtitle{
+
+    color:#6b7280;
+
+    font-size:1rem;
+
+    margin-bottom:30px;
+
+}
+
+/* Space Between Sections */
+
+.dashboard-section{
+
+    margin-top:35px;
+
+}
+
+/* White Container */
+
+.dashboard-panel{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+.welcome-banner{
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+    color:white;
+
+    border-radius:18px;
+
+    padding:28px 35px;
+
+    margin-bottom:30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.25);
+
+}
+
+.welcome-banner h3{
+
+    margin:0;
+
+    font-weight:700;
+
+    font-size:1.8rem;
+
+}
+
+.welcome-banner p{
+
+    margin-top:10px;
+
+    margin-bottom:0;
+
+    color:#e5edff;
+
+    font-size:1rem;
+
+}
+
+.close-banner-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+.close-banner-btn:hover{
+
+    background:white;
+
+    color:#2563eb;
+
+}
