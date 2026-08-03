@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./ExecutiveCss/AddAmenityModal.css";
+import AmenityService from "../../services/AmenityService";
 
 function AddAmenityModal({
 
     show,
 
-    close
+    close,
+    refreshAmenities
 
 }) {
 
@@ -15,21 +17,38 @@ function AddAmenityModal({
 
     if (!show) return null;
 
-    const handleSave = () => {
+    const handleSave = async () => {
 
-        console.log({
+    try {
+
+        const amenity = {
 
             amenityName,
 
             description
 
-        });
+        };
 
-        // Backend Integration Later
+        await AmenityService.addAmenity(amenity);
+
+        setAmenityName("");
+
+        setDescription("");
+
+        await refreshAmenities();
 
         close();
 
-    };
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
+
 
     return (
 
@@ -144,7 +163,7 @@ function AddAmenityModal({
         </div>
 
     );
-
 }
+
 
 export default AddAmenityModal;

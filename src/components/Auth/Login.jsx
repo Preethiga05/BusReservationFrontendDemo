@@ -1,6 +1,76 @@
 import "./AuthCss/Login.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthService from "../../services/AuthService";
+import { saveLoginDetails } from "../../utils/Auth";
 
 function Login({ close, openRegister }) {
+    const [username, setUsername] = useState("");
+
+    const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
+    const login = async () => {
+
+        try {
+
+            const response = await AuthService.login(
+
+                username,
+
+                password
+
+            );
+
+            console.log(response.data);
+
+            saveLoginDetails(response, username);
+
+            close();
+
+            switch (response.data.role) {
+
+                case "ADMIN":
+
+                    navigate("/admin-dashboard");
+
+                    break;
+
+                case "EXECUTIVE":
+
+                    navigate("/executive-dashboard");
+
+                    break;
+
+                case "BUS_OPERATOR":
+
+                    navigate("/bus-operator-dashboard");
+
+                    break;
+
+                case "PASSENGER":
+
+                    navigate("/");
+
+                    break;
+
+                default:
+
+                    navigate("/");
+
+            }
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+            alert("Invalid Username or Password");
+
+        }
+
+    };
 
     return (
 
@@ -37,14 +107,16 @@ function Login({ close, openRegister }) {
 
                         <label className="form-label">
 
-                            Username / Email
+                            Username
 
                         </label>
 
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Enter username or email"
+                            placeholder="Enter Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
 
                     </div>
@@ -60,7 +132,9 @@ function Login({ close, openRegister }) {
                         <input
                             type="password"
                             className="form-control"
-                            placeholder="Enter password"
+                            placeholder="Enter Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
 
                     </div>
@@ -78,6 +152,7 @@ function Login({ close, openRegister }) {
                     <button
                         type="button"
                         className="btn login-btn"
+                        onClick={login}
                     >
 
                         Login

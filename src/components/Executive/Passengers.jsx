@@ -1,39 +1,70 @@
 import "./ExecutiveCss/Passengers.css";
-import { useState } from "react";
+
 import PassengerDetailsModal from "./PassengerDetailsModal";
+import { useEffect, useState } from "react";
+import PassengerService from "../../services/PassengerService";
 function Passengers() {
 
     const [search, setSearch] = useState("");
     const [selectedPassenger, setSelectedPassenger] = useState(null);
 
-    const passengers = [
+    const [passengers, setPassengers] = useState([]);
+    useEffect(() => {
 
-        {
-            passengerId: 1,
-            username: "arun05",
-            name: "Arun Kumar",
-            phoneNumber: "9876543210",
-            emergencyContact: "9876500000",
-            dob: "2000-05-15",
-            gender: "MALE",
-            address: "Chennai",
-            status: "ACTIVE"
-        },
+    getAllPassengers();
 
-        {
-            passengerId: 2,
-            username: "priya08",
-            name: "Priya S",
-            phoneNumber: "9876543211",
-            emergencyContact: "9876500001",
-            dob: "2001-08-20",
-            gender: "FEMALE",
-            address: "Madurai",
-            status: "INACTIVE"
-        }
+}, []);
+const getAllPassengers = async () => {
 
-    ];
+    try {
 
+        const response = await PassengerService.getAllPassengers();
+
+        console.log(response.data);
+
+        setPassengers(response.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
+const filteredPassengers = passengers.filter(passenger =>
+
+    passenger.name
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+    ||
+
+    passenger.username
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+);
+const getPassengerById = async (passengerId) => {
+
+    try {
+
+        const response = await PassengerService.getPassengerById(passengerId);
+
+        console.log(response.data);
+
+        setSelectedPassenger(response.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
     return (
 
         <div className="passengers-page">
@@ -104,7 +135,7 @@ function Passengers() {
 
                         {
 
-                            passengers.map((passenger, index) => (
+                            filteredPassengers.map((passenger, index) => (
 
                                 <tr key={passenger.passengerId}>
 
@@ -148,8 +179,7 @@ function Passengers() {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={() => setSelectedPassenger(passenger)}
-
+                                            onClick={() => getPassengerById(passenger.passengerId)}
                                         >
 
                                             View
@@ -169,11 +199,13 @@ function Passengers() {
                 </table>
                 <PassengerDetailsModal
 
-                    passenger={selectedPassenger}
+    passenger={selectedPassenger}
 
-                    close={() => setSelectedPassenger(null)}
+    close={() => setSelectedPassenger(null)}
 
-                />
+    refreshPassengers={getAllPassengers}
+
+/>
 
             </div>
 

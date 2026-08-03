@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./PartnerApplication.css";
+import BusOperatorApplicationService from "../../services/BusOperatorApplicationService";
 
 function PartnerApplication({ close }) {
 
@@ -11,22 +12,57 @@ function PartnerApplication({ close }) {
     const [companyAddress, setCompanyAddress] = useState("");
     const [licenceNumber, setLicenceNumber] = useState("");
 
-    const submitApplication = () => {
+    const submitApplication = async () => {
 
-        console.log({
+    try {
+
+        const application = {
 
             ownerName,
+
             companyName,
+
             email,
+
             phoneNumber,
+
             gender,
+
             companyAddress,
+
             licenceNumber
 
-        });
+        };
+
+        await BusOperatorApplicationService
+            .submitApplication(application);
+
+        alert("Application submitted successfully.");
+
+        setOwnerName("");
+        setCompanyName("");
+        setEmail("");
+        setPhoneNumber("");
+        setGender("");
+        setCompanyAddress("");
+        setLicenceNumber("");
+
+        close();
 
     }
 
+    catch (err) {
+
+        console.log(err);
+
+        alert(
+            err.response?.data?.message ??
+            "Unable to submit application."
+        );
+
+    }
+
+};
     return (
 
         <div className="partner-overlay">

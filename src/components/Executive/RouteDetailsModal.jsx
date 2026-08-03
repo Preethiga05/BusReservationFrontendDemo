@@ -1,12 +1,14 @@
 import "./ExecutiveCss/RouteDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
+import RouteService from "../../services/RouteService";
 
 function RouteDetailsModal({
 
     route,
 
-    close
+    close,
+    refreshRoutes
 
 }) {
 
@@ -15,6 +17,41 @@ function RouteDetailsModal({
     if (!route) return null;
 
     const isActive = route.status === "ACTIVE";
+    const changeRouteStatus = async () => {
+
+    try {
+
+        if (isActive) {
+
+            await RouteService.deactivateRoute(
+                route.routeId
+            );
+
+        }
+
+        else {
+
+            await RouteService.activateRoute(
+                route.routeId
+            );
+
+        }
+
+        await refreshRoutes();
+
+        setShowConfirmation(false);
+
+        close();
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
 
     return (
 
@@ -278,25 +315,7 @@ This route will be available while creating bus schedules.`
 
                 onCancel={() => setShowConfirmation(false)}
 
-                onConfirm={() => {
-
-                    console.log(
-
-                        isActive
-
-                        ?
-
-                        "Deactivate Route"
-
-                        :
-
-                        "Activate Route"
-
-                    );
-
-                    setShowConfirmation(false);
-
-                }}
+                onConfirm={changeRouteStatus}
 
             />
 

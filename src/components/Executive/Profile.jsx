@@ -1,22 +1,50 @@
 import "./ExecutiveCss/Profile.css";
+import { useEffect, useState } from "react";
+import ExecutiveService from "../../services/ExecutiveService";
 
 function ExecutiveProfile() {
 
-    const executive = {
+    const [executive, setExecutive] = useState(null);
 
-        name: "Preethiga R",
+    useEffect(() => {
 
-        employeeCode: "EXE001",
+        getExecutiveProfile();
 
-        jobTitle: "MANAGER",
+    }, []);
 
-        phoneNumber: "9876543210",
+    const getExecutiveProfile = async () => {
 
-        gender: "FEMALE",
+        try {
 
-        status: "ACTIVE"
+            const response = await ExecutiveService.getProfile();
+
+            console.log(response.data);
+
+            setExecutive(response.data);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
 
     };
+
+    if (!executive) {
+
+        return (
+
+            <div className="text-center mt-5">
+
+                <h5>Loading Profile...</h5>
+
+            </div>
+
+        );
+
+    }
 
     return (
 
@@ -127,42 +155,6 @@ function ExecutiveProfile() {
                         <span>
 
                             {executive.gender}
-
-                        </span>
-
-                    </div>
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Status
-
-                        </label>
-
-                        <span>
-
-                            {
-
-                                executive.status === "ACTIVE"
-
-                                ?
-
-                                <span className="badge bg-success">
-
-                                    Active
-
-                                </span>
-
-                                :
-
-                                <span className="badge bg-danger">
-
-                                    Inactive
-
-                                </span>
-
-                            }
 
                         </span>
 

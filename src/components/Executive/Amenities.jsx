@@ -1,7 +1,9 @@
 import "./ExecutiveCss/Amenities.css";
 import AddAmenityModal from "./AddAmenityModal";
-import { useState } from "react";
+
 import AmenityDetailsModal from "./AmenityDetailsModal";
+import { useEffect, useState } from "react";
+import AmenityService from "../../services/AmenityService";
 
 function Amenities() {
 
@@ -9,38 +11,67 @@ function Amenities() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedAmenity, setSelectedAmenity] = useState(null);
 
-    const amenities = [
+    const [amenities, setAmenities] = useState([]);
 
-        {
-            id: 1,
-            amenityName: "WiFi",
-            description: "High-speed internet access",
-            status: "ACTIVE"
-        },
+    const [filteredAmenities, setFilteredAmenities] = useState([]);
+    useEffect(() => {
 
-        {
-            id: 2,
-            amenityName: "Charging Point",
-            description: "USB charging port",
-            status: "ACTIVE"
-        },
+        getAllAmenities();
 
-        {
-            id: 3,
-            amenityName: "Blanket",
-            description: "Comfortable travel blanket",
-            status: "ACTIVE"
-        },
+    }, []);
+    const getAllAmenities = async () => {
 
-        {
-            id: 4,
-            amenityName: "Water Bottle",
-            description: "Complimentary drinking water",
-            status: "INACTIVE"
+        try {
+
+            const response = await AmenityService.getAllAmenities();
+
+            console.log(response.data);
+
+            setAmenities(response.data);
+
+            setFilteredAmenities(response.data);
+
         }
 
-    ];
+        catch (err) {
 
+            console.log(err);
+
+        }
+
+    };
+    useEffect(() => {
+
+        const filtered = amenities.filter((amenity) =>
+
+            amenity.amenityName
+                .toLowerCase()
+                .includes(search.toLowerCase())
+
+        );
+
+        setFilteredAmenities(filtered);
+
+    }, [search, amenities]);
+    const getAmenityById = async (amenityId) => {
+
+        try {
+
+            const response = await AmenityService.getAmenityById(amenityId);
+
+            console.log(response.data);
+
+            setSelectedAmenity(response.data);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
     return (
 
         <div className="amenities-page">
@@ -123,9 +154,9 @@ function Amenities() {
 
                         {
 
-                            amenities.map((amenity, index) => (
+                            filteredAmenities.map((amenity, index) => (
 
-                                <tr key={amenity.id}>
+                                <tr key={amenity.amenityId}>
 
                                     <td>{index + 1}</td>
 
@@ -165,7 +196,7 @@ function Amenities() {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={() => setSelectedAmenity(amenity)}
+                                            onClick={() => getAmenityById(amenity.amenityId)}
 
                                         >
 
@@ -190,6 +221,8 @@ function Amenities() {
 
                     close={() => setShowAddModal(false)}
 
+                    refreshAmenities={getAllAmenities}
+
                 />
                 <AmenityDetailsModal
 
@@ -197,8 +230,9 @@ function Amenities() {
 
                     close={() => setSelectedAmenity(null)}
 
-                />
+                    refreshAmenities={getAllAmenities}
 
+                />
             </div>
 
         </div>

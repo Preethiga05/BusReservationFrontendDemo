@@ -1,14 +1,59 @@
 import "./ExecutiveCss/AmenityDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
+import AmenityService from "../../services/AmenityService";
 
-function AmenityDetailsModal({ amenity, close }) {
+function AmenityDetailsModal({
+
+    amenity,
+
+    close,
+
+    refreshAmenities
+
+}) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     if (!amenity) return null;
 
     const isActive = amenity.status === "ACTIVE";
+
+    const changeAmenityStatus = async () => {
+
+        try {
+
+            if (isActive) {
+
+                await AmenityService.deactivateAmenity(
+                    amenity.amenityId
+                );
+
+            }
+
+            else {
+
+                await AmenityService.activateAmenity(
+                    amenity.amenityId
+                );
+
+            }
+
+            await refreshAmenities();
+
+            setShowConfirmation(false);
+
+            close();
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
 
     return (
 
@@ -231,25 +276,7 @@ This amenity will be available while adding or updating buses.`
 
                 onCancel={() => setShowConfirmation(false)}
 
-                onConfirm={() => {
-
-                    console.log(
-
-                        isActive
-
-                            ?
-
-                            "Deactivate Amenity"
-
-                            :
-
-                            "Activate Amenity"
-
-                    );
-
-                    setShowConfirmation(false);
-
-                }}
+                onConfirm={changeAmenityStatus}
 
             />
 

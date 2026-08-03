@@ -1,20 +1,68 @@
 import "./ExecutiveCss/PassengerDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
+import PassengerService from "../../services/PassengerService";
 
 function PassengerDetailsModal({
 
     passenger,
 
-    close
+    close,
+    refreshPassengers
 
 }) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
+    
 
     if (!passenger) return null;
 
     const isActive = passenger.status === "ACTIVE";
+    const changePassengerStatus = async () => {
+
+    console.log("Clicked");
+
+    console.log(passenger);
+
+    console.log(isActive);
+
+    try {
+
+        if (isActive) {
+
+            console.log("Calling deactivate");
+
+            await PassengerService.deactivatePassenger(
+                passenger.passengerId
+            );
+
+        } else {
+
+            console.log("Calling activate");
+
+            await PassengerService.activatePassenger(
+                passenger.passengerId
+            );
+
+        }
+
+        console.log("API Success");
+
+        await refreshPassengers();
+
+        setShowConfirmation(false);
+
+        close();
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
 
     return (
 
@@ -338,25 +386,7 @@ The passenger will regain access to:
 
                 onCancel={() => setShowConfirmation(false)}
 
-                onConfirm={() => {
-
-                    console.log(
-
-                        isActive
-
-                            ?
-
-                            "Deactivate Passenger"
-
-                            :
-
-                            "Activate Passenger"
-
-                    );
-
-                    setShowConfirmation(false);
-
-                }}
+                onConfirm={changePassengerStatus}
 
             />
 

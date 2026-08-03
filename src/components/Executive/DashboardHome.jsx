@@ -1,9 +1,48 @@
 import DashboardCard from "../RusableComponents/DashboardCard";
 import "./ExecutiveCss/DashboardHome.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import DashboardService from "../../services/DashboardService";
 function DashboardHome({ setSelectedMenu }) {
     const username = localStorage.getItem("username") || "Executive";
     const [showWelcome, setShowWelcome] = useState(true);
+    const [dashboard, setDashboard] = useState(null);
+    useEffect(() => {
+
+    getDashboardOverview();
+
+}, []);
+const getDashboardOverview = async () => {
+
+    try {
+
+        const response = await DashboardService.getDashboardOverview();
+
+        console.log(response.data);
+
+        setDashboard(response.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
+if (!dashboard) {
+
+    return (
+
+        <div className="text-center mt-5">
+
+            <h5>Loading Dashboard...</h5>
+
+        </div>
+
+    );
+
+}
 
     return (
 
@@ -56,7 +95,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Pending Applications"
 
-                        count={12}
+                        count={dashboard.pendingApplications}
 
                         icon="bi-file-earmark-text-fill"
 
@@ -74,7 +113,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Bus Operators"
 
-                        count={48}
+                        count={dashboard.busOperatorCount}
 
                         icon="bi-buildings-fill"
 
@@ -92,7 +131,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Passengers"
 
-                        count={1250}
+                        count={dashboard.passengerCount}
 
                         icon="bi-people-fill"
 
@@ -110,7 +149,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Routes"
 
-                        count={80}
+                        count={dashboard.routeCount}
 
                         icon="bi-signpost-fill"
 
@@ -132,7 +171,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Amenities"
 
-                        count={15}
+                        count={dashboard.amenityCount}
 
                         icon="bi-stars"
 
@@ -150,7 +189,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Today's Bookings"
 
-                        count={165}
+                        count={dashboard.todayBookings}
 
                         icon="bi-ticket-perforated-fill"
 
@@ -166,7 +205,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Revenue"
 
-                        count="₹1.8L"
+                        count={`₹${dashboard.totalRevenue}`}
 
                         icon="bi-currency-rupee"
 
@@ -182,7 +221,7 @@ function DashboardHome({ setSelectedMenu }) {
 
                         title="Cancelled"
 
-                        count={8}
+                        count={dashboard.cancelledBookings}
 
                         icon="bi-x-circle-fill"
 

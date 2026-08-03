@@ -3,6 +3,9 @@ import WelcomePage from "./pages/WelcomePage"
 import SearchResultsPage from "./pages/SearchResultsPage";
 import PartnerWithFastX from "./pages/PartnerWithFastX";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import BusOperatorDashboard from "./pages/BusOperatorDashboard";
 
 function App() {
 
@@ -20,7 +23,34 @@ function App() {
                 />
                 <Route
                     path="/executive-dashboard"
-                    element={<ExecutiveDashboard />}
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["EXECUTIVE"]}
+                        >
+                            <ExecutiveDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin-dashboard"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ADMIN"]}
+                        >
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/bus-operator-dashboard"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["BUS_OPERATOR"]}
+                        >
+                            <BusOperatorDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
             </Routes>

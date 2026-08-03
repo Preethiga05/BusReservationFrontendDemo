@@ -1,11 +1,14 @@
 import { useState } from "react";
 import "./ExecutiveCss/AddRouteModal.css";
+import RouteService from "../../services/RouteService";
 
 function AddRouteModal({
 
     show,
 
-    close
+    close,
+
+    refreshRoutes
 
 }) {
 
@@ -19,9 +22,11 @@ function AddRouteModal({
 
     if (!show) return null;
 
-    const handleSave = () => {
+    const handleSave = async () => {
 
-        console.log({
+    try {
+
+        const route = {
 
             originCity,
 
@@ -31,13 +36,31 @@ function AddRouteModal({
 
             estimatedDurationMinutes
 
-        });
+        };
 
-        // Backend Integration Later
+        await RouteService.addRoute(route);
+
+        setOriginCity("");
+
+        setDestinationCity("");
+
+        setDistanceKm("");
+
+        setEstimatedDurationMinutes("");
+
+        await refreshRoutes();
 
         close();
 
-    };
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
 
     return (
 

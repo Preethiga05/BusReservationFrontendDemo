@@ -1,77 +1,64 @@
 import "./ExecutiveCss/BusOperators.css";
-import { useState } from "react";
+
 import BusOperatorDetailsModal from "./BusOperatorDetailsModal";
+import { useEffect, useState } from "react";
+import BusOperatorService from "../../services/BusOperatorService";
 
 function BusOperators() {
 
     const [selectedOperator, setSelectedOperator] = useState(null);
 
-    const operators = [
+    const [operators, setOperators] = useState([]);
 
-        {
-    id:1,
+    const [filteredOperators, setFilteredOperators] = useState([]);
 
-    companyName:"KPN Travels",
+    const [search, setSearch] = useState("");
+    useEffect(() => {
 
-    ownerName:"Suresh",
+        getAllBusOperators();
 
-    email:"kpn@gmail.com",
+    }, []);
+    const getAllBusOperators = async () => {
 
-    phoneNumber:"9876543210",
+        try {
 
-    licenceNumber:"TN20261234",
+            const response =
+                await BusOperatorService.getAllBusOperators();
 
-    companyAddress:"Anna Nagar, Chennai",
+            setOperators(response.data);
 
-    executiveName:"Preethiga",
+            setFilteredOperators(response.data);
 
-    status:"ACTIVE"
+        }
 
-},
-{
-    id:2,
+        catch (err) {
 
-    companyName:"GreenLine",
+            console.log(err);
 
-    ownerName:"Arun",
+        }
 
-    email:"greenline@gmail.com",
+    };
+    useEffect(() => {
 
-    phoneNumber:"9876543211",
+        const filtered = operators.filter(operator =>
 
-    licenceNumber:"TN20262345",
+            operator.companyName
+                .toLowerCase()
+                .includes(search.toLowerCase())
 
-    companyAddress:"Coimbatore",
+            ||
 
-    executiveName:"Preethiga",
+            operator.busOperatorName
+                .toLowerCase()
+                .includes(search.toLowerCase())
 
-    status:"ACTIVE"
+        );
 
-},
-{
-    id:3,
+        setFilteredOperators(filtered);
 
-    companyName:"ABC Travels",
-
-    ownerName:"Ramesh",
-
-    email:"abc@gmail.com",
-
-    phoneNumber:"9876543212",
-
-    licenceNumber:"TN20263456",
-
-    companyAddress:"Madurai",
-
-    executiveName:"Preethiga",
-
-    status:"INACTIVE"
-
-}
-
-    ];
-
-    return(
+    }, [search, operators]);
+    console.log(filteredOperators);
+    return (
 
         <div className="bus-operators-page">
 
@@ -100,6 +87,10 @@ function BusOperators() {
                     className="form-control search-box"
 
                     placeholder="Search Company..."
+
+                    value={search}
+
+                    onChange={(e) => setSearch(e.target.value)}
 
                 />
 
@@ -133,13 +124,13 @@ function BusOperators() {
 
                         {
 
-                            operators.map((operator,index)=>(
+                            filteredOperators.map((operator, index) => (
 
-                                <tr key={operator.id}>
+                                <tr key={operator.busOperatorId}>
 
                                     <td>
 
-                                        {index+1}
+                                        {index + 1}
 
                                     </td>
 
@@ -151,7 +142,7 @@ function BusOperators() {
 
                                     <td>
 
-                                        {operator.ownerName}
+                                        {operator.busOperatorName}
 
                                     </td>
 
@@ -165,23 +156,23 @@ function BusOperators() {
 
                                         {
 
-                                            operator.status==="ACTIVE"
+                                            operator.status === "ACTIVE"
 
-                                            ?
+                                                ?
 
-                                            <span className="active-status">
+                                                <span className="active-status">
 
-                                                Active
+                                                    Active
 
-                                            </span>
+                                                </span>
 
-                                            :
+                                                :
 
-                                            <span className="inactive-status">
+                                                <span className="inactive-status">
 
-                                                Inactive
+                                                    Inactive
 
-                                            </span>
+                                                </span>
 
                                         }
 
@@ -193,7 +184,27 @@ function BusOperators() {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={()=>setSelectedOperator(operator)}
+                                            onClick={async () => {
+
+                                                try {
+
+                                                    const response =
+                                                        await BusOperatorService
+                                                            .getBusOperatorById(
+                                                                operator.busOperatorId
+                                                            );
+
+                                                    setSelectedOperator(response.data);
+
+                                                }
+
+                                                catch (err) {
+
+                                                    console.log(err);
+
+                                                }
+
+                                            }}
 
                                         >
 
@@ -219,7 +230,9 @@ function BusOperators() {
 
                 operator={selectedOperator}
 
-                close={()=>setSelectedOperator(null)}
+                close={() => setSelectedOperator(null)}
+
+                refreshBusOperators={getAllBusOperators}
 
             />
 

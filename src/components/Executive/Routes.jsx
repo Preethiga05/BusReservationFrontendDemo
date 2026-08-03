@@ -1,7 +1,9 @@
 import "./ExecutiveCss/Routes.css";
-import { useState } from "react";
+
 import AddRouteModal from "./AddRouteModal";
 import RouteDetailsModal from "./RouteDetailsModal";
+import { useEffect, useState } from "react";
+import RouteService from "../../services/RouteService";
 
 function Routes() {
 
@@ -9,46 +11,63 @@ function Routes() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState(null);
 
-    const routes = [
+    const [routes, setRoutes] = useState([]);
+    useEffect(() => {
 
-        {
-            routeId: 1,
-            originCity: "Chennai",
-            destinationCity: "Madurai",
-            distanceKm: 465,
-            estimatedDurationMinutes: 480,
-            status: "ACTIVE"
-        },
+    getAllRoutes();
 
-        {
-            routeId: 2,
-            originCity: "Bengaluru",
-            destinationCity: "Chennai",
-            distanceKm: 350,
-            estimatedDurationMinutes: 420,
-            status: "ACTIVE"
-        },
+}, []);
+const getAllRoutes = async () => {
 
-        {
-            routeId: 3,
-            originCity: "Salem",
-            destinationCity: "Coimbatore",
-            distanceKm: 170,
-            estimatedDurationMinutes: 180,
-            status: "ACTIVE"
-        },
+    try {
 
-        {
-            routeId: 4,
-            originCity: "Madurai",
-            destinationCity: "Trichy",
-            distanceKm: 135,
-            estimatedDurationMinutes: 120,
-            status: "INACTIVE"
-        }
+        const response = await RouteService.getAllRoutes();
 
-    ];
+        console.log(response.data);
 
+        setRoutes(response.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
+const filteredRoutes = routes.filter(route =>
+
+    route.originCity
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+    ||
+
+    route.destinationCity
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+);
+const getRouteById = async (routeId) => {
+
+    try {
+
+        const response = await RouteService.getRouteById(routeId);
+
+        console.log(response.data);
+
+        setSelectedRoute(response.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+};
     return (
 
         <div className="routes-page">
@@ -135,7 +154,7 @@ function Routes() {
 
                         {
 
-                            routes.map((route, index) => (
+                            filteredRoutes.map((route, index) => (
 
                                 <tr key={route.routeId}>
 
@@ -181,8 +200,7 @@ function Routes() {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={() => setSelectedRoute(route)}
-
+                                           onClick={() => getRouteById(route.routeId)}
                                         >
 
                                             View
@@ -202,18 +220,22 @@ function Routes() {
                 </table>
                 <AddRouteModal
 
-                    show={showAddModal}
+    show={showAddModal}
 
-                    close={() => setShowAddModal(false)}
+    close={() => setShowAddModal(false)}
 
-                />
+    refreshRoutes={getAllRoutes}
+
+/>
                 <RouteDetailsModal
 
-                    route={selectedRoute}
+    route={selectedRoute}
 
-                    close={() => setSelectedRoute(null)}
+    close={() => setSelectedRoute(null)}
 
-                />
+    refreshRoutes={getAllRoutes}
+
+/>
 
             </div>
 

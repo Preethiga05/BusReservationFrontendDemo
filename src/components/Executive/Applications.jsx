@@ -1,37 +1,63 @@
 import "./ExecutiveCss/Application.css";
-import { useState } from "react";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
+import { useEffect, useState } from "react";
+import BusOperatorApplicationService from "../../services/BusOperatorApplicationService";
+
 
 function Applications() {
     const [selectedApplication, setSelectedApplication] = useState(null);
 
-    const applications = [
+    const [applications, setApplications] = useState([]);
 
-        {
-            id: 1,
-            companyName: "ABC Travels",
-            ownerName: "Ramesh",
-            phoneNumber: "9876543210",
-            status: "Pending"
-        },
+    const [filteredApplications, setFilteredApplications] = useState([]);
 
-        {
-            id: 2,
-            companyName: "KPN Travels",
-            ownerName: "Suresh",
-            phoneNumber: "9876543211",
-            status: "Pending"
-        },
+    const [search, setSearch] = useState("");
+    useEffect(() => {
 
-        {
-            id: 3,
-            companyName: "GreenLine",
-            ownerName: "Arun",
-            phoneNumber: "9876543212",
-            status: "Pending"
+        getAllApplications();
+
+    }, []);
+
+    const getAllApplications = async () => {
+
+        try {
+
+            const response =
+                await BusOperatorApplicationService
+                    .getAllApplications();
+
+            setApplications(response.data);
+
+            setFilteredApplications(response.data);
+
         }
 
-    ];
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
+    useEffect(() => {
+
+        const filtered = applications.filter(application =>
+
+            application.companyName
+                .toLowerCase()
+                .includes(search.toLowerCase())
+
+            ||
+
+            application.ownerName
+                .toLowerCase()
+                .includes(search.toLowerCase())
+
+        );
+
+        setFilteredApplications(filtered);
+
+    }, [search, applications]);
 
     return (
 
@@ -48,6 +74,13 @@ function Applications() {
                     </p>
 
                 </div>
+                <input
+                    type="text"
+                    className="form-control search-box"
+                    placeholder="Search Application..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
 
             </div>
 
@@ -79,9 +112,9 @@ function Applications() {
 
                         {
 
-                            applications.map((application, index) => (
+                            filteredApplications.map((application, index) => (
 
-                                <tr key={application.id}>
+                                <tr key={application.applicationId}>
 
                                     <td>{index + 1}</td>
 
@@ -93,9 +126,17 @@ function Applications() {
 
                                     <td>
 
-                                        <span className="status-badge">
+                                        <span
+                                            className={
+                                                application.applicationStatus === "APPROVED"
+                                                    ? "approved-status"
+                                                    : application.applicationStatus === "REJECTED"
+                                                        ? "rejected-status"
+                                                        : "pending-status"
+                                            }
+                                        >
 
-                                            {application.status}
+                                            {application.applicationStatus}
 
                                         </span>
 
@@ -105,7 +146,27 @@ function Applications() {
 
                                         <button
                                             className="btn btn-primary btn-sm"
-                                            onClick={() => setSelectedApplication(application)}
+                                            onClick={async () => {
+
+                                                try {
+
+                                                    const response =
+                                                        await BusOperatorApplicationService
+                                                            .getApplicationById(
+                                                                application.applicationId
+                                                            );
+
+                                                    setSelectedApplication(response.data);
+
+                                                }
+
+                                                catch (err) {
+
+                                                    console.log(err);
+
+                                                }
+
+                                            }}
                                         >
                                             View
                                         </button>
@@ -124,6 +185,7 @@ function Applications() {
                 <ApplicationDetailsModal
                     application={selectedApplication}
                     close={() => setSelectedApplication(null)}
+                    refreshApplications={getAllApplications}
                 />
 
             </div>

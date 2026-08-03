@@ -1,14 +1,52 @@
 import "./ExecutiveCss/BusOperatorDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
+import BusOperatorService from "../../services/BusOperatorService";
 
-function BusOperatorDetailsModal({ operator, close }) {
+function BusOperatorDetailsModal({ operator, close, refreshBusOperators }) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     if (!operator) return null;
 
     const isActive = operator.status === "ACTIVE";
+    const changeBusOperatorStatus = async () => {
+
+    try {
+
+        if(isActive){
+
+            await BusOperatorService
+                .deactivateBusOperator(
+                    operator.busOperatorId
+                );
+
+        }
+
+        else{
+
+            await BusOperatorService
+                .activateBusOperator(
+                    operator.busOperatorId
+                );
+
+        }
+
+        await refreshBusOperators();
+
+        setShowConfirmation(false);
+
+        close();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+};
 
     return (
         <>
@@ -175,20 +213,7 @@ The operator will regain access to:
 
                 onCancel={() => setShowConfirmation(false)}
 
-                onConfirm={() => {
-
-                    console.log(
-                        isActive
-                            ? "Deactivate API"
-                            : "Activate API"
-                    );
-
-                    setShowConfirmation(false);
-
-                    // Later
-                    // axios.put(...)
-
-                }}
+                onConfirm={changeBusOperatorStatus}
 
             />
 
