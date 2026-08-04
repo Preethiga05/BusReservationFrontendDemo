@@ -1,35 +1,51 @@
-.search-card{
+/* ==========================
+   SEARCH WRAPPER
+========================== */
 
-    background:#ffffff;
-    border-radius:22px;
-    padding:25px;
-    box-shadow:0 12px 35px rgba(0,0,0,.15);
-
+.search-wrapper{
+    width:85%;
+    margin:auto;
     position:relative;
+}
 
+/* ==========================
+   SEARCH CARD
+========================== */
+
+.search-card{
+    background:#ffffff;
+    border-radius:28px;
+    padding:22px 28px;
     margin-top:-70px;
-
+    position:relative;
     z-index:100;
 
+    box-shadow:
+        0 20px 50px rgba(13,110,253,.12),
+        0 8px 25px rgba(0,0,0,.08);
 }
+
+/* ==========================
+   SEARCH BOX
+========================== */
 
 .search-box{
 
-    height:90px;
+    height:80px;
 
-    border:2px solid #ececec;
+    border:1px solid #e7edf7;
 
-    border-radius:16px;
+    border-radius:18px;
 
     display:flex;
 
     align-items:center;
 
-    padding:0 18px;
-
-    transition:.3s;
+    padding:0 22px;
 
     background:white;
+
+    transition:.35s ease;
 
 }
 
@@ -37,21 +53,39 @@
 
     border-color:#0d6efd;
 
-    box-shadow:0 5px 15px rgba(13,110,253,.15);
+    box-shadow:0 8px 22px rgba(13,110,253,.12);
 
 }
+
+.search-box:focus-within{
+
+    border-color:#0d6efd;
+
+    box-shadow:0 0 0 4px rgba(13,110,253,.12);
+
+}
+
+/* ==========================
+   ICONS
+========================== */
 
 .search-icon{
 
-    font-size:26px;
+    font-size:22px;
 
     color:#0d6efd;
 
-    margin-right:12px;
+    margin-right:15px;
 
 }
 
+/* ==========================
+   INPUTS
+========================== */
+
 .search-input{
+
+    width:100%;
 
     border:none !important;
 
@@ -59,41 +93,45 @@
 
     box-shadow:none !important;
 
-    width:100%;
+    background:transparent;
 
     font-size:18px;
 
     font-weight:600;
 
-    background:transparent;
+    color:#222;
 
 }
 
 .search-input::placeholder{
 
-    color:#9b9b9b;
+    color:#9aa6b2;
 
-    font-size:25px;
+    font-size:17px;
 
     font-weight:500;
 
 }
 
+/* ==========================
+   SWAP BUTTON
+========================== */
+
 .swap-btn{
 
-    width:58px;
+    width:56px;
 
-    height:58px;
+    height:56px;
 
     border-radius:50%;
 
-    border:none;
+    border:2px solid #0d6efd;
 
-    background:#0d6efd;
+    background:white;
 
-    color:white;
+    color:#0d6efd;
 
-    font-size:22px;
+    font-size:20px;
 
     transition:.4s;
 
@@ -101,19 +139,29 @@
 
 .swap-btn:hover{
 
+    background:#0d6efd;
+
+    color:white;
+
     transform:rotate(180deg);
 
-    background:#0a58ca;
+    box-shadow:0 10px 20px rgba(13,110,253,.25);
 
 }
+
+/* ==========================
+   QUICK DATE
+========================== */
 
 .quick-date{
 
     display:flex;
 
-    gap:10px;
+    gap:12px;
 
     justify-content:center;
+
+    align-items:center;
 
 }
 
@@ -122,13 +170,15 @@
 
     border:none;
 
-    background:#edf4ff;
+    background:#eef5ff;
 
     color:#0d6efd;
 
-    padding:10px 18px;
+    padding:12px 20px;
 
-    border-radius:25px;
+    border-radius:999px;
+
+    font-size:15px;
 
     font-weight:600;
 
@@ -145,25 +195,42 @@
 
 }
 
+.active-chip{
+
+    background:linear-gradient(135deg,#0d6efd,#3b82f6)!important;
+
+    color:white!important;
+
+    box-shadow:0 8px 18px rgba(13,110,253,.25);
+
+}
+
+/* ==========================
+   SEARCH BUTTON
+========================== */
+
 .search-bus-btn{
 
-    transform: translateY(-22px);
+    transform:translateY(-22px);
 
-    padding:15px 70px;
+    padding:16px 70px;
 
     border:none;
 
     border-radius:50px;
 
-    background:linear-gradient(90deg,#0d6efd,#0056d6);
+    background:linear-gradient(135deg,#0d6efd,#0052d4);
 
     color:white;
 
-    font-size:20px;
+    font-size:19px;
 
     font-weight:600;
 
-    box-shadow:0 8px 25px rgba(13,110,253,.35);
+    transition:.35s;
+
+    box-shadow:
+        0 15px 30px rgba(13,110,253,.30);
 
     position:relative;
 
@@ -173,11 +240,16 @@
 
 .search-bus-btn:hover{
 
-    transform:translateY(-3px);
+    transform:translateY(-26px);
 
-    box-shadow:0 12px 30px rgba(13,110,253,.45);
+    box-shadow:
+        0 22px 40px rgba(13,110,253,.40);
 
 }
+
+/* ==========================
+   DATE PICKER INPUT
+========================== */
 
 .react-datepicker-wrapper{
 
@@ -191,48 +263,66 @@
 
 }
 
-@media(max-width:991px){
+.date-card{
 
-    .search-card{
+    display:flex;
 
-        margin-top:30px;
+    align-items:center;
 
-    }
+    gap:14px;
 
-    .search-box{
+    width:100%;
 
-        margin-bottom:18px;
-
-    }
-
-    .swap-btn{
-
-        margin-bottom:18px;
-
-    }
-
-    .quick-date{
-
-        margin-top:10px;
-
-        justify-content:flex-start;
-
-    }
+    cursor:pointer;
 
 }
+
+.date-card h6{
+
+    margin:0;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.date-card small{
+
+    color:#7d8794;
+
+    font-size:13px;
+
+    font-weight:500;
+
+}
+
+.date-placeholder{
+
+    color:#9aa6b2;
+
+    font-size:17px;
+
+    font-weight:500;
+
+}
+
 /* ==========================
    REACT DATE PICKER
 ========================== */
 
 .react-datepicker{
 
-    border:none !important;
+    border:none!important;
 
-    border-radius:18px !important;
+    border-radius:20px!important;
 
     overflow:hidden;
 
-    box-shadow:0 15px 35px rgba(0,0,0,.18);
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.18);
 
     font-family:inherit;
 
@@ -242,9 +332,9 @@
 
     background:white;
 
-    border-bottom:1px solid #ececec;
+    border-bottom:1px solid #edf1f7;
 
-    padding:15px;
+    padding:16px;
 
 }
 
@@ -254,13 +344,13 @@
 
     font-weight:700;
 
-    color:#222;
+    color:#1f2937;
 
 }
 
 .react-datepicker__day-name{
 
-    color:#777;
+    color:#7d8794;
 
     font-weight:600;
 
@@ -272,11 +362,11 @@
 
     line-height:42px;
 
+    margin:3px;
+
     border-radius:50%;
 
-    transition:.3s;
-
-    margin:4px;
+    transition:.25s;
 
 }
 
@@ -290,17 +380,17 @@
 
 .react-datepicker__day--selected{
 
-    background:#0d6efd !important;
+    background:#0d6efd!important;
 
-    color:white !important;
+    color:white!important;
 
 }
 
 .react-datepicker__day--keyboard-selected{
 
-    background:#0d6efd !important;
+    background:#0d6efd!important;
 
-    color:white !important;
+    color:white!important;
 
 }
 
@@ -332,7 +422,7 @@
 
     font-weight:600;
 
-    border-top:1px solid #ececec;
+    border-top:1px solid #edf1f7;
 
     padding:12px;
 
@@ -343,62 +433,55 @@
     color:#d4d4d4;
 
 }
-.active-chip{
 
-    background:#0d6efd !important;
+/* ==========================
+   RESPONSIVE
+========================== */
 
-    color:white !important;
+@media(max-width:991px){
 
-}
-.date-card{
+    .search-wrapper{
 
-    display:flex;
+        width:95%;
 
-    align-items:center;
+    }
 
-    gap:15px;
+    .search-card{
 
-    cursor:pointer;
+        margin-top:30px;
 
-    width:100%;
+        padding:22px;
 
-}
+    }
 
-.date-card h6{
+    .search-box{
 
-    margin:0;
+        margin-bottom:18px;
 
-    font-weight:700;
+    }
 
-    font-size:18px;
+    .swap-btn{
 
-}
+        margin-bottom:18px;
 
-.date-card small{
+    }
 
-    color:#666;
+    .quick-date{
 
-}
+        justify-content:flex-start;
 
-.placeholder{
+        margin-top:10px;
 
-    color:#999;
+        flex-wrap:wrap;
 
-    font-size:18px;
+    }
 
-}
+    .search-bus-btn{
 
-.active-chip{
+        width:100%;
 
-    background:#0d6efd !important;
+        padding:16px;
 
-    color:white !important;
-
-}
-.search-wrapper{
-
-    width:85%;
-
-    margin:auto;
+    }
 
 }

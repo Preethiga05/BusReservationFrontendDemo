@@ -6,6 +6,8 @@ import ExecutiveDashboard from "./pages/ExecutiveDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BusOperatorDashboard from "./pages/BusOperatorDashboard";
+import Register from "./components/Auth/Register";
+import Login from "./components/Auth/Login";
 
 function App() {
 
@@ -51,6 +53,11 @@ function App() {
                             <BusOperatorDashboard />
                         </ProtectedRoute>
                     }
+                />
+                <Route path="/register" element={<Register />} />
+                <Route
+                    path="/login"
+                    element={<Login />}
                 />
 
             </Routes>

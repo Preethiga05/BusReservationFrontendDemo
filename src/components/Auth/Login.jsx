@@ -169,13 +169,24 @@ function Login({ close, openRegister }) {
 
                 <div className="register-text">
 
-                    Don't have an account?
+                    <div className="text-center mt-3">
 
-                    <span onClick={openRegister}>
+                        <span>
 
-                        Register
+                            Don't have an account?
 
-                    </span>
+                        </span>
+
+                        <button
+                            className="register-link-btn"
+                            onClick={() => navigate("/register")}
+                        >
+
+                            Register
+
+                        </button>
+
+                    </div>
 
                 </div>
 

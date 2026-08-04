@@ -18,6 +18,17 @@ class PassengerService {
         };
 
     }
+    registerPassenger(passenger){
+
+    return axios.post(
+
+        `${BASE_URL}/add`,
+
+        passenger
+
+    );
+
+}
 
     getAllPassengers() {
 

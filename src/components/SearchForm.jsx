@@ -104,7 +104,7 @@ function SearchForm() {
 
     return (
 
-        <div className="search-wrapper">
+        <div id="searchBus" className="search-wrapper">
 
             <div className="search-card">
 

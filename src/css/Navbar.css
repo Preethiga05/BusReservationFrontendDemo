@@ -82,3 +82,46 @@
     padding:0 60px;
 
 }
+.profile-dropdown{
+
+    position:absolute;
+
+    top:110%;
+
+    right:0;
+
+    width:220px;
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+    z-index:9999;
+
+}
+
+.profile-dropdown .dropdown-item{
+
+    width:100%;
+
+    border:none;
+
+    background:white;
+
+    padding:14px 18px;
+
+    text-align:left;
+
+    transition:.3s;
+
+}
+
+.profile-dropdown .dropdown-item:hover{
+
+    background:#f5f9ff;
+
+}

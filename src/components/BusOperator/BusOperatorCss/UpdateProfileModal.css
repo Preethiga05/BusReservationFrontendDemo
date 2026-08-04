@@ -1,0 +1,49 @@
+.profile-modal{
+
+    width:700px;
+
+    max-width:95vw;
+
+    border-radius:18px;
+
+}
+
+.profile-modal-body{
+
+    padding:25px;
+
+}
+
+.profile-modal .form-control,
+
+.profile-modal .form-select{
+
+    min-height:46px;
+
+}
+
+.profile-modal textarea{
+
+    resize:none;
+
+}
+
+.profile-modal .modal-footer{
+
+    padding:20px 25px;
+
+    border-top:1px solid #e9ecef;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+}
+
+.profile-modal .btn{
+
+    min-width:140px;
+
+}

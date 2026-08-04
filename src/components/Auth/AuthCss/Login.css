@@ -345,3 +345,22 @@
     }
 
 }
+.register-link-btn{
+
+    border:none;
+
+    background:none;
+
+    color:#0d6efd;
+
+    margin-left:6px;
+
+    font-weight:600;
+
+}
+
+.register-link-btn:hover{
+
+    text-decoration:underline;
+
+}
