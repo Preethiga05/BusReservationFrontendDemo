@@ -1,15 +1,24 @@
-import "./BusOperatorCss/Buses.css";
 import { useEffect, useState } from "react";
+
 import BusDetailsModal from "./BusDetailsModal";
 import AddBusModal from "./AddBusModal";
-import UpdateBusModal from "./UpdateBusModal";
+
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
+
+import BusService from "../../services/BusService";
+import UpdateBusModal from "./UpdateBusModal";
+
 
 function Buses() {
 
-    const [selectedBus, setSelectedBus] = useState(null);
+    const [buses, setBuses] = useState([]);
+
+    const [filteredBuses, setFilteredBuses] = useState([]);
+    const [showStatusModal, setShowStatusModal] = useState(false);
 
     const [showAddModal, setShowAddModal] = useState(false);
+
+    const [selectedBus, setSelectedBus] = useState(null);
 
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -17,91 +26,152 @@ function Buses() {
 
     const [search, setSearch] = useState("");
 
-    const [buses] = useState([
+    const [loading, setLoading] = useState(true);
 
-        {
+    const [error, setError] = useState("");
 
-            busId: 1,
-
-            busNumber: "TN01AB1234",
-
-            busName: "KPN Express",
-
-            busType: "SLEEPER_AC",
-
-            totalSeats: 40,
-
-            status: "ACTIVE"
-
-        },
-
-        {
-
-            busId: 2,
-
-            busNumber: "TN22XY5678",
-
-            busName: "Sai Travels",
-
-            busType: "SEATER_AC",
-
-            totalSeats: 35,
-
-            status: "ACTIVE"
-
-        },
-
-        {
-
-            busId: 3,
-
-            busNumber: "TN55ZZ8888",
-
-            busName: "GreenLine",
-
-            busType: "SLEEPER_NON_AC",
-
-            totalSeats: 40,
-
-            status: "INACTIVE"
-
-        }
-
-    ]);
-
-    const [filteredBuses, setFilteredBuses] = useState(buses);
 
     useEffect(() => {
 
-        const filtered = buses.filter(bus =>
+        loadBuses();
 
-            bus.busName.toLowerCase().includes(search.toLowerCase())
+    }, []);
 
-            ||
 
-            bus.busNumber.toLowerCase().includes(search.toLowerCase())
+    async function loadBuses() {
 
+    try {
+
+        const response =
+            await BusService.getOwnBuses();
+
+        console.log(
+            "Buses:",
+            response.data
         );
+
+        setBuses(response.data);
+
+    }
+    catch (error) {
+
+        console.error(
+            "Failed to load buses:",
+            error
+        );
+
+    }
+
+}
+
+
+    useEffect(() => {
+
+        const value =
+            search.toLowerCase().trim();
+
+        const filtered =
+            buses.filter((bus) =>
+
+                bus.busName
+                    ?.toLowerCase()
+                    .includes(value)
+
+                ||
+
+                bus.busNumber
+                    ?.toLowerCase()
+                    .includes(value)
+
+                ||
+
+                bus.busType
+                    ?.toLowerCase()
+                    .includes(value)
+
+            );
 
         setFilteredBuses(filtered);
 
     }, [search, buses]);
 
+
+    async function changeBusStatus() {
+
+        if (!selectedBus) {
+            return;
+        }
+
+
+        try {
+
+            if (selectedBus.busStatus === "ACTIVE") {
+
+                await BusService.deactivateBus(
+                    selectedBus.busId
+                );
+
+            }
+            else {
+
+                await BusService.activateBus(
+                    selectedBus.busId
+                );
+
+            }
+
+
+            setShowDeactivateModal(false);
+
+            setSelectedBus(null);
+
+            await loadBuses();
+
+        }
+        catch (error) {
+
+            console.log(
+                "Bus status update error:",
+                error
+            );
+
+            console.log(
+                "Status:",
+                error.response?.status
+            );
+
+            console.log(
+                "Response:",
+                error.response?.data
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Unable to change bus status."
+            );
+
+        }
+
+    }
+
     return (
 
-        <div className="buses-page">
+        <div className="container-fluid py-4 px-4">
 
-            <div className="page-header">
+
+            {/* PAGE HEADER */}
+
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold text-primary mb-1">
 
                         My Buses
 
                     </h2>
 
-                    <p>
+                    <p className="text-muted mb-0">
 
                         Manage all buses registered under your company.
 
@@ -109,28 +179,28 @@ function Buses() {
 
                 </div>
 
-                <div className="header-actions">
+
+                <div className="d-flex gap-2">
 
                     <input
-
                         type="text"
-
-                        className="form-control search-box"
-
+                        className="form-control"
+                        style={{
+                            width: "260px"
+                        }}
                         placeholder="Search Bus..."
-
                         value={search}
-
-                        onChange={(e) => setSearch(e.target.value)}
-
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
                     />
 
+
                     <button
-
-                        className="btn btn-primary"
-
-                        onClick={() => setShowAddModal(true)}
-
+                        className="btn btn-primary text-nowrap"
+                        onClick={() =>
+                            setShowAddModal(true)
+                        }
                     >
 
                         <i className="bi bi-plus-circle me-2"></i>
@@ -143,152 +213,359 @@ function Buses() {
 
             </div>
 
-            <div className="table-card">
 
-                <table className="table table-hover align-middle">
+            {/* ERROR */}
 
-                    <thead>
+            {
+                error &&
 
-                        <tr>
+                <div className="alert alert-danger">
 
-                            <th>#</th>
+                    {error}
 
-                            <th>Bus Number</th>
+                </div>
+            }
 
-                            <th>Bus Name</th>
 
-                            <th>Type</th>
+            {/* TABLE CARD */}
 
-                            <th>Seats</th>
+            <div className="card border-0 shadow-sm rounded-4">
 
-                            <th>Status</th>
+                <div className="card-body p-3 p-md-4">
 
-                            <th>Action</th>
 
-                        </tr>
+                    {
+                        loading
 
-                    </thead>
+                            ?
 
-                    <tbody>
+                            <div className="text-center py-5">
 
-                        {
+                                <div
+                                    className="spinner-border text-primary"
+                                    role="status"
+                                ></div>
 
-                            filteredBuses.map((bus, index) => (
+                                <p className="text-muted mt-3 mb-0">
 
-                                <tr key={bus.busId}>
+                                    Loading buses...
 
-                                    <td>
+                                </p>
 
-                                        {index + 1}
+                            </div>
 
-                                    </td>
+                            :
 
-                                    <td>
+                            filteredBuses.length === 0
 
-                                        {bus.busNumber}
+                                ?
 
-                                    </td>
+                                <div className="text-center py-5">
 
-                                    <td>
+                                    <i
+                                        className="bi bi-bus-front text-muted"
+                                        style={{
+                                            fontSize: "3rem"
+                                        }}
+                                    ></i>
 
-                                        {bus.busName}
+                                    <h5 className="mt-3">
 
-                                    </td>
+                                        No buses found
 
-                                    <td>
+                                    </h5>
 
-                                        {bus.busType}
-
-                                    </td>
-
-                                    <td>
-
-                                        {bus.totalSeats}
-
-                                    </td>
-
-                                    <td>
+                                    <p className="text-muted">
 
                                         {
-
-                                            bus.status === "ACTIVE"
-
-                                                ?
-
-                                                <span className="active-status">
-
-                                                    Active
-
-                                                </span>
-
-                                                :
-
-                                                <span className="inactive-status">
-
-                                                    Inactive
-
-                                                </span>
-
+                                            search
+                                                ? "No buses match your search."
+                                                : "You have not registered any buses yet."
                                         }
 
-                                    </td>
+                                    </p>
 
-                                    <td>
+                                </div>
 
-                                        <div className="action-buttons">
+                                :
 
-                                            <button
-                                                className="btn btn-primary btn-sm"
-                                                onClick={() => setSelectedBus(bus)}
-                                            >
-                                                View
-                                            </button>
+                                <div className="table-responsive">
 
-                                        </div>
+                                    <table className="table table-hover align-middle mb-0">
 
-                                    </td>
+                                        <thead className="table-light">
 
-                                </tr>
+                                            <tr>
 
-                            ))
+                                                <th>#</th>
 
-                        }
+                                                <th>Bus Number</th>
 
-                    </tbody>
+                                                <th>Bus Name</th>
 
-                </table>
+                                                <th>Type</th>
+
+                                                <th>Seats</th>
+
+                                                <th>Status</th>
+
+                                                <th>Action</th>
+
+                                            </tr>
+
+                                        </thead>
+
+
+                                        <tbody>
+
+                                            {
+                                                filteredBuses.map(
+                                                    (bus, index) => (
+
+                                                        <tr
+                                                            key={bus.busId}
+                                                        >
+
+                                                            <td>
+
+                                                                {index + 1}
+
+                                                            </td>
+
+                                                            <td className="fw-semibold">
+
+                                                                {bus.busNumber}
+
+                                                            </td>
+
+                                                            <td>
+
+                                                                {bus.busName}
+
+                                                            </td>
+
+                                                            <td>
+
+                                                                {bus.busType}
+
+                                                            </td>
+
+                                                            <td>
+
+                                                                {bus.totalSeats}
+
+                                                            </td>
+
+                                                            <td>
+
+                                                                {
+                                                                    bus.busStatus === "ACTIVE"
+
+                                                                        ?
+
+                                                                        <span className="badge bg-success-subtle text-success">
+
+                                                                            Active
+
+                                                                        </span>
+
+                                                                        :
+
+                                                                        <span className="badge bg-danger-subtle text-danger">
+
+                                                                            Inactive
+
+                                                                        </span>
+                                                                }
+
+                                                            </td>
+
+                                                            <td>
+
+                                                                <button
+                                                                    className="btn btn-primary btn-sm"
+                                                                    onClick={() =>
+                                                                        setSelectedBus(bus)
+                                                                    }
+                                                                >
+
+                                                                    <i className="bi bi-eye me-1"></i>
+
+                                                                    View
+
+                                                                </button>
+
+                                                            </td>
+
+                                                        </tr>
+
+                                                    )
+                                                )
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                    }
+
+                </div>
 
             </div>
 
-            <BusDetailsModal
 
-    bus={selectedBus}
+            {/* BUS DETAILS */}
 
-    close={() => setSelectedBus(null)}
+            {
+                selectedBus &&
 
-    openUpdate={() => {
+                !showDeactivateModal &&
 
-        setSelectedBus(selectedBus);
+                <BusDetailsModal
 
-        setShowUpdateModal(true);
+                    bus={selectedBus}
 
-    }}
+                    close={() =>
+                        setSelectedBus(null)
+                    }
 
-    openDeactivate={() => {
+                    openUpdate={() => {
 
-        setShowDeactivateModal(true);
+                        setShowUpdateModal(true);
 
-    }}
+                    }}
 
-/>
+                    openDeactivate={() => {
+
+                        setShowDeactivateModal(true);
+
+                    }}
+
+                />
+            }
+
+            {/* ADD BUS */}
+
 
             <AddBusModal
 
                 show={showAddModal}
 
-                close={() => setShowAddModal(false)}
+                close={() =>
+                    setShowAddModal(false)
+                }
+
+                onBusAdded={loadBuses}
 
             />
+
+
+            {/* STATUS CONFIRMATION */}
+
+            <ConfirmationModal
+
+    show={showDeactivateModal}
+
+    title={
+        selectedBus?.busStatus === "ACTIVE"
+            ? "Deactivate Bus"
+            : "Activate Bus"
+    }
+
+    message={`Are you sure you want to ${
+        selectedBus?.busStatus === "ACTIVE"
+            ? "deactivate"
+            : "activate"
+    } "${selectedBus?.busName}"?`}
+
+    confirmButtonText="Yes"
+
+    confirmButtonClass={
+        selectedBus?.busStatus === "ACTIVE"
+            ? "btn-danger"
+            : "btn-success"
+    }
+
+    onCancel={() => {
+        setShowDeactivateModal(false);
+    }}
+
+    onConfirm={async () => {
+
+        try {
+
+            console.log(
+                "Selected bus:",
+                selectedBus
+            );
+
+            console.log(
+                "Bus ID:",
+                selectedBus?.busId
+            );
+
+            if (!selectedBus) {
+                return;
+            }
+
+            if (selectedBus.busStatus === "ACTIVE") {
+
+                console.log(
+                    "Calling deactivate API..."
+                );
+
+                await BusService.deactivateBus(
+                    selectedBus.busId
+                );
+
+            } else {
+
+                console.log(
+                    "Calling activate API..."
+                );
+
+                await BusService.activateBus(
+                    selectedBus.busId
+                );
+
+            }
+
+            console.log(
+                "Bus status updated successfully"
+            );
+
+            setShowDeactivateModal(false);
+
+            setSelectedBus(null);
+
+            // Reload buses
+            await loadBuses();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Bus status update failed:",
+                error
+            );
+
+            console.error(
+                "Response:",
+                error.response?.data
+            );
+
+            console.error(
+                "Status:",
+                error.response?.status
+            );
+
+        }
+
+    }}
+
+/>
 
             <UpdateBusModal
 
@@ -296,29 +573,19 @@ function Buses() {
 
                 bus={selectedBus}
 
-                close={() => setShowUpdateModal(false)}
+                close={() => {
 
-            />
+                    setShowUpdateModal(false);
 
-            <ConfirmationModal
+                }}
 
-                show={showDeactivateModal}
+                onBusUpdated={async () => {
 
-                title="Bus Status"
+                    await loadBuses();
 
-                message={`Are you sure you want to change the status of "${selectedBus?.busName}"?`}
+                    setShowUpdateModal(false);
 
-                confirmButtonText="Yes"
-
-                confirmButtonClass="btn-danger"
-
-                onCancel={() => setShowDeactivateModal(false)}
-
-                onConfirm={() => {
-
-                    console.log("API Tomorrow");
-
-                    setShowDeactivateModal(false);
+                    setSelectedBus(null);
 
                 }}
 

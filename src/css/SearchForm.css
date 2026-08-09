@@ -1,49 +1,64 @@
-/* ==========================
+/* =====================================================
    SEARCH WRAPPER
-========================== */
+===================================================== */
 
 .search-wrapper{
+
     width:85%;
+
     margin:auto;
+
     position:relative;
+
 }
 
-/* ==========================
+/* =====================================================
    SEARCH CARD
-========================== */
+===================================================== */
 
 .search-card{
+
     background:#ffffff;
+
     border-radius:28px;
-    padding:22px 28px;
+
+    padding:28px 34px;
+
     margin-top:-70px;
+
     position:relative;
+
     z-index:100;
 
     box-shadow:
-        0 20px 50px rgba(13,110,253,.12),
-        0 8px 25px rgba(0,0,0,.08);
+
+        0 18px 40px rgba(13,110,253,.08),
+
+        0 8px 20px rgba(0,0,0,.06);
+
 }
 
-/* ==========================
+/* =====================================================
    SEARCH BOX
-========================== */
+===================================================== */
 
 .search-box{
 
-    height:80px;
-
-    border:1px solid #e7edf7;
-
-    border-radius:18px;
+    position:relative;
 
     display:flex;
 
     align-items:center;
 
+    height:72px;
+
     padding:0 22px;
 
-    background:white;
+    background:#fff;
+
+    border:1px solid #dce8fb;
+
+    border-radius:18px;
 
     transition:.35s ease;
 
@@ -53,7 +68,9 @@
 
     border-color:#0d6efd;
 
-    box-shadow:0 8px 22px rgba(13,110,253,.12);
+    box-shadow:
+
+        0 8px 22px rgba(13,110,253,.12);
 
 }
 
@@ -61,27 +78,34 @@
 
     border-color:#0d6efd;
 
-    box-shadow:0 0 0 4px rgba(13,110,253,.12);
+    box-shadow:
+
+        0 8px 22px rgba(13,110,253,.12),
+
+        0 0 0 3px rgba(13,110,253,.10);
 
 }
 
-/* ==========================
+/* =====================================================
    ICONS
-========================== */
+===================================================== */
 
 .search-icon{
 
-    font-size:22px;
+    width:24px;
+
+    min-width:24px;
 
     color:#0d6efd;
 
-    margin-right:15px;
+    font-size:18px;
+
+    margin-right:16px;
 
 }
-
-/* ==========================
-   INPUTS
-========================== */
+/* =====================================================
+   INPUT
+===================================================== */
 
 .search-input{
 
@@ -95,7 +119,7 @@
 
     background:transparent;
 
-    font-size:18px;
+    font-size:17px;
 
     font-weight:600;
 
@@ -107,15 +131,15 @@
 
     color:#9aa6b2;
 
-    font-size:17px;
+    font-size:16px;
 
     font-weight:500;
 
 }
 
-/* ==========================
+/* =====================================================
    SWAP BUTTON
-========================== */
+===================================================== */
 
 .swap-btn{
 
@@ -127,13 +151,17 @@
 
     border:2px solid #0d6efd;
 
-    background:white;
+    background:#fff;
 
     color:#0d6efd;
 
     font-size:20px;
 
-    transition:.4s;
+    transition:.35s;
+
+    box-shadow:
+
+        0 8px 18px rgba(13,110,253,.12);
 
 }
 
@@ -145,38 +173,41 @@
 
     transform:rotate(180deg);
 
-    box-shadow:0 10px 20px rgba(13,110,253,.25);
+    box-shadow:
+
+        0 12px 25px rgba(13,110,253,.25);
 
 }
 
-/* ==========================
+/* =====================================================
    QUICK DATE
-========================== */
+===================================================== */
 
 .quick-date{
 
     display:flex;
 
-    gap:12px;
-
     justify-content:center;
 
     align-items:center;
 
+    gap:12px;
+
 }
 
 .today-btn,
+
 .tomorrow-btn{
 
     border:none;
 
+    padding:12px 22px;
+
+    border-radius:999px;
+
     background:#eef5ff;
 
     color:#0d6efd;
-
-    padding:12px 20px;
-
-    border-radius:999px;
 
     font-size:15px;
 
@@ -187,11 +218,12 @@
 }
 
 .today-btn:hover,
+
 .tomorrow-btn:hover{
 
     background:#0d6efd;
 
-    color:white;
+    color:#fff;
 
 }
 
@@ -199,42 +231,43 @@
 
     background:linear-gradient(135deg,#0d6efd,#3b82f6)!important;
 
-    color:white!important;
+    color:#fff!important;
 
-    box-shadow:0 8px 18px rgba(13,110,253,.25);
+    box-shadow:
+
+        0 10px 20px rgba(13,110,253,.25);
 
 }
 
-/* ==========================
+/* =====================================================
    SEARCH BUTTON
-========================== */
-
+===================================================== */
 .search-bus-btn{
 
-    transform:translateY(-22px);
+    position: relative;
 
-    padding:16px 70px;
+    z-index: 1000;
+
+    transform: translateY(-15px);
+
+    padding:16px 56px;
 
     border:none;
 
-    border-radius:50px;
+    border-radius:999px;
 
     background:linear-gradient(135deg,#0d6efd,#0052d4);
 
     color:white;
 
-    font-size:19px;
+    font-size:18px;
 
     font-weight:600;
 
     transition:.35s;
 
     box-shadow:
-        0 15px 30px rgba(13,110,253,.30);
-
-    position:relative;
-
-    z-index:1000;
+        0 15px 30px rgba(13,110,253,.28);
 
 }
 
@@ -243,13 +276,157 @@
     transform:translateY(-26px);
 
     box-shadow:
-        0 22px 40px rgba(13,110,253,.40);
+
+        0 20px 40px rgba(13,110,253,.35);
+
+}
+.react-datepicker-wrapper{
+
+    width:100%;
+
+    height:100%;
 
 }
 
-/* ==========================
-   DATE PICKER INPUT
-========================== */
+.react-datepicker__input-container{
+
+    width:100%;
+
+    height:100%;
+
+}
+
+.react-datepicker__input-container > div{
+
+    height:100%;
+
+}
+
+/* =====================================================
+   DATE CARD
+===================================================== 
+
+.date-card{
+
+    display:flex;
+
+    align-items:center;
+
+    width:100%;
+
+    height:100%;
+
+    padding:0 2px;
+
+    cursor:pointer;
+
+}
+
+.date-card h6{
+
+    margin:0;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.date-card small{
+
+    color:#8b98a8;
+
+    font-size:13px;
+
+    font-weight:500;
+
+}
+
+.date-placeholder{
+
+    display:block;
+
+    line-height:1;
+
+    color:#9aa6b2;
+
+    font-size:16px;
+
+    font-weight:500;
+
+}
+    */
+
+    /* ===========================================
+   CUSTOM DATE INPUT
+=========================================== */
+
+.custom-date-input{
+
+    display:flex;
+
+    align-items:center;
+
+    width:100%;
+
+    height:100%;
+
+    cursor:pointer;
+
+}
+
+.custom-date-input i{
+
+    color:#0d6efd;
+
+    font-size:18px;
+
+    margin-right:16px;
+
+    flex-shrink:0;
+
+}
+
+.custom-date-input input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:#222;
+
+    cursor:pointer;
+
+}
+
+.custom-date-input input::placeholder{
+
+    color:#9aa6b2;
+
+    font-weight:500;
+
+}
+
+.custom-date-input input:focus{
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+/* =====================================================
+   DATE PICKER
+===================================================== */
 
 .react-datepicker-wrapper{
 
@@ -263,66 +440,23 @@
 
 }
 
-.date-card{
+.react-datepicker-popper{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    width:100%;
-
-    cursor:pointer;
+    z-index:99999 !important;
 
 }
-
-.date-card h6{
-
-    margin:0;
-
-    font-size:17px;
-
-    font-weight:700;
-
-    color:#222;
-
-}
-
-.date-card small{
-
-    color:#7d8794;
-
-    font-size:13px;
-
-    font-weight:500;
-
-}
-
-.date-placeholder{
-
-    color:#9aa6b2;
-
-    font-size:17px;
-
-    font-weight:500;
-
-}
-
-/* ==========================
-   REACT DATE PICKER
-========================== */
 
 .react-datepicker{
 
-    border:none!important;
+    border:none !important;
 
-    border-radius:20px!important;
+    border-radius:20px !important;
 
     overflow:hidden;
 
     box-shadow:
-        0 20px 45px rgba(0,0,0,.18);
+
+        0 18px 35px rgba(0,0,0,.18);
 
     font-family:inherit;
 
@@ -330,9 +464,9 @@
 
 .react-datepicker__header{
 
-    background:white;
+    background:#fff;
 
-    border-bottom:1px solid #edf1f7;
+    border-bottom:1px solid #edf2f8;
 
     padding:16px;
 
@@ -340,17 +474,17 @@
 
 .react-datepicker__current-month{
 
+    color:#173B72;
+
     font-size:18px;
 
     font-weight:700;
-
-    color:#1f2937;
 
 }
 
 .react-datepicker__day-name{
 
-    color:#7d8794;
+    color:#8b98a8;
 
     font-weight:600;
 
@@ -358,11 +492,11 @@
 
 .react-datepicker__day{
 
-    width:42px;
+    width:40px;
 
-    line-height:42px;
+    line-height:40px;
 
-    margin:3px;
+    margin:4px;
 
     border-radius:50%;
 
@@ -374,23 +508,17 @@
 
     background:#0d6efd;
 
-    color:white;
+    color:#fff;
 
 }
 
-.react-datepicker__day--selected{
-
-    background:#0d6efd!important;
-
-    color:white!important;
-
-}
+.react-datepicker__day--selected,
 
 .react-datepicker__day--keyboard-selected{
 
-    background:#0d6efd!important;
+    background:#0d6efd !important;
 
-    color:white!important;
+    color:white !important;
 
 }
 
@@ -404,7 +532,7 @@
 
 .react-datepicker__navigation{
 
-    top:18px;
+    top:16px;
 
 }
 
@@ -416,27 +544,211 @@
 
 .react-datepicker__today-button{
 
-    background:white;
+    background:#fff;
 
     color:#0d6efd;
 
     font-weight:600;
 
-    border-top:1px solid #edf1f7;
-
     padding:12px;
+
+    border-top:1px solid #edf2f8;
 
 }
 
 .react-datepicker__day--disabled{
 
-    color:#d4d4d4;
+    color:#d0d0d0;
+
+}
+/* =====================================================
+   AUTO SUGGESTION
+===================================================== */
+
+.suggestion-box{
+
+    position:absolute;
+
+    top:calc(100% + 50px);
+
+    left:0;
+
+    width:100%;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    border:1px solid #e4ecfb;
+
+    box-shadow:
+
+        0 18px 40px rgba(13,110,253,.08),
+
+        0 8px 20px rgba(0,0,0,.08);
+
+    overflow:hidden;
+
+    max-height:260px;
+
+    overflow-y:auto;
+
+    z-index:9999;
+
+    animation:fadeSuggestion .18s ease-in-out;
 
 }
 
-/* ==========================
+@keyframes fadeSuggestion{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-6px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.suggestion-item{
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    color:#173B72;
+
+    transition:all .25s ease;
+
+    border-bottom:1px solid #f3f6fc;
+
+}
+
+.suggestion-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.suggestion-item:hover{
+
+    background:#f3f8ff;
+
+    color:#0d6efd;
+
+    padding-left:26px;
+
+}
+
+.suggestion-item:active{
+
+    background:#e8f1ff;
+
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.suggestion-box::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.suggestion-box::-webkit-scrollbar-track{
+
+    background:#f4f7fc;
+
+}
+
+.suggestion-box::-webkit-scrollbar-thumb{
+
+    background:#0d6efd;
+
+    border-radius:20px;
+
+}
+
+.suggestion-box::-webkit-scrollbar-thumb:hover{
+
+    background:#0052d4;
+
+}
+
+/* =====================================================
+   INPUT AUTOFILL
+===================================================== */
+
+.search-input:-webkit-autofill,
+
+.search-input:-webkit-autofill:hover,
+
+.search-input:-webkit-autofill:focus{
+
+    -webkit-box-shadow:0 0 0px 1000px #ffffff inset !important;
+
+    -webkit-text-fill-color:#222 !important;
+
+}
+
+/* =====================================================
+   REMOVE INPUT OUTLINE
+===================================================== */
+
+input:focus{
+
+    outline:none;
+
+}
+
+/* =====================================================
+   BUTTON ICON
+===================================================== */
+
+.search-bus-btn i{
+
+    font-size:18px;
+
+}
+
+/* =====================================================
+   DATE PLACEHOLDER
+===================================================== */
+
+.date-placeholder{
+
+    letter-spacing:.5px;
+
+}
+
+
+/* =====================================================
    RESPONSIVE
-========================== */
+===================================================== */
+
+@media(max-width:1200px){
+
+    .search-wrapper{
+
+        width:92%;
+
+    }
+
+}
 
 @media(max-width:991px){
 
@@ -448,9 +760,9 @@
 
     .search-card{
 
-        margin-top:30px;
+        margin-top:25px;
 
-        padding:22px;
+        padding:24px;
 
     }
 
@@ -470,9 +782,9 @@
 
         justify-content:flex-start;
 
-        margin-top:10px;
-
         flex-wrap:wrap;
+
+        margin-top:10px;
 
     }
 
@@ -480,7 +792,73 @@
 
         width:100%;
 
+        transform:none;
+
         padding:16px;
+
+    }
+
+    .search-bus-btn:hover{
+
+        transform:none;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .search-card{
+
+        padding:18px;
+
+        border-radius:22px;
+
+    }
+
+    .search-box{
+
+        height:64px;
+
+        padding:0 18px;
+
+    }
+
+    .search-input{
+
+        font-size:16px;
+
+    }
+
+    .search-icon{
+
+        font-size:18px;
+
+        margin-right:12px;
+
+    }
+
+    .swap-btn{
+
+        width:50px;
+
+        height:50px;
+
+    }
+
+    .today-btn,
+
+    .tomorrow-btn{
+
+        padding:10px 18px;
+
+        font-size:14px;
+
+    }
+
+    .search-bus-btn{
+
+        font-size:17px;
 
     }
 

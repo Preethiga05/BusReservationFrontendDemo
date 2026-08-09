@@ -1,287 +1,617 @@
 import { useEffect, useState } from "react";
-import "./BusOperatorCss/UpdateScheduleModal.css";
+import BusService from "../../services/BusService";
+import RouteService from "../../services/RouteService";
+import BusScheduleService from "../../services/BusScheduleService";
 
 function UpdateScheduleModal({
-
     show,
-
     schedule,
-
-    close
-
+    close,
+    onScheduleUpdated
 }) {
 
-    const [bus, setBus] = useState("");
+    const [buses, setBuses] = useState([]);
+    const [routes, setRoutes] = useState([]);
 
-    const [route, setRoute] = useState("");
+    const [busId, setBusId] = useState("");
+    const [routeId, setRouteId] = useState("");
 
     const [journeyDate, setJourneyDate] = useState("");
 
+    const [departureDate, setDepartureDate] = useState("");
     const [departureTime, setDepartureTime] = useState("");
 
+    const [arrivalDate, setArrivalDate] = useState("");
     const [arrivalTime, setArrivalTime] = useState("");
 
     const [fare, setFare] = useState("");
 
+    const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(false);
+
+    const [error, setError] = useState("");
+
+
     useEffect(() => {
 
-        if (schedule) {
+        if (show && schedule) {
 
-            setBus(schedule.busName);
+            loadData();
 
-            setRoute(schedule.route);
+            setBusId(
+                schedule.busId || ""
+            );
 
-            setJourneyDate(schedule.journeyDate);
+            setRouteId(
+                schedule.routeId || ""
+            );
 
-            setDepartureTime(schedule.departure);
+            setJourneyDate(
+                schedule.journeyDate || ""
+            );
 
-            setArrivalTime(schedule.arrival);
 
-            setFare(schedule.fare);
+            if (schedule.departureDateTime) {
+
+                const departure =
+                    schedule.departureDateTime;
+
+                setDepartureDate(
+                    departure.substring(0, 10)
+                );
+
+                setDepartureTime(
+                    departure.substring(11, 16)
+                );
+
+            }
+
+
+            if (schedule.arrivalDateTime) {
+
+                const arrival =
+                    schedule.arrivalDateTime;
+
+                setArrivalDate(
+                    arrival.substring(0, 10)
+                );
+
+                setArrivalTime(
+                    arrival.substring(11, 16)
+                );
+
+            }
+
+
+            setFare(
+                schedule.fare || ""
+            );
 
         }
 
-    }, [schedule]);
+    }, [show, schedule]);
 
-    if (!show || !schedule) return null;
 
-    const updateSchedule = () => {
+    const loadData = async () => {
 
-        console.log({
+        try {
 
-            scheduleId: schedule.scheduleId,
+            setLoadingData(true);
 
-            bus,
+            const [
+                busResponse,
+                routeResponse
+            ] = await Promise.all([
 
-            route,
+                BusService.getOwnBuses(),
 
-            journeyDate,
+                RouteService.getAllRoutes()
 
-            departureTime,
+            ]);
 
-            arrivalTime,
+            setBuses(
+                busResponse.data
+            );
 
-            fare
+            setRoutes(
+                routeResponse.data
+            );
 
-        });
+        }
+        catch (error) {
 
-        close();
+            console.error(
+                "Loading update data failed:",
+                error
+            );
+
+            setError(
+                "Unable to load buses and routes."
+            );
+
+        }
+        finally {
+
+            setLoadingData(false);
+
+        }
 
     };
 
+
+    const updateSchedule = async () => {
+
+        setError("");
+
+        if (
+            !busId ||
+            !routeId ||
+            !journeyDate ||
+            !departureDate ||
+            !departureTime ||
+            !arrivalDate ||
+            !arrivalTime ||
+            !fare
+        ) {
+
+            setError(
+                "Please fill all the fields."
+            );
+
+            return;
+
+        }
+
+
+        const departureDateTime =
+            `${departureDate}T${departureTime}`;
+
+        const arrivalDateTime =
+            `${arrivalDate}T${arrivalTime}`;
+
+
+        if (
+            new Date(arrivalDateTime) <=
+            new Date(departureDateTime)
+        ) {
+
+            setError(
+                "Arrival must be after departure."
+            );
+
+            return;
+
+        }
+
+
+        const scheduleData = {
+
+            busId: Number(busId),
+
+            routeId: Number(routeId),
+
+            journeyDate: journeyDate,
+
+            departureDateTime:
+                departureDateTime,
+
+            arrivalDateTime:
+                arrivalDateTime,
+
+            fare: Number(fare)
+
+        };
+
+
+        try {
+
+            setLoading(true);
+
+            await BusScheduleService.updateSchedule(
+                schedule.busScheduleId,
+                scheduleData
+            );
+
+            if (onScheduleUpdated) {
+
+                await onScheduleUpdated();
+
+            }
+
+            close();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Update schedule error:",
+                error
+            );
+
+            setError(
+                error.response?.data?.message ||
+                "Unable to update schedule."
+            );
+
+        }
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+
+    if (!show || !schedule) {
+
+        return null;
+
+    }
+
+
     return (
 
-        <div className="application-modal-overlay">
+        <div
+            className="modal d-block"
+            tabIndex="-1"
+            style={{
+                backgroundColor:
+                    "rgba(0,0,0,0.5)"
+            }}
+        >
 
-            <div className="application-modal">
+            <div className="modal-dialog modal-lg modal-dialog-centered">
 
-                <button
+                <div className="modal-content border-0 shadow-lg rounded-4">
 
-                    className="close-modal-btn"
+                    <div className="modal-header">
 
-                    onClick={close}
+                        <div>
 
-                >
+                            <div className="d-flex align-items-center gap-2">
 
-                    <i className="bi bi-x-lg"></i>
+                                <i className="bi bi-pencil-square text-primary fs-4"></i>
 
-                </button>
+                                <h5 className="modal-title fw-bold mb-0">
 
-                <div className="modal-header-section">
+                                    Update Schedule
 
-                    <div className="application-icon">
+                                </h5>
 
-                        <i className="bi bi-pencil-square"></i>
+                            </div>
+
+                            <small className="text-muted">
+
+                                Update journey information.
+
+                            </small>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={close}
+                        ></button>
 
                     </div>
 
-                    <h3>
 
-                        Update Schedule
+                    <div className="modal-body">
 
-                    </h3>
+                        {error && (
 
-                    <p>
+                            <div className="alert alert-danger">
 
-                        Modify the journey schedule.
+                                {error}
 
-                    </p>
+                            </div>
 
-                </div>
+                        )}
 
-                <div className="row mt-4">
 
-                    <div className="col-md-6 mb-3">
+                        {loadingData ? (
 
-                        <label>
+                            <div className="text-center py-5">
 
-                            Bus
+                                <div className="spinner-border text-primary"></div>
 
-                        </label>
+                                <p className="text-muted mt-2 mb-0">
 
-                        <select
+                                    Loading...
 
-                            className="form-select"
+                                </p>
 
-                            value={bus}
+                            </div>
 
-                            onChange={(e) => setBus(e.target.value)}
+                        ) : (
 
+                            <div className="row g-3">
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Bus
+
+                                    </label>
+
+                                    <select
+                                        className="form-select"
+                                        value={busId}
+                                        onChange={(e) =>
+                                            setBusId(e.target.value)
+                                        }
+                                    >
+
+                                        <option value="">
+
+                                            Select Bus
+
+                                        </option>
+
+                                        {buses
+                                            .filter(
+                                                bus =>
+                                                    bus.busStatus ===
+                                                    "ACTIVE"
+                                            )
+                                            .map(bus => (
+
+                                                <option
+                                                    key={bus.busId}
+                                                    value={bus.busId}
+                                                >
+
+                                                    {bus.busName}
+                                                    {" - "}
+                                                    {bus.busNumber}
+
+                                                </option>
+
+                                            ))}
+
+                                    </select>
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Route
+
+                                    </label>
+
+                                    <select
+                                        className="form-select"
+                                        value={routeId}
+                                        onChange={(e) =>
+                                            setRouteId(e.target.value)
+                                        }
+                                    >
+
+                                        <option value="">
+
+                                            Select Route
+
+                                        </option>
+
+                                        {routes.map(route => (
+
+                                            <option
+                                                key={route.routeId}
+                                                value={route.routeId}
+                                            >
+
+                                                {route.originCity}
+                                                {" → "}
+                                                {route.destinationCity}
+
+                                            </option>
+
+                                        ))}
+
+                                    </select>
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Journey Date
+
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={journeyDate}
+                                        onChange={(e) =>
+                                            setJourneyDate(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Fare
+
+                                    </label>
+
+                                    <div className="input-group">
+
+                                        <span className="input-group-text">
+                                            ₹
+                                        </span>
+
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            className="form-control"
+                                            value={fare}
+                                            onChange={(e) =>
+                                                setFare(
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                    </div>
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Departure Date
+
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={departureDate}
+                                        onChange={(e) =>
+                                            setDepartureDate(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Departure Time
+
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        className="form-control"
+                                        value={departureTime}
+                                        onChange={(e) =>
+                                            setDepartureTime(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Arrival Date
+
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={arrivalDate}
+                                        onChange={(e) =>
+                                            setArrivalDate(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+
+                                <div className="col-md-6">
+
+                                    <label className="form-label fw-semibold">
+
+                                        Arrival Time
+
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        className="form-control"
+                                        value={arrivalTime}
+                                        onChange={(e) =>
+                                            setArrivalTime(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+
+                    <div className="modal-footer">
+
+                        <button
+                            className="btn btn-secondary"
+                            onClick={close}
+                            disabled={loading}
                         >
 
-                            <option>KPN Express</option>
+                            Cancel
 
-                            <option>Sai Travels</option>
+                        </button>
 
-                            <option>GreenLine</option>
-
-                        </select>
-
-                    </div>
-
-                    <div className="col-md-6 mb-3">
-
-                        <label>
-
-                            Route
-
-                        </label>
-
-                        <select
-
-                            className="form-select"
-
-                            value={route}
-
-                            onChange={(e) => setRoute(e.target.value)}
-
+                        <button
+                            className="btn btn-primary"
+                            onClick={updateSchedule}
+                            disabled={
+                                loading ||
+                                loadingData
+                            }
                         >
 
-                            <option>Chennai → Madurai</option>
+                            {loading ? (
 
-                            <option>Salem → Bangalore</option>
+                                <>
 
-                            <option>Coimbatore → Chennai</option>
+                                    <span className="spinner-border spinner-border-sm me-2"></span>
 
-                        </select>
+                                    Updating...
 
-                    </div>
+                                </>
 
-                    <div className="col-md-6 mb-3">
+                            ) : (
 
-                        <label>
+                                <>
 
-                            Journey Date
+                                    <i className="bi bi-check-circle me-2"></i>
 
-                        </label>
+                                    Update Schedule
 
-                        <input
+                                </>
 
-                            type="date"
+                            )}
 
-                            className="form-control"
-
-                            value={journeyDate}
-
-                            onChange={(e) => setJourneyDate(e.target.value)}
-
-                        />
+                        </button>
 
                     </div>
-
-                    <div className="col-md-6 mb-3">
-
-                        <label>
-
-                            Fare
-
-                        </label>
-
-                        <input
-
-                            type="number"
-
-                            className="form-control"
-
-                            value={fare}
-
-                            onChange={(e) => setFare(e.target.value)}
-
-                        />
-
-                    </div>
-
-                    <div className="col-md-6">
-
-                        <label>
-
-                            Departure Time
-
-                        </label>
-
-                        <input
-
-                            type="time"
-
-                            className="form-control"
-
-                            value={departureTime}
-
-                            onChange={(e) => setDepartureTime(e.target.value)}
-
-                        />
-
-                    </div>
-
-                    <div className="col-md-6">
-
-                        <label>
-
-                            Arrival Time
-
-                        </label>
-
-                        <input
-
-                            type="time"
-
-                            className="form-control"
-
-                            value={arrivalTime}
-
-                            onChange={(e) => setArrivalTime(e.target.value)}
-
-                        />
-
-                    </div>
-
-                </div>
-
-                <div className="modal-footer mt-4">
-
-                    <button
-
-                        className="btn btn-secondary"
-
-                        onClick={close}
-
-                    >
-
-                        Cancel
-
-                    </button>
-
-                    <button
-
-                        className="btn btn-warning"
-
-                        onClick={updateSchedule}
-
-                    >
-
-                        Update Schedule
-
-                    </button>
 
                 </div>
 

@@ -1,291 +1,402 @@
-import "./BusOperatorCss/BusDetailsModal.css";
+import { useEffect, useState } from "react";
+import BusAmenityService from "../../services/BusAmenityService";
 
 function BusDetailsModal({
-
     bus,
-
     close,
     openUpdate,
-
     openDeactivate
-
 }) {
 
-    if (!bus) return null;
+    const [amenities, setAmenities] = useState([]);
+
+    const [loadingAmenities, setLoadingAmenities] = useState(false);
+
+    const [amenityError, setAmenityError] = useState("");
+    
+
+
+    useEffect(() => {
+
+        if (!bus) {
+            return;
+        }
+
+        loadAmenities();
+
+    }, [bus]);
+
+
+    async function loadAmenities() {
+
+        try {
+
+            setLoadingAmenities(true);
+
+            setAmenityError("");
+
+            console.log(
+                "Loading amenities for bus:",
+                bus.busId
+            );
+
+            const response =
+                await BusAmenityService.getByBus(
+                    bus.busId
+                );
+
+            console.log(
+                "Bus amenities response:",
+                response.data
+            );
+
+            setAmenities(response.data);
+
+        }
+        catch (error) {
+
+            console.log(
+                "Bus amenities loading error:",
+                error
+            );
+
+            console.log(
+                "Status:",
+                error.response?.status
+            );
+
+            console.log(
+                "Response:",
+                error.response?.data
+            );
+
+            setAmenities([]);
+
+            setAmenityError(
+                "Unable to load amenities."
+            );
+
+        }
+        finally {
+
+            setLoadingAmenities(false);
+
+        }
+
+    }
+
+
+    if (!bus) {
+        return null;
+    }
+
 
     return (
 
-        <div className="application-modal-overlay">
+        <div
+            className="modal d-block"
+            tabIndex="-1"
+            style={{
+                backgroundColor: "rgba(0,0,0,0.5)"
+            }}
+        >
 
-            <div className="application-modal">
+            <div className="modal-dialog modal-dialog-centered">
 
-                <button
+                <div className="modal-content shadow">
 
-                    className="close-modal-btn"
 
-                    onClick={close}
+                    {/* HEADER */}
 
-                >
+                    <div className="modal-header">
 
-                    <i className="bi bi-x-lg"></i>
+                        <div>
 
-                </button>
+                            <div className="d-flex align-items-center gap-2">
 
-                <div className="modal-header-section">
+                                <i className="bi bi-bus-front-fill text-primary fs-4"></i>
 
-                    <div className="application-icon">
+                                <h5 className="modal-title mb-0">
 
-                        <i className="bi bi-bus-front-fill"></i>
+                                    Bus Details
 
-                    </div>
+                                </h5>
 
-                    <h3>
+                            </div>
 
-                        Bus Details
+                            <small className="text-muted">
 
-                    </h3>
+                                View complete information about this bus.
 
-                    <p>
+                            </small>
 
-                        View complete information about this bus.
+                        </div>
 
-                    </p>
 
-                </div>
-
-                <div className="application-details">
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Bus Number
-
-                        </label>
-
-                        <span>
-
-                            {bus.busNumber}
-
-                        </span>
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={close}
+                        ></button>
 
                     </div>
 
-                    <div className="detail-item">
 
-                        <label>
+                    {/* BODY */}
 
-                            Bus Name
+                    <div className="modal-body">
 
-                        </label>
 
-                        <span>
+                        {/* BUS INFORMATION */}
 
-                            {bus.busName}
+                        <div className="row g-3">
 
-                        </span>
 
-                    </div>
+                            <div className="col-md-6">
 
-                    <div className="detail-item">
+                                <div className="border rounded p-3">
 
-                        <label>
+                                    <small className="text-muted">
 
-                            Bus Type
+                                        Bus Number
 
-                        </label>
+                                    </small>
 
-                        <span>
+                                    <div className="fw-semibold mt-1">
 
-                            {bus.busType}
+                                        {bus.busNumber || "N/A"}
 
-                        </span>
+                                    </div>
 
-                    </div>
+                                </div>
 
-                    <div className="detail-item">
+                            </div>
 
-                        <label>
 
-                            Total Seats
+                            <div className="col-md-6">
 
-                        </label>
+                                <div className="border rounded p-3">
 
-                        <span>
+                                    <small className="text-muted">
 
-                            {bus.totalSeats}
+                                        Bus Name
 
-                        </span>
+                                    </small>
 
-                    </div>
+                                    <div className="fw-semibold mt-1">
 
-                    <div className="detail-item">
+                                        {bus.busName || "N/A"}
 
-                        <label>
+                                    </div>
 
-                            Status
+                                </div>
 
-                        </label>
+                            </div>
 
-                        {
 
-                            bus.status === "ACTIVE"
+                            <div className="col-md-6">
 
-                                ?
+                                <div className="border rounded p-3">
 
-                                <span className="badge bg-success">
+                                    <small className="text-muted">
 
-                                    Active
+                                        Bus Type
+
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        {bus.busType || "N/A"}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <div className="border rounded p-3">
+
+                                    <small className="text-muted">
+
+                                        Total Seats
+
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        {bus.totalSeats}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <div className="border rounded p-3">
+
+                                    <small className="text-muted">
+
+                                        Status
+
+                                    </small>
+
+                                    <div className="mt-2">
+
+                                        {bus.busStatus === "ACTIVE" ? (
+
+                                            <span className="badge bg-success">
+
+                                                Active
+
+                                            </span>
+
+                                        ) : (
+
+                                            <span className="badge bg-danger">
+
+                                                Inactive
+
+                                            </span>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <hr className="my-4" />
+
+
+                        {/* AMENITIES */}
+
+                        <h6 className="fw-semibold">
+
+                            Amenities
+
+                        </h6>
+
+
+                        <div className="d-flex flex-wrap gap-2 mt-3">
+
+
+                            {loadingAmenities ? (
+
+                                <div className="text-muted">
+
+                                    <span
+                                        className="spinner-border spinner-border-sm me-2"
+                                    ></span>
+
+                                    Loading amenities...
+
+                                </div>
+
+                            ) : amenityError ? (
+
+                                <div className="alert alert-danger w-100 mb-0">
+
+                                    {amenityError}
+
+                                </div>
+
+                            ) : amenities.length > 0 ? (
+
+                                amenities.map((amenity) => (
+
+                                    <span
+                                        key={amenity.busAmenityId}
+                                        className="badge text-bg-light border"
+                                    >
+
+                                        {amenity.amenityName}
+
+                                    </span>
+
+                                ))
+
+                            ) : (
+
+                                <span className="text-muted">
+
+                                    No amenities assigned.
 
                                 </span>
 
-                                :
+                            )}
 
-                                <span className="badge bg-danger">
+                        </div>
 
-                                    Inactive
-
-                                </span>
-
-                        }
 
                     </div>
 
-                </div>
 
-                <hr />
+                    {/* FOOTER */}
 
-                <h5>
+                    <div className="modal-footer">
 
-                    Amenities
 
-                </h5>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={close}
+                        >
 
-                <div className="amenities-list">
+                            Close
 
-                    <span className="amenity-chip">
+                        </button>
 
-                        WiFi
 
-                    </span>
+                        <button
+                            className="btn btn-warning"
+                            onClick={openUpdate}
+                        >
 
-                    <span className="amenity-chip">
+                            <i className="bi bi-pencil-square me-2"></i>
 
-                        Charging Port
+                            Update Bus
 
-                    </span>
+                        </button>
 
-                    <span className="amenity-chip">
 
-                        Water Bottle
+                        <button
+                            className={
+                                bus.busStatus === "ACTIVE"
+                                    ? "btn btn-danger"
+                                    : "btn btn-success"
+                            }
+                            onClick={openDeactivate}
+                        >
 
-                    </span>
+                            <i
+                                className={
+                                    bus.busStatus === "ACTIVE"
+                                        ? "bi bi-toggle-off me-2"
+                                        : "bi bi-toggle-on me-2"
+                                }
+                            ></i>
 
-                    <span className="amenity-chip">
+                            {
+                                bus.busStatus === "ACTIVE"
+                                    ? "Deactivate Bus"
+                                    : "Activate Bus"
+                            }
 
-                        CCTV
+                        </button>
 
-                    </span>
-
-                    <span className="amenity-chip">
-
-                        Blanket
-
-                    </span>
-
-                </div>
-
-                <hr />
-
-                <div className="row text-center mt-3">
-
-                    <div className="col">
-
-                        <h3>
-
-                            12
-
-                        </h3>
-
-                        <small>
-
-                            Active Schedules
-
-                        </small>
 
                     </div>
 
-                    <div className="col">
-
-                        <h3>
-
-                            280
-
-                        </h3>
-
-                        <small>
-
-                            Total Trips
-
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <div className="modal-footer mt-4">
-
-                    <button
-
-                        className="btn btn-warning"
-
-                        onClick={() => {
-
-                            close();
-
-                            openUpdate();
-
-                        }}
-
-                    >
-
-                        Update Bus
-
-                    </button>
-
-                    <button
-
-                        className={
-                            bus.status === "ACTIVE"
-                                ? "btn btn-danger"
-                                : "btn btn-success"
-                        }
-
-                        onClick={() => {
-
-                            close();
-
-                            openDeactivate();
-
-                        }}
-
-                    >
-
-                        {
-
-                            bus.status === "ACTIVE"
-
-                                ?
-
-                                "Deactivate Bus"
-
-                                :
-
-                                "Activate Bus"
-
-                        }
-
-                    </button>
 
                 </div>
 

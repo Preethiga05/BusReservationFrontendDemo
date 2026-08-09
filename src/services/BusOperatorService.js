@@ -68,6 +68,14 @@ class BusOperatorService {
         );
 
     }
+    getMyProfile() {
+
+    return axios.get(
+        `${BASE_URL}/profile`,
+        this.getToken()
+    );
+
+}
 
 }
 

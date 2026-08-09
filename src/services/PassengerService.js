@@ -18,17 +18,17 @@ class PassengerService {
         };
 
     }
-    registerPassenger(passenger){
+    registerPassenger(passenger) {
 
-    return axios.post(
+        return axios.post(
 
-        `${BASE_URL}/add`,
+            `${BASE_URL}/add`,
 
-        passenger
+            passenger
 
-    );
+        );
 
-}
+    }
 
     getAllPassengers() {
 
@@ -79,6 +79,48 @@ class PassengerService {
         );
 
     }
+    getPassengerProfile() {
+
+        return axios.get(
+
+            `${BASE_URL}/profile`,
+
+            this.getToken()
+
+        );
+
+    }
+    getPassengerBookings() {
+
+        return axios.get(
+
+            `${API}/get-by-passenger`,
+
+            {
+
+                headers: {
+
+                    Authorization:
+                        "Bearer " + getToken()
+
+                }
+
+            }
+
+        );
+
+    }
+    getDashboard() {
+
+    return axios.get(
+
+        `${BASE_URL}/dashboard`,
+
+        this.getToken()
+
+    );
+
+}
 
 }
 

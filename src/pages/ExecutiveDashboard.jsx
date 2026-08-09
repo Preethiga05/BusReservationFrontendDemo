@@ -1,7 +1,7 @@
 import ExecutiveSidebar from "../components/Executive/ExecutiveSidebar";
 import ExecutiveNavbar from "../components/Executive/ExecutiveNavbar";
 import DashboardHome from "../components/Executive/DashboardHome";
-import "../css/executiveDashboard.css";
+import "../css/ExecutiveDashboard.css";
 import { useState } from "react";
 import Applications from "../components/Executive/Applications";
 import BusOperators from "../components/Executive/BusOperators";

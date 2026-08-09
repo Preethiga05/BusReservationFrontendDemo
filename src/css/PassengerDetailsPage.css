@@ -1,0 +1,197 @@
+/* ==========================================
+   PAGE
+========================================== */
+
+.passenger-page{
+
+    min-height:100vh;
+
+    background:#eef4ff;
+
+    padding:30px 0 50px;
+
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.passenger-container{
+
+    width:100%;
+
+    max-width:1350px;
+
+    margin:0 auto;
+
+    padding:0 20px;
+
+}
+
+/* ==========================================
+   BACK BUTTON
+========================================== */
+
+.back-btn{
+
+    border:none;
+
+    background:#ffffff;
+
+    color:#0d6efd;
+
+    font-weight:600;
+
+    padding:10px 20px;
+
+    border-radius:12px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    margin-bottom:22px;
+
+    transition:.3s;
+
+}
+
+.back-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:#0d6efd;
+
+    color:#fff;
+
+}
+
+.back-btn i{
+
+    margin-right:8px;
+
+}
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:28px;
+
+}
+
+.page-header h2{
+
+    margin:0;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#173B72;
+
+}
+
+.page-header p{
+
+    margin:0;
+
+    color:#6c757d;
+
+    font-size:17px;
+
+}
+
+/* ==========================================
+   LAYOUT
+========================================== */
+
+.passenger-layout{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:28px;
+
+    align-items:start;
+
+}
+
+/* ==========================================
+   LEFT
+========================================== */
+
+.passenger-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+/* ==========================================
+   RIGHT
+========================================== */
+
+.passenger-right{
+
+    position:sticky;
+
+    top:25px;
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:992px){
+
+    .passenger-layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .passenger-right{
+
+        position:static;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .page-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:10px;
+
+    }
+
+    .page-header h2{
+
+        font-size:28px;
+
+    }
+
+    .passenger-container{
+
+        padding:0 15px;
+
+    }
+
+}

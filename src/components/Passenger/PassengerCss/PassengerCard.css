@@ -1,0 +1,105 @@
+.passenger-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    margin-bottom:24px;
+
+}
+
+.passenger-card-header{
+
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #0052d4
+    );
+
+    color:#fff;
+
+    padding:18px 24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.passenger-card-header h4{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.passenger-card-header span{
+
+    opacity:.9;
+
+    font-size:14px;
+
+}
+
+.seat-badge{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    font-size:18px;
+
+}
+
+.passenger-card-body{
+
+    padding:24px;
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+    color:#173B72;
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius:12px;
+
+    min-height:48px;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#0d6efd;
+
+    box-shadow:0 0 0 .15rem rgba(13,110,253,.2);
+
+}

@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import Navbar from "../components/Navbar";
 
-import PassengerSidebar from "../components/Passenger/PassengerSidebar";
+import PassengerSidebar from "../components/Passenger/Sidebar";
 import DashboardHome from "../components/Passenger/DashboardHome";
 import Bookings from "../components/Passenger/Bookings";
 import Profile from "../components/Passenger/Profile";
+import "../css/PassengerDashboard.css";
 
-import "../components/Passenger/PassengerCss/PassengerDashboard.css";
 
 function PassengerDashboard() {
 
@@ -91,13 +91,15 @@ function PassengerDashboard() {
 
                             <button
 
-                                className="btn-close"
+                        className="close-banner-btn"
 
-                                onClick={() => setShowWelcome(false)}
+                        onClick={() => setShowWelcome(false)}
 
-                            >
+                    >
 
-                            </button>
+                        <i className="bi bi-x-lg"></i>
+
+                    </button>
 
                         </div>
 

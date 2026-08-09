@@ -1,0 +1,239 @@
+.payment-summary-card{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 30px rgba(13,110,253,.08),
+        0 4px 12px rgba(0,0,0,.05);
+
+    margin-bottom:30px;
+
+}
+
+.payment-summary-header{
+
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #0052d4
+    );
+
+    color:#fff;
+
+    padding:22px 28px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.payment-summary-header h3{
+
+    margin:0;
+
+    font-size:26px;
+
+    font-weight:700;
+
+}
+
+.payment-summary-header p{
+
+    margin:6px 0 0;
+
+    opacity:.9;
+
+}
+
+.payment-bus-type{
+
+    background:rgba(255,255,255,.18);
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.payment-summary-body{
+
+    padding:30px;
+
+}
+
+.payment-route{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.route-city{
+
+    text-align:center;
+
+}
+
+.route-city h4{
+
+    color:#173B72;
+
+    font-size:28px;
+
+    margin-bottom:6px;
+
+    font-weight:700;
+
+}
+
+.route-city span{
+
+    color:#6c757d;
+
+    font-size:15px;
+
+}
+
+.payment-route-middle{
+
+    flex:1;
+
+    text-align:center;
+
+    padding:0 30px;
+
+}
+
+.payment-route-middle span{
+
+    font-weight:600;
+
+    color:#173B72;
+
+}
+
+.payment-route-line{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-top:12px;
+
+}
+
+.payment-route-line::before,
+
+.payment-route-line::after{
+
+    content:"";
+
+    flex:1;
+
+    height:2px;
+
+    background:#0d6efd;
+
+}
+
+.bus-icon{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:0 12px;
+
+    font-size:20px;
+
+}
+
+.dot{
+
+    display:none;
+
+}
+
+.payment-info-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:20px;
+
+}
+
+.payment-info-grid div{
+
+    background:#f8fbff;
+
+    border-radius:14px;
+
+    padding:18px;
+
+}
+
+.payment-info-grid small{
+
+    display:block;
+
+    color:#6c757d;
+
+    margin-bottom:6px;
+
+}
+
+.payment-info-grid strong{
+
+    color:#173B72;
+
+    font-size:18px;
+
+}
+
+@media(max-width:992px){
+
+    .payment-route{
+
+        flex-direction:column;
+
+        gap:20px;
+
+    }
+
+    .payment-info-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

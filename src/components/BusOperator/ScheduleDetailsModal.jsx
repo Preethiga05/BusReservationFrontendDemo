@@ -1,294 +1,336 @@
-import "./BusOperatorCss/ScheduleDetailsModal.css";
-
 function ScheduleDetailsModal({
-
     schedule,
-
     close,
-
     openUpdate,
-
     openCancel
-
 }) {
 
-    if (!schedule) return null;
+    if (!schedule) {
+        return null;
+    }
+
+
+    const isScheduled =
+        schedule.scheduledStatus === "SCHEDULED";
+
+
+    const formatDateTime = (dateTime) => {
+
+        if (!dateTime) {
+            return "N/A";
+        }
+
+        return new Date(dateTime).toLocaleString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    };
+
 
     return (
 
-        <div className="application-modal-overlay">
+        <div
+            className="modal d-block"
+            tabIndex="-1"
+            style={{
+                backgroundColor:
+                    "rgba(0,0,0,0.5)"
+            }}
+        >
 
-            <div className="application-modal">
+            <div className="modal-dialog modal-dialog-centered">
 
-                <button
+                <div className="modal-content border-0 shadow-lg rounded-4">
 
-                    className="close-modal-btn"
+                    {/* HEADER */}
 
-                    onClick={close}
+                    <div className="modal-header">
 
-                >
+                        <div>
 
-                    <i className="bi bi-x-lg"></i>
+                            <div className="d-flex align-items-center gap-2">
 
-                </button>
+                                <i className="bi bi-calendar-week-fill text-primary fs-4"></i>
 
-                <div className="modal-header-section">
+                                <h5 className="modal-title fw-bold mb-0">
 
-                    <div className="application-icon">
+                                    Schedule Details
 
-                        <i className="bi bi-calendar-week-fill"></i>
+                                </h5>
 
-                    </div>
+                            </div>
 
-                    <h3>
+                            <small className="text-muted">
 
-                        Schedule Details
+                                View complete journey information.
 
-                    </h3>
+                            </small>
 
-                    <p>
-
-                        View complete journey information.
-
-                    </p>
-
-                </div>
-
-                <div className="application-details">
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Bus
-
-                        </label>
-
-                        <span>
-
-                            {schedule.busName}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Route
-
-                        </label>
-
-                        <span>
-
-                            {schedule.route}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Journey Date
-
-                        </label>
-
-                        <span>
-
-                            {schedule.journeyDate}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Departure
-
-                        </label>
-
-                        <span>
-
-                            {schedule.departure}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Arrival
-
-                        </label>
-
-                        <span>
-
-                            {schedule.arrival}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Fare
-
-                        </label>
-
-                        <span>
-
-                            ₹ {schedule.fare}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Available Seats
-
-                        </label>
-
-                        <span>
-
-                            {schedule.availableSeats}
-
-                        </span>
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Status
-
-                        </label>
-
-                        {
-
-                            schedule.status === "ACTIVE"
-
-                            ?
-
-                            <span className="badge bg-success">
-
-                                Active
-
-                            </span>
-
-                            :
-
-                            <span className="badge bg-danger">
-
-                                Cancelled
-
-                            </span>
-
-                        }
-
-                    </div>
-
-                </div>
-
-                <hr/>
-
-                <div className="row text-center">
-
-                    <div className="col">
-
-                        <h3>
-
-                            22
-
-                        </h3>
-
-                        <small>
-
-                            Booked Seats
-
-                        </small>
-
-                    </div>
-
-                    <div className="col">
-
-                        <h3>
-
-                            18
-
-                        </h3>
-
-                        <small>
-
-                            Available Seats
-
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <div className="modal-footer mt-4">
-
-                    {
-
-                        schedule.status === "ACTIVE"
-
-                        &&
+                        </div>
 
                         <button
+                            type="button"
+                            className="btn-close"
+                            onClick={close}
+                        ></button>
 
-                            className="btn btn-warning"
+                    </div>
 
-                            onClick={() => {
 
-                                openUpdate();
+                    {/* BODY */}
 
-                            }}
+                    <div className="modal-body">
 
+                        <div className="row g-3">
+
+                            <div className="col-md-6">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Bus
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+                                        {schedule.busName}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Route
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        {schedule.originCity}
+                                        {" → "}
+                                        {schedule.destinationCity}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Journey Date
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+                                        {schedule.journeyDate}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Fare
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        ₹ {schedule.fare}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Departure
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        {formatDateTime(
+                                            schedule.departureDateTime
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Arrival
+                                    </small>
+
+                                    <div className="fw-semibold mt-1">
+
+                                        {formatDateTime(
+                                            schedule.arrivalDateTime
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <div className="border rounded-3 p-3">
+
+                                    <small className="text-muted">
+                                        Status
+                                    </small>
+
+                                    <div className="mt-2">
+
+                                        {isScheduled ? (
+
+                                            <span className="badge rounded-pill bg-success-subtle text-success px-3 py-2">
+
+                                                Scheduled
+
+                                            </span>
+
+                                        ) : (
+
+                                            <span className="badge rounded-pill bg-danger-subtle text-danger px-3 py-2">
+
+                                                Cancelled
+
+                                            </span>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <hr className="my-4" />
+
+
+                        <div className="row text-center">
+
+                            <div className="col border-end">
+
+                                <h3 className="fw-bold text-primary">
+
+                                    {schedule.bookedSeats}
+
+                                </h3>
+
+                                <small className="text-muted">
+
+                                    Booked Seats
+
+                                </small>
+
+                            </div>
+
+                            <div className="col">
+
+                                <h3 className="fw-bold text-success">
+
+                                    {schedule.availableSeats}
+
+                                </h3>
+
+                                <small className="text-muted">
+
+                                    Available Seats
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* FOOTER */}
+
+                    <div className="modal-footer">
+
+                        <button
+                            className="btn btn-secondary"
+                            onClick={close}
                         >
 
-                            Update Schedule
+                            Close
 
                         </button>
 
-                    }
 
-                    {
+                        {isScheduled && (
 
-                        schedule.status === "ACTIVE"
+                            <>
 
-                        &&
+                                <button
+                                    className="btn btn-warning"
+                                    onClick={openUpdate}
+                                >
 
-                        <button
+                                    <i className="bi bi-pencil-square me-2"></i>
 
-                            className="btn btn-danger"
+                                    Update Schedule
 
-                            onClick={() => {
+                                </button>
 
-                                openCancel();
 
-                            }}
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={openCancel}
+                                >
 
-                        >
+                                    <i className="bi bi-x-circle me-2"></i>
 
-                            Cancel Schedule
+                                    Cancel Schedule
 
-                        </button>
+                                </button>
 
-                    }
+                            </>
+
+                        )}
+
+                    </div>
 
                 </div>
 

@@ -1,9 +1,10 @@
 import "./ResultPageCss/BusCard.css";
 import { useState } from "react";
 import { amenityIcons } from "../../utils/amenityIcons";
+import { useNavigate } from "react-router";
 
 function BusCard({ bus }) {
-
+    const navigate = useNavigate();
     const departureDate = new Date(bus.departureDateTime);
     const arrivalDate = new Date(bus.arrivalDateTime);
     const [activeSection, setActiveSection] = useState(null);
@@ -117,10 +118,17 @@ function BusCard({ bus }) {
 
                 <div className="button-info">
 
-                    <button>
-
+                    <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                            navigate("/seat-selection", {
+                                state: {
+                                    bus
+                                }
+                            })
+                        }
+                    >
                         View Seats
-
                     </button>
 
                 </div>
@@ -151,8 +159,8 @@ function BusCard({ bus }) {
 
                     <i
                         className={`bi ${activeSection === "reviews"
-                                ? "bi-chevron-up"
-                                : "bi-chevron-down"
+                            ? "bi-chevron-up"
+                            : "bi-chevron-down"
                             }`}
                     ></i>
 
@@ -179,8 +187,8 @@ function BusCard({ bus }) {
 
                     <i
                         className={`bi ${activeSection === "amenities"
-                                ? "bi-chevron-up"
-                                : "bi-chevron-down"
+                            ? "bi-chevron-up"
+                            : "bi-chevron-down"
                             }`}
                     ></i>
 

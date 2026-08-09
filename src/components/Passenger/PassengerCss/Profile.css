@@ -1,0 +1,291 @@
+/* ===========================================
+   Profile Page
+=========================================== */
+
+.profile-page{
+
+    animation:fadeIn .35s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===========================================
+   Profile Card
+=========================================== */
+
+.profile-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    border:1px solid #e8edf7;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+
+}
+
+/* ===========================================
+   Header
+=========================================== */
+
+.profile-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-bottom:20px;
+
+}
+
+.profile-avatar{
+
+    width:110px;
+
+    height:110px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#0d6efd,#173B72);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:48px;
+
+    box-shadow:0 10px 20px rgba(13,110,253,.25);
+
+}
+
+.profile-header h2{
+
+    margin-bottom:5px;
+
+    color:#173B72;
+
+    font-weight:700;
+
+}
+
+.profile-header p{
+
+    margin-bottom:10px;
+
+    color:#6c757d;
+
+}
+
+/* ===========================================
+   Section Title
+=========================================== */
+
+.section-title{
+
+    color:#173B72;
+
+    font-size:1.1rem;
+
+    font-weight:700;
+
+    margin-bottom:20px;
+
+}
+
+/* ===========================================
+   Grid
+=========================================== */
+
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.profile-item{
+
+    background:#f8fbff;
+
+    border:1px solid #dce8fb;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    transition:.3s;
+
+}
+
+.profile-item:hover{
+
+    border-color:#0d6efd;
+
+    background:#eef5ff;
+
+}
+
+.profile-item label{
+
+    display:block;
+
+    color:#6c757d;
+
+    font-size:.82rem;
+
+    margin-bottom:5px;
+
+    font-weight:600;
+
+}
+
+.profile-item span{
+
+    color:#173B72;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+}
+
+/* ===========================================
+   Travel Summary
+=========================================== */
+
+.profile-card .row{
+
+    margin-top:15px;
+
+}
+
+.profile-card .row h3{
+
+    color:#0d6efd;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.profile-card .row p{
+
+    color:#6c757d;
+
+    margin:0;
+
+}
+
+/* ===========================================
+   Button
+=========================================== */
+
+.profile-card .btn{
+
+    min-width:190px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+    padding:10px 20px;
+
+}
+
+/* ===========================================
+   Divider
+=========================================== */
+
+.profile-card hr{
+
+    margin:30px 0;
+
+    border-color:#edf2f7;
+
+}
+
+/* ===========================================
+   Responsive
+=========================================== */
+
+@media(max-width:768px){
+
+    .profile-card{
+
+        padding:25px;
+
+    }
+
+    .profile-header{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .profile-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .profile-card{
+
+        padding:18px;
+
+    }
+
+    .profile-avatar{
+
+        width:90px;
+
+        height:90px;
+
+        font-size:40px;
+
+    }
+
+    .profile-card .btn{
+
+        width:100%;
+
+    }
+
+}

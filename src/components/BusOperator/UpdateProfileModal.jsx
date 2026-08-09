@@ -60,6 +60,8 @@ function UpdateProfileModal({
         close();
 
     };
+    console.log("Operator:", operator);
+console.log("Licence:", operator?.LicenceNumber);
 
     return (
 
@@ -119,7 +121,7 @@ function UpdateProfileModal({
 
                                 value={busOperatorName}
 
-                                onChange={(e)=>setBusOperatorName(e.target.value)}
+                                onChange={(e) => setBusOperatorName(e.target.value)}
 
                             />
 
@@ -139,34 +141,28 @@ function UpdateProfileModal({
 
                                 value={companyName}
 
-                                onChange={(e)=>setCompanyName(e.target.value)}
+                                onChange={(e) => setCompanyName(e.target.value)}
 
                             />
 
                         </div>
 
-                        <div className="col-md-6 mb-3">
+                        <div className="col-md-6">
 
-                            <label>
 
+                            <label className="form-label fw-semibold">
                                 Licence Number
-
                             </label>
 
                             <input
-
+                                type="text"
                                 className="form-control"
-
-                                value={operator.licenceNumber}
-
+                                value={operator.LicenceNumber || ""}
                                 disabled
-
                             />
 
                             <small className="text-muted">
-
-                                Licence Number cannot be modified.
-
+                                Licence number cannot be changed.
                             </small>
 
                         </div>
@@ -185,7 +181,7 @@ function UpdateProfileModal({
 
                                 value={phoneNumber}
 
-                                onChange={(e)=>setPhoneNumber(e.target.value)}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
 
                             />
 
@@ -205,7 +201,7 @@ function UpdateProfileModal({
 
                                 value={gender}
 
-                                onChange={(e)=>setGender(e.target.value)}
+                                onChange={(e) => setGender(e.target.value)}
 
                             >
 
@@ -241,7 +237,7 @@ function UpdateProfileModal({
 
                                 value={companyAddress}
 
-                                onChange={(e)=>setCompanyAddress(e.target.value)}
+                                onChange={(e) => setCompanyAddress(e.target.value)}
 
                             />
 

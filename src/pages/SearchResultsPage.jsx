@@ -5,6 +5,7 @@ import { useLocation } from "react-router";
 import SearchSummary from "../components/ResultPage/SearchSummary";
 import FilterSidebar from "../components/ResultPage/FilterSidebar";
 import BusList from "../components/ResultPage/BusList";
+import NoBusFound from "../components/ResultPage/NoBusFound";
 
 import "../css/SearchResultsPage.css";
 
@@ -194,7 +195,21 @@ function SearchResultsPage() {
 
                 />
 
-                <BusList buses={buses} />
+                {
+    buses.length === 0 ? (
+
+        <NoBusFound
+            source={source}
+            destination={destination}
+            journeyDate={journeyDate}
+        />
+
+    ) : (
+
+        <BusList buses={buses} />
+
+    )
+}
 
             </div>
 

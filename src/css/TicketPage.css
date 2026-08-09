@@ -1,0 +1,169 @@
+.ticket-page {
+    min-height: 100vh;
+    background: #f4f8fc;
+    padding: 40px 20px;
+}
+
+.ticket-container {
+    max-width: 950px;
+    margin: auto;
+}
+
+.payment-success-banner {
+    background: linear-gradient(135deg, #0d6efd, #3d8bfd);
+    color: white;
+    border-radius: 15px;
+    padding: 18px 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
+}
+
+.payment-success-banner i {
+    font-size: 45px;
+}
+
+.payment-success-banner h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.payment-success-banner p {
+    margin: 4px 0 0;
+    opacity: .95;
+}
+
+.ticket-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+
+.ticket-header {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg,#0d6efd,#5ea5ff);
+    color: white;
+}
+
+.ticket-header h2 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.ticket-header span {
+    font-size: .9rem;
+    opacity: .9;
+}
+
+.ticket-header h4 {
+    margin-top: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.ticket-section {
+    padding: 25px 35px;
+}
+
+.ticket-section h5 {
+    margin-bottom: 20px;
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 18px;
+}
+
+.ticket-grid small {
+    color: gray;
+}
+
+.ticket-grid p {
+    margin: 4px 0 0;
+    font-weight: 600;
+}
+
+.ticket-passenger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f9fc;
+    padding: 15px 18px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    border-left: 5px solid #0d6efd;
+}
+
+.ticket-passenger span {
+    font-weight: 500;
+}
+
+.fare-row,
+.fare-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 16px;
+}
+
+.fare-total {
+    border-top: 2px dashed #ddd;
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 19px;
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.ticket-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    padding: 30px;
+    background: #fafafa;
+}
+
+.ticket-buttons .btn {
+    min-width: 220px;
+    height: 48px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.ticket-buttons i {
+    margin-right: 8px;
+}
+
+hr {
+    margin: 0;
+    border-color: #ececec;
+}
+
+@media(max-width:768px){
+
+    .ticket-grid{
+        grid-template-columns:1fr;
+    }
+
+    .ticket-passenger{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+    }
+
+    .ticket-buttons{
+        flex-direction:column;
+    }
+
+    .ticket-buttons .btn{
+        width:100%;
+    }
+
+}

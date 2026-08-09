@@ -4,15 +4,53 @@ import { useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { saveLoginDetails } from "../../utils/Auth";
 
-function Login({ close, openRegister }) {
+function Login({ close }) {
+
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("");
 
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+
+        let validationErrors = {};
+
+        if (!username.trim()) {
+
+            validationErrors.username = "Username is required.";
+
+        }
+
+        if (!password) {
+
+            validationErrors.password = "Password is required.";
+
+        }
+
+        setErrors(validationErrors);
+
+        return Object.keys(validationErrors).length === 0;
+
+    };
+
     const login = async () => {
 
+        if (!validateForm()) {
+
+            return;
+
+        }
+
         try {
+
+            setLoading(true);
 
             const response = await AuthService.login(
 
@@ -22,11 +60,34 @@ function Login({ close, openRegister }) {
 
             );
 
-            console.log(response.data);
-
             saveLoginDetails(response, username);
+            /*
+------------------------------------------
+Check if user came from Seat Booking
+------------------------------------------
+*/
 
-            close();
+            const pendingBooking = sessionStorage.getItem("pendingBooking");
+
+            if (pendingBooking && response.data.role === "PASSENGER") {
+
+                const booking = JSON.parse(pendingBooking);
+
+                sessionStorage.removeItem("pendingBooking");
+
+                close?.();
+
+                navigate("/passenger-details", {
+
+                    state: booking
+
+                });
+
+                return;
+
+            }
+
+            close?.();
 
             switch (response.data.role) {
 
@@ -66,136 +127,319 @@ function Login({ close, openRegister }) {
 
             console.log(err);
 
-            alert("Invalid Username or Password");
+            setErrors({
+
+                login: "Invalid Username or Password."
+
+            });
+
+        }
+
+        finally {
+
+            setLoading(false);
 
         }
 
     };
 
-    return (
+   return (
+    <>
+        <div
+            className="modal fade show"
+            style={{ display: "block" }}
+            tabIndex="-1"
+            aria-modal="true"
+            role="dialog"
+        >
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content shadow-lg border-0 rounded-4">
 
-        <div className="login-overlay">
+                    <div className="modal-header border-0 pb-0">
 
-            <div className="login-container">
+                        <div className="w-100 text-center">
 
-                <button
-                    className="close-btn"
-                    onClick={close}
-                >
-                    <i className="bi bi-x-lg"></i>
-                </button>
+                            <div className="login-icon mx-auto mb-3">
 
-                <div className="login-header">
+                                <i className="bi bi-bus-front-fill fs-2 text-white"></i>
 
-                    <div className="login-icon">
+                            </div>
 
-                        <i className="bi bi-bus-front-fill"></i>
+                            <h3 className="fw-bold mb-1">
 
-                    </div>
+                                Welcome Back!
 
-                    <h2>Welcome Back!</h2>
+                            </h3>
 
-                    <p>
-                        Continue your journey with <strong>FastX</strong>
-                    </p>
+                            <p className="text-muted mb-0">
 
-                </div>
+                                Continue your journey with
 
-                <form>
+                                <span className="fw-bold text-primary">
 
-                    <div className="mb-3">
+                                    {" "}FastX
 
-                        <label className="form-label">
+                                </span>
 
-                            Username
+                            </p>
 
-                        </label>
-
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-
-                    </div>
-
-                    <div className="mb-3">
-
-                        <label className="form-label">
-
-                            Password
-
-                        </label>
-
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Enter Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-
-                    </div>
-
-                    <div className="forgot-password">
-
-                        <a href="#">
-
-                            Forgot Password?
-
-                        </a>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        className="btn login-btn"
-                        onClick={login}
-                    >
-
-                        Login
-
-                    </button>
-
-                </form>
-
-                <div className="divider">
-
-                    <span>OR</span>
-
-                </div>
-
-                <div className="register-text">
-
-                    <div className="text-center mt-3">
-
-                        <span>
-
-                            Don't have an account?
-
-                        </span>
+                        </div>
 
                         <button
-                            className="register-link-btn"
-                            onClick={() => navigate("/register")}
-                        >
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-3"
+                            onClick={() => close?.()}
+                        ></button>
 
-                            Register
+                    </div>
 
-                        </button>
+                    <div className="modal-body px-4 pb-4">
+
+                        <form>
+
+                            <div className="mb-3">
+
+                                <label className="form-label fw-semibold">
+
+                                    Username
+
+                                </label>
+
+                                <input
+
+                                    type="text"
+
+                                    className={`form-control ${errors.username ? "is-invalid" : ""}`}
+
+                                    placeholder="Enter Username"
+
+                                    value={username}
+
+                                    onChange={(e) => {
+
+                                        setUsername(e.target.value);
+
+                                        setErrors({
+
+                                            ...errors,
+
+                                            username: "",
+
+                                            login: ""
+
+                                        });
+
+                                    }}
+
+                                />
+
+                                {
+
+                                    errors.username &&
+
+                                    <div className="invalid-feedback">
+
+                                        {errors.username}
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            <div className="mb-3">
+
+                                <label className="form-label fw-semibold">
+
+                                    Password
+
+                                </label>
+
+                                <div className="input-group">
+
+                                    <input
+
+                                        type={showPassword ? "text" : "password"}
+
+                                        className={`form-control ${errors.password ? "is-invalid" : ""}`}
+
+                                        placeholder="Enter Password"
+
+                                        value={password}
+
+                                        onChange={(e) => {
+
+                                            setPassword(e.target.value);
+
+                                            setErrors({
+
+                                                ...errors,
+
+                                                password: "",
+
+                                                login: ""
+
+                                            });
+
+                                        }}
+
+                                    />
+
+                                    <button
+
+                                        type="button"
+
+                                        className="btn btn-outline-secondary"
+
+                                        onClick={() =>
+
+                                            setShowPassword(!showPassword)
+
+                                        }
+
+                                    >
+
+                                        <i
+
+                                            className={`bi ${showPassword ? "bi-eye-slash-fill" : "bi-eye-fill"}`}
+
+                                        ></i>
+
+                                    </button>
+
+                                </div>
+
+                                {
+
+                                    errors.password &&
+
+                                    <div className="invalid-feedback d-block">
+
+                                        {errors.password}
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            {
+
+                                errors.login &&
+
+                                <div className="alert alert-danger">
+
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+
+                                    {errors.login}
+
+                                </div>
+
+                            }
+
+                            <div className="text-end mb-3">
+
+                                <a
+
+                                    href="#"
+
+                                    className="text-decoration-none"
+
+                                >
+
+                                    Forgot Password?
+
+                                </a>
+
+                            </div>
+
+                            <button
+
+                                type="button"
+
+                                className="btn btn-primary w-100 py-2"
+
+                                onClick={login}
+
+                                disabled={loading}
+
+                            >
+
+                                {
+
+                                    loading ?
+
+                                        <>
+
+                                            <span className="spinner-border spinner-border-sm me-2"></span>
+
+                                            Logging In...
+
+                                        </>
+
+                                        :
+
+                                        <>
+
+                                            <i className="bi bi-box-arrow-in-right me-2"></i>
+
+                                            Login
+
+                                        </>
+
+                                }
+
+                            </button>
+
+                        </form>
+
+                        <div className="d-flex align-items-center my-4">
+
+                            <hr className="flex-grow-1" />
+
+                            <span className="mx-3 text-muted">
+
+                                OR
+
+                            </span>
+
+                            <hr className="flex-grow-1" />
+
+                        </div>
+
+                        <div className="text-center">
+
+                            <span className="text-muted">
+
+                                Don't have an account?
+
+                            </span>
+
+                            <button
+
+                                type="button"
+
+                                className="btn btn-link text-decoration-none"
+
+                                onClick={() => navigate("/register")}
+
+                            >
+
+                                Register
+
+                            </button>
+
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
-
         </div>
 
-    );
-
+        <div className="modal-backdrop fade show"></div>
+    </>
+);
 }
-
 export default Login;

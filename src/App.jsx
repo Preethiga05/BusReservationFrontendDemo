@@ -8,7 +8,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BusOperatorDashboard from "./pages/BusOperatorDashboard";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
-
+import PassengerDashboard from "./pages/PassengerDashboard";
+import PassengerDetailsPage from "./pages/PassengerDetailsPage";
+import SeatSelectionPage from "./pages/SeatSelectionPage";
+import PaymentPage from "./pages/PaymentPage";
+import TicketPage from "./pages/TicketPage";
 function App() {
 
     return (
@@ -54,10 +58,59 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                <Route
+                    path="/passenger-dashboard"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["PASSENGER"]}
+                        >
+                            <PassengerDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/passenger-details"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["PASSENGER"]}
+                        >
+                            <PassengerDetailsPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/payment"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["PASSENGER"]}
+                        >
+                            <PaymentPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/ticket"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["PASSENGER"]}
+                        >
+                            <TicketPage />
+                        </ProtectedRoute>
+                    }
+                />
+
                 <Route path="/register" element={<Register />} />
                 <Route
                     path="/login"
                     element={<Login />}
+                />
+                <Route
+
+                    path="/seat-selection"
+
+                    element={<SeatSelectionPage />}
+
                 />
 
             </Routes>

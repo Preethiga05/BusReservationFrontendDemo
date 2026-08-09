@@ -1,490 +1,783 @@
 import { useEffect, useState } from "react";
-import "./BusOperatorCss/UpdateBusModal.css";
+
+import BusService from "../../services/BusService";
+import AmenityService from "../../services/AmenityService";
+import BusAmenityService from "../../services/BusAmenityService";
 
 function UpdateBusModal({
-
     show,
-
     bus,
-
-    close
-
+    close,
+    onBusUpdated
 }) {
 
     const [busName, setBusName] = useState("");
-
     const [busNumber, setBusNumber] = useState("");
-
     const [busType, setBusType] = useState("");
 
-    const [totalSeats, setTotalSeats] = useState("");
-
+    const [amenities, setAmenities] = useState([]);
     const [selectedAmenities, setSelectedAmenities] = useState([]);
 
-    const [amenities, setAmenities] = useState([]);
+    /*
+     * Stores the currently ACTIVE BusAmenity records.
+     *
+     * Example:
+     *
+     * [
+     *   {
+     *      busAmenityId: 59,
+     *      amenityId: 3,
+     *      amenityName: "Charging Point"
+     *   }
+     * ]
+     */
+    const [existingBusAmenities, setExistingBusAmenities] = useState([]);
 
-    const dummyAmenities = [
+    const [loading, setLoading] = useState(false);
+    const [loadingAmenities, setLoadingAmenities] = useState(false);
 
-        {
-            amenityId: 1,
-            amenityName: "WiFi",
-            description: "High-speed wireless internet",
-            status: "ACTIVE"
-        },
+    const [error, setError] = useState("");
 
-        {
-            amenityId: 2,
-            amenityName: "Charging Port",
-            description: "USB charging facility",
-            status: "ACTIVE"
-        },
 
-        {
-            amenityId: 3,
-            amenityName: "Blanket",
-            description: "Comfortable blanket for overnight travel",
-            status: "ACTIVE"
-        },
 
-        {
-            amenityId: 4,
-            amenityName: "Water Bottle",
-            description: "Complimentary drinking water",
-            status: "ACTIVE"
-        },
-
-        {
-            amenityId: 5,
-            amenityName: "CCTV",
-            description: "24x7 Security Surveillance",
-            status: "ACTIVE"
-        },
-
-        {
-            amenityId: 6,
-            amenityName: "Reading Light",
-            description: "Personal reading light",
-            status: "ACTIVE"
-        }
-
-    ];
-
+    /*
+     * When the Update Bus modal opens,
+     * load the bus information and amenities.
+     */
     useEffect(() => {
 
-        setAmenities(dummyAmenities);
+        if (!show || !bus) {
+            return;
+        }
 
-        if (bus) {
+        setBusName(bus.busName || "");
+        setBusNumber(bus.busNumber || "");
+        setBusType(bus.busType || "");
 
-            setBusName(bus.busName);
+        setError("");
 
-            setBusNumber(bus.busNumber);
+        loadAmenities();
 
-            setBusType(bus.busType);
+    }, [show, bus]);
 
-            setTotalSeats(bus.totalSeats);
 
-            // Dummy selected amenities
-            // Tomorrow fetch from BusAmenity API
 
-            setSelectedAmenities([
+    /*
+     * Load:
+     *
+     * 1. All available amenities
+     * 2. Amenities currently assigned to this bus
+     */
+    async function loadAmenities() {
 
-                1,
+        try {
 
-                2,
+            setLoadingAmenities(true);
 
-                3
+            const [
+                allAmenitiesResponse,
+                busAmenitiesResponse
+            ] = await Promise.all([
+
+                AmenityService.getAllAmenities(),
+
+                BusAmenityService.getByBus(
+                    bus.busId
+                )
 
             ]);
 
+
+            /*
+             * Only show ACTIVE amenities from the
+             * master Amenity table.
+             *
+             * If your backend already returns only
+             * ACTIVE amenities, this still works.
+             */
+            const activeAmenities =
+                allAmenitiesResponse.data.filter(
+                    (amenity) =>
+                        !amenity.status ||
+                        amenity.status === "ACTIVE"
+                );
+
+
+            setAmenities(activeAmenities);
+
+
+            const currentBusAmenities =
+                busAmenitiesResponse.data;
+
+
+            setExistingBusAmenities(
+                currentBusAmenities
+            );
+
+
+            /*
+             * Automatically check the amenities
+             * currently assigned to this bus.
+             */
+            const selectedIds =
+                currentBusAmenities.map(
+                    (amenity) =>
+                        amenity.amenityId
+                );
+
+
+            setSelectedAmenities(selectedIds);
+
+        }
+        catch (error) {
+
+            console.log(
+                "Amenity loading error:",
+                error
+            );
+
+            setError(
+                "Unable to load bus amenities."
+            );
+
+        }
+        finally {
+
+            setLoadingAmenities(false);
+
         }
 
-    }, [bus]);
+    }
 
-    if (!show || !bus) return null;
 
-    const handleBusTypeChange = (e) => {
 
-        const type = e.target.value;
+    /*
+     * Check / uncheck an amenity.
+     */
+    function handleAmenityChange(amenityId) {
 
-        setBusType(type);
+        setSelectedAmenities((previous) => {
 
-        switch (type) {
+            if (previous.includes(amenityId)) {
 
-            case "SLEEPER_AC":
+                return previous.filter(
+                    (id) => id !== amenityId
+                );
 
-                setTotalSeats(40);
+            }
 
-                break;
-
-            case "SLEEPER_NON_AC":
-
-                setTotalSeats(40);
-
-                break;
-
-            case "SEATER_AC":
-
-                setTotalSeats(45);
-
-                break;
-
-            case "SEATER_NON_AC":
-
-                setTotalSeats(45);
-
-                break;
-
-            default:
-
-                setTotalSeats("");
-
-        }
-
-    };
-
-    const updateBus = () => {
-
-        console.log({
-
-            busId: bus.busId,
-
-            busName,
-
-            busNumber,
-
-            busType,
-
-            totalSeats,
-
-            amenityIds: selectedAmenities
+            return [
+                ...previous,
+                amenityId
+            ];
 
         });
 
-        close();
+    }
 
-    };
+
+
+    /*
+     * Update bus + amenities.
+     */
+    async function updateBus() {
+
+        setError("");
+
+        if (
+            !busName.trim() ||
+            !busNumber.trim() ||
+            !busType
+        ) {
+
+            setError(
+                "Please fill all the required fields."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            setLoading(true);
+
+
+            /*
+             * ------------------------------------------------
+             * 1. UPDATE BUS DETAILS
+             * ------------------------------------------------
+             */
+
+            const busData = {
+
+                busName: busName.trim(),
+
+                /*
+                 * Registration number is disabled,
+                 * but we still send the existing value
+                 * because the backend DTO may require it.
+                 */
+                busNumber: busNumber,
+
+                busType: busType,
+
+                /*
+                 * Seat count cannot be changed after
+                 * bus creation.
+                 */
+                totalSeats: bus.totalSeats
+
+            };
+
+
+            await BusService.updateBus(
+                bus.busId,
+                busData
+            );
+
+
+
+            /*
+             * ------------------------------------------------
+             * 2. FIND REMOVED AMENITIES
+             * ------------------------------------------------
+             *
+             * Existing active amenities:
+             *
+             * [3, 4, 5, 6]
+             *
+             * New selection:
+             *
+             * [3, 4, 5, 7]
+             *
+             * Therefore:
+             *
+             * 6 needs to be deactivated.
+             */
+
+            const removedAmenities =
+                existingBusAmenities.filter(
+                    (existingAmenity) =>
+                        !selectedAmenities.includes(
+                            existingAmenity.amenityId
+                        )
+                );
+
+
+
+            /*
+             * ------------------------------------------------
+             * 3. DEACTIVATE REMOVED AMENITIES
+             * ------------------------------------------------
+             */
+
+            for (
+                const busAmenity
+                of removedAmenities
+            ) {
+
+                await BusAmenityService.deactivate(
+                    busAmenity.busAmenityId
+                );
+
+            }
+
+
+
+            /*
+             * ------------------------------------------------
+             * 4. ADD / REACTIVATE SELECTED AMENITIES
+             * ------------------------------------------------
+             *
+             * Your improved backend add() method should:
+             *
+             * - create a new BusAmenity if it doesn't exist
+             * - set existing INACTIVE relationship to ACTIVE
+             * - leave existing ACTIVE relationship ACTIVE
+             *
+             * Therefore we can simply send all selected IDs.
+             */
+
+            if (
+                selectedAmenities.length > 0
+            ) {
+
+                await BusAmenityService.add(
+                    bus.busId,
+                    selectedAmenities
+                );
+
+            }
+
+
+
+            /*
+             * ------------------------------------------------
+             * 5. REFRESH BUSES
+             * ------------------------------------------------
+             */
+
+            if (onBusUpdated) {
+
+                await onBusUpdated();
+
+            }
+
+
+            close();
+
+        }
+        catch (error) {
+
+            console.log(
+                "Update bus error:",
+                error
+            );
+
+            setError(
+                error.response?.data?.message ||
+                "Unable to update bus."
+            );
+
+        }
+        finally {
+
+            setLoading(false);
+
+        }
+
+    }
+
+
+
+    if (!show || !bus) {
+
+        return null;
+
+    }
+
+
 
     return (
 
-        <div className="application-modal-overlay">
+        <div
+            className="modal d-block"
+            tabIndex="-1"
+            style={{
+                backgroundColor:
+                    "rgba(0,0,0,0.5)"
+            }}
+        >
 
-            <div className="application-modal">
+            <div
+                className="modal-dialog modal-dialog-centered modal-lg"
+            >
 
-                <button
+                <div className="modal-content border-0 shadow">
 
-                    className="close-modal-btn"
 
-                    onClick={close}
+                    {/* ================= HEADER ================= */}
 
-                >
+                    <div className="modal-header">
 
-                    <i className="bi bi-x-lg"></i>
+                        <div>
 
-                </button>
+                            <div className="d-flex align-items-center gap-2">
 
-                <div className="modal-header-section">
+                                <i className="bi bi-pencil-square text-primary fs-4"></i>
 
-                    <div className="application-icon">
+                                <h5 className="modal-title mb-0">
 
-                        <i className="bi bi-pencil-square"></i>
+                                    Update Bus
 
-                    </div>
+                                </h5>
 
-                    <h3>
-
-                        Update Bus
-
-                    </h3>
-
-                    <p>
-
-                        Modify the selected bus information.
-
-                    </p>
-
-                </div>
-                <div className="modal-body-scroll">
-                    <h5 className="section-title">
-
-                        Bus Information
-
-                    </h5>
-
-                    <div className="row">
-
-                        <div className="col-md-6 mb-3">
-
-                            <label>
-
-                                Bus Name
-
-                            </label>
-
-                            <input
-
-                                className="form-control"
-
-                                value={busName}
-
-                                onChange={(e) => setBusName(e.target.value)}
-
-                            />
-
-                        </div>
-
-                        <div className="col-md-6 mb-3">
-
-                            <label>
-
-                                Bus Number
-
-                            </label>
-
-                            <input
-
-                                className="form-control"
-
-                                value={busNumber}
-
-                                onChange={(e) => setBusNumber(e.target.value)}
-
-                            />
-
-                        </div>
-
-                        <div className="col-md-6 mb-3">
-
-                            <label>
-
-                                Bus Type
-
-                            </label>
-
-                            <select
-
-                                className="form-select"
-
-                                value={busType}
-
-                                onChange={handleBusTypeChange}
-
-                            >
-
-                                <option value="SLEEPER_AC">
-
-                                    Sleeper AC
-
-                                </option>
-
-                                <option value="SLEEPER_NON_AC">
-
-                                    Sleeper Non AC
-
-                                </option>
-
-                                <option value="SEATER_AC">
-
-                                    Seater AC
-
-                                </option>
-
-                                <option value="SEATER_NON_AC">
-
-                                    Seater Non AC
-
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <div className="col-md-6 mb-3">
-
-                            <label>
-
-                                Total Seats
-
-                            </label>
-
-                            <input
-
-                                type="number"
-
-                                className="form-control"
-
-                                value={totalSeats}
-
-                                onChange={(e) => setTotalSeats(e.target.value)}
-
-                            />
-
-                        </div>
-
-                        <div className="col-12">
+                            </div>
 
                             <small className="text-muted">
 
-                                💡 Suggested seat count is automatically filled based on the selected bus type. You can modify it if your bus has a different seating configuration.
+                                Update bus information and amenities.
 
                             </small>
 
                         </div>
 
+
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={close}
+                            disabled={loading}
+                        ></button>
+
                     </div>
 
-                    <hr />
 
-                    <h5 className="section-title">
 
-                        Bus Amenities
+                    {/* ================= BODY ================= */}
 
-                    </h5>
+                    <div className="modal-body">
 
-                    <div className="row">
-                        {
 
-                            amenities
+                        {error && (
 
-                                .filter(amenity => amenity.status === "ACTIVE")
+                            <div
+                                className="alert alert-danger"
+                                role="alert"
+                            >
 
-                                .map((amenity) => (
+                                <i className="bi bi-exclamation-circle me-2"></i>
 
-                                    <div
+                                {error}
 
-                                        className="col-md-6 mb-3"
+                            </div>
 
-                                        key={amenity.amenityId}
+                        )}
 
-                                    >
 
-                                        <div className="form-check amenity-card">
 
-                                            <input
+                        {/* ================= BUS DETAILS ================= */}
 
-                                                className="form-check-input"
+                        <h6 className="fw-bold mb-3">
 
-                                                type="checkbox"
+                            Bus Information
 
-                                                id={`amenity-${amenity.amenityId}`}
+                        </h6>
 
-                                                checked={
 
+                        <div className="row g-3">
+
+
+                            {/* Bus Name */}
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+
+                                    Bus Name
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={busName}
+                                    onChange={(e) =>
+                                        setBusName(
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={loading}
+                                />
+
+                            </div>
+
+
+
+                            {/* Registration Number */}
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+
+                                    Bus Registration Number
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={busNumber}
+                                    disabled
+                                />
+
+                                <small className="text-muted">
+
+                                    Registration number cannot be changed after bus registration.
+
+                                </small>
+
+                            </div>
+
+
+
+                            {/* Bus Type */}
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+
+                                    Bus Type
+
+                                </label>
+
+                                <select
+                                    className="form-select"
+                                    value={busType}
+                                    onChange={(e) =>
+                                        setBusType(
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={loading}
+                                >
+
+                                    <option value="">
+
+                                        Select Bus Type
+
+                                    </option>
+
+                                    <option value="SLEEPER_AC">
+
+                                        Sleeper AC
+
+                                    </option>
+
+                                    <option value="SLEEPER_NON_AC">
+
+                                        Sleeper Non AC
+
+                                    </option>
+
+                                    <option value="SEATER_AC">
+
+                                        Seater AC
+
+                                    </option>
+
+                                    <option value="SEATER_NON_AC">
+
+                                        Seater Non AC
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            {/* Total Seats */}
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+
+                                    Total Seats
+
+                                </label>
+
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={bus.totalSeats}
+                                    disabled
+                                />
+
+                                <small className="text-muted">
+
+                                    Seat count cannot be changed after bus creation.
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <hr className="my-4" />
+
+
+
+                        {/* ================= AMENITIES ================= */}
+
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+
+                            <div>
+
+                                <h6 className="fw-bold mb-1">
+
+                                    Amenities
+
+                                </h6>
+
+                                <small className="text-muted">
+
+                                    Select the amenities available on this bus.
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {loadingAmenities ? (
+
+                            <div className="text-center py-4">
+
+                                <div
+                                    className="spinner-border text-primary"
+                                    role="status"
+                                ></div>
+
+                                <p className="text-muted mt-2 mb-0">
+
+                                    Loading amenities...
+
+                                </p>
+
+                            </div>
+
+                        ) : amenities.length === 0 ? (
+
+                            <div className="alert alert-light border">
+
+                                <i className="bi bi-info-circle me-2"></i>
+
+                                No active amenities available.
+
+                            </div>
+
+                        ) : (
+
+                            <div className="row g-2">
+
+                                {amenities.map(
+                                    (amenity) => (
+
+                                        <div
+                                            className="col-md-4"
+                                            key={
+                                                amenity.amenityId
+                                            }
+                                        >
+
+                                            <div
+                                                className={`form-check border rounded p-3 h-100 ${
                                                     selectedAmenities.includes(
-
                                                         amenity.amenityId
-
                                                     )
-
-                                                }
-
-                                                onChange={(e) => {
-
-                                                    if (e.target.checked) {
-
-                                                        setSelectedAmenities([
-
-                                                            ...selectedAmenities,
-
-                                                            amenity.amenityId
-
-                                                        ]);
-
-                                                    }
-
-                                                    else {
-
-                                                        setSelectedAmenities(
-
-                                                            selectedAmenities.filter(
-
-                                                                item =>
-
-                                                                    item !== amenity.amenityId
-
-                                                            )
-
-                                                        );
-
-                                                    }
-
-                                                }}
-
-                                            />
-
-                                            <label
-
-                                                className="form-check-label"
-
-                                                htmlFor={`amenity-${amenity.amenityId}`}
-
+                                                        ? "border-primary bg-light"
+                                                        : ""
+                                                }`}
                                             >
 
-                                                <strong>
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input ms-0 me-2"
+                                                    id={`update-amenity-${amenity.amenityId}`}
+                                                    checked={selectedAmenities.includes(
+                                                        amenity.amenityId
+                                                    )}
+                                                    onChange={() =>
+                                                        handleAmenityChange(
+                                                            amenity.amenityId
+                                                        )
+                                                    }
+                                                    disabled={loading}
+                                                />
 
-                                                    {amenity.amenityName}
+                                                <label
+                                                    className="form-check-label fw-semibold"
+                                                    htmlFor={`update-amenity-${amenity.amenityId}`}
+                                                >
 
-                                                </strong>
+                                                    {
+                                                        amenity.amenityName
+                                                    }
 
-                                                <br />
+                                                </label>
 
-                                                <small className="text-muted">
-
-                                                    {amenity.description}
-
-                                                </small>
-
-                                            </label>
+                                            </div>
 
                                         </div>
 
-                                    </div>
+                                    )
+                                )}
 
-                                ))
+                            </div>
 
-                        }
+                        )}
+
+
+
+                        <div className="mt-3">
+
+                            <small className="text-muted">
+
+                                <i className="bi bi-info-circle me-1"></i>
+
+                                Unchecking an amenity removes it from this bus. You can add it again later.
+
+                            </small>
+
+                        </div>
+
 
                     </div>
 
-                    <div className="mt-2">
 
-                        <small className="text-muted">
 
-                            💡 Select the amenities available in this bus.
+                    {/* ================= FOOTER ================= */}
 
-                            Unchecking an amenity will remove it from this bus only.
+                    <div className="modal-footer">
 
-                        </small>
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={close}
+                            disabled={loading}
+                        >
+
+                            Cancel
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={updateBus}
+                            disabled={
+                                loading ||
+                                loadingAmenities
+                            }
+                        >
+
+                            {loading ? (
+
+                                <>
+
+                                    <span
+                                        className="spinner-border spinner-border-sm me-2"
+                                        role="status"
+                                    ></span>
+
+                                    Saving Changes...
+
+                                </>
+
+                            ) : (
+
+                                <>
+
+                                    <i className="bi bi-check-circle me-2"></i>
+
+                                    Save Changes
+
+                                </>
+
+                            )}
+
+                        </button>
 
                     </div>
-                </div>
-
-                <div className="modal-footer mt-4">
-
-                    <button
-
-                        className="btn btn-secondary"
-
-                        onClick={close}
-
-                    >
-
-                        Cancel
-
-                    </button>
-
-                    <button
-
-                        className="btn btn-warning"
-
-                        onClick={updateBus}
-
-                    >
-
-                        <i className="bi bi-check-circle me-2"></i>
-
-                        Update Bus
-
-                    </button>
 
                 </div>
 

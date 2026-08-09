@@ -1,0 +1,143 @@
+.passenger-dashboard{
+
+    display:flex;
+
+    min-height:calc(100vh - 72px);
+
+    background:#f4f7fc;
+
+}
+
+.passenger-content{
+
+    flex:1;
+
+    padding:30px;
+
+    overflow-y:auto;
+
+}
+
+/* Welcome Card */
+
+.welcome-card{
+
+    background:linear-gradient(135deg,#0d6efd,#4f9df8);
+
+    color:white;
+
+    border-radius:18px;
+
+    padding:25px 30px;
+
+    margin-bottom:30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:0 12px 30px rgba(13,110,253,.25);
+
+}
+
+.welcome-card h4{
+
+    margin:0;
+
+    font-weight:700;
+
+    font-size:1.6rem;
+
+}
+
+.welcome-card p{
+
+    margin-top:10px;
+
+    margin-bottom:0;
+
+    color:rgba(255,255,255,.9);
+
+}
+
+.welcome-card .text-primary{
+
+    color:#fff !important;
+
+    font-weight:700;
+
+}
+
+.welcome-card .btn-close{
+
+    background:white;
+
+    border-radius:50%;
+
+    padding:10px;
+
+    opacity:1;
+
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+
+    .passenger-dashboard{
+
+        flex-direction:column;
+
+    }
+
+    .passenger-content{
+
+        padding:20px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .welcome-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .welcome-card .btn-close{
+
+        align-self:flex-end;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .welcome-card{
+
+        padding:20px;
+
+    }
+
+    .welcome-card h4{
+
+        font-size:1.3rem;
+
+    }
+
+    .passenger-content{
+
+        padding:15px;
+
+    }
+
+}
