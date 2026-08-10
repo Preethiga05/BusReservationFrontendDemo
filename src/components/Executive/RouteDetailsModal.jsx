@@ -1,15 +1,11 @@
-import "./ExecutiveCss/RouteDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
 import RouteService from "../../services/RouteService";
 
 function RouteDetailsModal({
-
     route,
-
     close,
     refreshRoutes
-
 }) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -17,225 +13,221 @@ function RouteDetailsModal({
     if (!route) return null;
 
     const isActive = route.status === "ACTIVE";
+
+
     const changeRouteStatus = async () => {
 
-    try {
+        try {
 
-        if (isActive) {
+            if (isActive) {
 
-            await RouteService.deactivateRoute(
-                route.routeId
-            );
+                await RouteService.deactivateRoute(
+                    route.routeId
+                );
+
+            }
+
+            else {
+
+                await RouteService.activateRoute(
+                    route.routeId
+                );
+
+            }
+
+            await refreshRoutes();
+
+            setShowConfirmation(false);
+
+            close();
 
         }
 
-        else {
+        catch (err) {
 
-            await RouteService.activateRoute(
-                route.routeId
-            );
+            console.log(err);
 
         }
 
-        await refreshRoutes();
+    };
 
-        setShowConfirmation(false);
-
-        close();
-
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-    }
-
-};
 
     return (
 
         <>
 
-            <div className="application-modal-overlay">
+            {/* Route Details Modal */}
 
-                <div className="application-modal">
+            <div
+                className="modal fade show d-block"
+                tabIndex="-1"
+            >
 
-                    <button
+                <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                        className="close-modal-btn"
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                        onClick={close}
+                        {/* Close Button */}
 
-                    >
+                        <button
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-4"
+                            onClick={close}
+                        >
+                        </button>
 
-                        <i className="bi bi-x-lg"></i>
 
-                    </button>
+                        {/* Header */}
 
-                    <div className="modal-header-section">
+                        <div className="text-center mb-4">
 
-                        <div className="application-icon">
+                            <div
+                                className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style={{
+                                    width: "75px",
+                                    height: "75px"
+                                }}
+                            >
 
-                            <i className="bi bi-signpost-fill"></i>
+                                <i className="bi bi-signpost-fill fs-2"></i>
 
-                        </div>
+                            </div>
 
-                        <h3>
+                            <h3 className="fw-semibold mb-2">
+                                Route Details
+                            </h3>
 
-                            Route Details
-
-                        </h3>
-
-                        <p>
-
-                            View route information.
-
-                        </p>
-
-                    </div>
-
-                    <div className="application-details">
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Origin City
-
-                            </label>
-
-                            <span>
-
-                                {route.originCity}
-
-                            </span>
+                            <p className="text-secondary mb-0">
+                                View route information.
+                            </p>
 
                         </div>
 
-                        <div className="detail-item">
 
-                            <label>
+                        {/* Route Details */}
 
-                                Destination City
+                        <div className="row g-4">
 
-                            </label>
+                            <div className="col-md-6">
 
-                            <span>
+                                <label className="form-label fw-semibold text-secondary">
+                                    Origin City
+                                </label>
 
-                                {route.destinationCity}
+                                <div className="bg-light rounded-3 p-3">
+                                    {route.originCity}
+                                </div>
 
-                            </span>
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Destination City
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {route.destinationCity}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Distance
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {route.distanceKm} KM
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Estimated Duration
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {route.estimatedDurationMinutes} Minutes
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Status
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+
+                                    {
+
+                                        isActive
+
+                                            ?
+
+                                            <span className="badge bg-success">
+                                                Active
+                                            </span>
+
+                                            :
+
+                                            <span className="badge bg-danger">
+                                                Inactive
+                                            </span>
+
+                                    }
+
+                                </div>
+
+                            </div>
 
                         </div>
 
-                        <div className="detail-item">
 
-                            <label>
+                        {/* Footer */}
 
-                                Distance
+                        <div className="d-flex justify-content-end mt-4">
 
-                            </label>
+                            <button
 
-                            <span>
+                                className={
+                                    isActive
+                                        ? "btn btn-danger"
+                                        : "btn btn-success"
+                                }
 
-                                {route.distanceKm} KM
+                                onClick={() =>
+                                    setShowConfirmation(true)
+                                }
 
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Estimated Duration
-
-                            </label>
-
-                            <span>
-
-                                {route.estimatedDurationMinutes} Minutes
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Status
-
-                            </label>
-
-                            <span>
+                            >
 
                                 {
 
                                     isActive
 
-                                    ?
+                                        ?
 
-                                    <span className="badge bg-success">
+                                        "Deactivate Route"
 
-                                        Active
+                                        :
 
-                                    </span>
-
-                                    :
-
-                                    <span className="badge bg-danger">
-
-                                        Inactive
-
-                                    </span>
+                                        "Activate Route"
 
                                 }
 
-                            </span>
+                            </button>
 
                         </div>
-
-                    </div>
-
-                    <div className="modal-footer justify-content-end">
-
-                        <button
-
-                            className={
-
-                                isActive
-
-                                ?
-
-                                "btn btn-danger"
-
-                                :
-
-                                "btn btn-success"
-
-                            }
-
-                            onClick={() => setShowConfirmation(true)}
-
-                        >
-
-                            {
-
-                                isActive
-
-                                ?
-
-                                "Deactivate Route"
-
-                                :
-
-                                "Activate Route"
-
-                            }
-
-                        </button>
 
                     </div>
 
@@ -243,77 +235,53 @@ function RouteDetailsModal({
 
             </div>
 
+
+            {/* Confirmation Modal */}
+
             <ConfirmationModal
 
                 show={showConfirmation}
 
                 title={
-
                     isActive
-
-                    ?
-
-                    "Deactivate Route"
-
-                    :
-
-                    "Activate Route"
-
+                        ? "Deactivate Route"
+                        : "Activate Route"
                 }
 
                 message={
 
                     isActive
 
-                    ?
+                        ?
 
-                    `Are you sure you want to deactivate the route
-
-"${route.originCity} → ${route.destinationCity}"?
+                        `Are you sure you want to deactivate the route "${route.originCity} → ${route.destinationCity}"?
 
 This route will no longer be available while creating bus schedules.
 
 This action can be reversed later.`
 
-                    :
+                        :
 
-                    `Are you sure you want to activate the route
-
-"${route.originCity} → ${route.destinationCity}"?
+                        `Are you sure you want to activate the route "${route.originCity} → ${route.destinationCity}"?
 
 This route will be available while creating bus schedules.`
-
                 }
 
                 confirmButtonText={
-
                     isActive
-
-                    ?
-
-                    "Deactivate"
-
-                    :
-
-                    "Activate"
-
+                        ? "Deactivate"
+                        : "Activate"
                 }
 
                 confirmButtonClass={
-
                     isActive
-
-                    ?
-
-                    "btn-danger"
-
-                    :
-
-                    "btn-success"
-
+                        ? "btn-danger"
+                        : "btn-success"
                 }
 
-                onCancel={() => setShowConfirmation(false)}
+                onCancel={() =>
+                    setShowConfirmation(false)
+                }
 
                 onConfirm={changeRouteStatus}
 

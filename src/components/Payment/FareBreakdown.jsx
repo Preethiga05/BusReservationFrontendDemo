@@ -1,38 +1,40 @@
-import "./PaymentCss/FareBreakdown.css";
-
 function FareBreakdown({
-
-     fareSummary
-
+    fareSummary
 }) {
 
     if (!fareSummary) {
 
+        return (
+
+            <div className="text-center p-5">
+
+                <div className="spinner-border text-primary"></div>
+
+                <p className="mt-3">
+
+                    Calculating fare...
+
+                </p>
+
+            </div>
+
+        );
+
+    }
+
     return (
 
-        <div className="text-center p-5">
+        <div
+            className="bg-white rounded-4 overflow-hidden shadow-sm"
+        >
 
-            <div className="spinner-border text-primary"></div>
+            {/* Header */}
 
-            <p className="mt-3">
+            <div
+                className="bg-primary text-white p-3"
+            >
 
-                Calculating fare...
-
-            </p>
-
-        </div>
-
-    );
-
-}
-
-    return (
-
-        <div className="fare-breakdown-card">
-
-            <div className="fare-breakdown-header">
-
-                <h3>
+                <h3 className="mb-0 fs-4 fw-bold">
 
                     <i className="bi bi-wallet2 me-2"></i>
 
@@ -42,79 +44,112 @@ function FareBreakdown({
 
             </div>
 
-            <div className="fare-breakdown-body">
 
-                <div className="fare-item">
+            {/* Body */}
 
-    <span>
+            <div className="p-4">
 
-        Seat Fare
+                {/* Seat Fare */}
 
-    </span>
+                <div
+                    className="d-flex justify-content-between align-items-center mb-3"
+                >
 
-    <strong>
+                    <span className="text-secondary">
 
-        ₹ {fareSummary.seatFare}
+                        Seat Fare
 
-    </strong>
+                    </span>
 
-</div>
+                    <strong className="text-dark fs-5">
 
-<div className="fare-item">
+                        ₹ {fareSummary.seatFare}
 
-    <span>
+                    </strong>
 
-        Convenience Fee
+                </div>
 
-    </span>
 
-    <strong>
+                {/* Convenience Fee */}
 
-        ₹ {fareSummary.convenienceFee}
+                <div
+                    className="d-flex justify-content-between align-items-center mb-3"
+                >
 
-    </strong>
+                    <span className="text-secondary">
 
-</div>
+                        Convenience Fee
 
-<div className="fare-item">
+                    </span>
 
-    <span>
+                    <strong className="text-dark fs-5">
 
-        GST
+                        ₹ {fareSummary.convenienceFee}
 
-    </span>
+                    </strong>
 
-    <strong>
+                </div>
 
-        ₹ {fareSummary.gst}
 
-    </strong>
+                {/* GST */}
 
-</div>
+                <div
+                    className="d-flex justify-content-between align-items-center mb-3"
+                >
 
-<hr/>
+                    <span className="text-secondary">
 
-<div className="fare-total">
+                        GST
 
-    <span>
+                    </span>
 
-        Total
+                    <strong className="text-dark fs-5">
 
-    </span>
+                        ₹ {fareSummary.gst}
 
-    <strong>
+                    </strong>
 
-        ₹ {fareSummary.totalFare}
+                </div>
 
-    </strong>
 
-</div>
+                <hr />
 
-                <div className="payment-note">
+
+                {/* Total */}
+
+                <div
+                    className="d-flex justify-content-between align-items-center mt-3 mb-4"
+                >
+
+                    <span className="text-primary fs-4 fw-bold">
+
+                        Total
+
+                    </span>
+
+                    <strong className="text-primary fs-4 fw-bold">
+
+                        ₹ {fareSummary.totalFare}
+
+                    </strong>
+
+                </div>
+
+
+                {/* Security Note */}
+
+                <div
+                    className="alert alert-primary d-flex align-items-center mb-0"
+                    role="alert"
+                >
 
                     <i className="bi bi-shield-lock-fill me-2"></i>
 
-                    Your payment is protected with secure encryption.
+                    <span>
+
+                        Your payment is protected with secure encryption.
+
+                    </span>
 
                 </div>
 

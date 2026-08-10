@@ -1,5 +1,3 @@
-import "./ExecutiveCss/Routes.css";
-
 import AddRouteModal from "./AddRouteModal";
 import RouteDetailsModal from "./RouteDetailsModal";
 import { useEffect, useState } from "react";
@@ -8,81 +6,97 @@ import RouteService from "../../services/RouteService";
 function Routes() {
 
     const [search, setSearch] = useState("");
+
     const [showAddModal, setShowAddModal] = useState(false);
+
     const [selectedRoute, setSelectedRoute] = useState(null);
 
     const [routes, setRoutes] = useState([]);
+
+
     useEffect(() => {
 
-    getAllRoutes();
+        getAllRoutes();
 
-}, []);
-const getAllRoutes = async () => {
+    }, []);
 
-    try {
 
-        const response = await RouteService.getAllRoutes();
+    const getAllRoutes = async () => {
 
-        console.log(response.data);
+        try {
 
-        setRoutes(response.data);
+            const response =
+                await RouteService.getAllRoutes();
 
-    }
+            console.log(response.data);
 
-    catch (err) {
+            setRoutes(response.data);
 
-        console.log(err);
+        }
 
-    }
+        catch (err) {
 
-};
-const filteredRoutes = routes.filter(route =>
+            console.log(err);
 
-    route.originCity
-        .toLowerCase()
-        .includes(search.toLowerCase())
+        }
 
-    ||
+    };
 
-    route.destinationCity
-        .toLowerCase()
-        .includes(search.toLowerCase())
 
-);
-const getRouteById = async (routeId) => {
+    const filteredRoutes = routes.filter(route =>
 
-    try {
+        route.originCity
+            .toLowerCase()
+            .includes(search.toLowerCase())
 
-        const response = await RouteService.getRouteById(routeId);
+        ||
 
-        console.log(response.data);
+        route.destinationCity
+            .toLowerCase()
+            .includes(search.toLowerCase())
 
-        setSelectedRoute(response.data);
+    );
 
-    }
 
-    catch (err) {
+    const getRouteById = async (routeId) => {
 
-        console.log(err);
+        try {
 
-    }
+            const response =
+                await RouteService.getRouteById(routeId);
 
-};
+            console.log(response.data);
+
+            setSelectedRoute(response.data);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
+
+
     return (
 
-        <div className="routes-page">
+        <div className="p-4">
 
-            <div className="page-header">
+            {/* Page Header */}
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold text-dark mb-1">
 
                         Routes
 
                     </h2>
 
-                    <p>
+                    <p className="text-secondary mb-0">
 
                         Manage available travel routes across the FastX platform.
 
@@ -90,27 +104,35 @@ const getRouteById = async (routeId) => {
 
                 </div>
 
-                <div className="page-actions">
+
+                <div className="d-flex align-items-center gap-3">
 
                     <input
 
                         type="text"
 
-                        className="form-control search-box"
+                        className="form-control"
+
+                        style={{ width: "260px" }}
 
                         placeholder="Search Route..."
 
                         value={search}
 
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
 
                     />
+
 
                     <button
 
                         className="btn btn-primary"
 
-                        onClick={() => setShowAddModal(true)}
+                        onClick={() =>
+                            setShowAddModal(true)
+                        }
 
                     >
 
@@ -124,11 +146,14 @@ const getRouteById = async (routeId) => {
 
             </div>
 
-            <div className="table-card">
 
-                <table className="table table-hover align-middle">
+            {/* Routes Table */}
 
-                    <thead>
+            <div className="bg-white rounded-4 shadow-sm p-4">
+
+                <table className="table table-hover align-middle mb-0">
+
+                    <thead className="table-light">
 
                         <tr>
 
@@ -150,6 +175,7 @@ const getRouteById = async (routeId) => {
 
                     </thead>
 
+
                     <tbody>
 
                         {
@@ -158,15 +184,25 @@ const getRouteById = async (routeId) => {
 
                                 <tr key={route.routeId}>
 
-                                    <td>{index + 1}</td>
+                                    <td>
+                                        {index + 1}
+                                    </td>
 
-                                    <td>{route.originCity}</td>
+                                    <td>
+                                        {route.originCity}
+                                    </td>
 
-                                    <td>{route.destinationCity}</td>
+                                    <td>
+                                        {route.destinationCity}
+                                    </td>
 
-                                    <td>{route.distanceKm} KM</td>
+                                    <td>
+                                        {route.distanceKm} KM
+                                    </td>
 
-                                    <td>{route.estimatedDurationMinutes} Min</td>
+                                    <td>
+                                        {route.estimatedDurationMinutes} Min
+                                    </td>
 
                                     <td>
 
@@ -176,7 +212,7 @@ const getRouteById = async (routeId) => {
 
                                                 ?
 
-                                                <span className="active-status">
+                                                <span className="badge bg-success-subtle text-success-emphasis rounded-pill px-3 py-2">
 
                                                     Active
 
@@ -184,7 +220,7 @@ const getRouteById = async (routeId) => {
 
                                                 :
 
-                                                <span className="inactive-status">
+                                                <span className="badge bg-danger-subtle text-danger-emphasis rounded-pill px-3 py-2">
 
                                                     Inactive
 
@@ -200,7 +236,12 @@ const getRouteById = async (routeId) => {
 
                                             className="btn btn-primary btn-sm"
 
-                                           onClick={() => getRouteById(route.routeId)}
+                                            onClick={() =>
+                                                getRouteById(
+                                                    route.routeId
+                                                )
+                                            }
+
                                         >
 
                                             View
@@ -218,24 +259,32 @@ const getRouteById = async (routeId) => {
                     </tbody>
 
                 </table>
+
+
                 <AddRouteModal
 
-    show={showAddModal}
+                    show={showAddModal}
 
-    close={() => setShowAddModal(false)}
+                    close={() =>
+                        setShowAddModal(false)
+                    }
 
-    refreshRoutes={getAllRoutes}
+                    refreshRoutes={getAllRoutes}
 
-/>
+                />
+
+
                 <RouteDetailsModal
 
-    route={selectedRoute}
+                    route={selectedRoute}
 
-    close={() => setSelectedRoute(null)}
+                    close={() =>
+                        setSelectedRoute(null)
+                    }
 
-    refreshRoutes={getAllRoutes}
+                    refreshRoutes={getAllRoutes}
 
-/>
+                />
 
             </div>
 

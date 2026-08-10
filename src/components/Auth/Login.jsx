@@ -1,4 +1,4 @@
-import "./AuthCss/Login.css";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
@@ -61,11 +61,6 @@ function Login({ close }) {
             );
 
             saveLoginDetails(response, username);
-            /*
-------------------------------------------
-Check if user came from Seat Booking
-------------------------------------------
-*/
 
             const pendingBooking = sessionStorage.getItem("pendingBooking");
 
@@ -337,21 +332,7 @@ Check if user came from Seat Booking
 
                             }
 
-                            <div className="text-end mb-3">
-
-                                <a
-
-                                    href="#"
-
-                                    className="text-decoration-none"
-
-                                >
-
-                                    Forgot Password?
-
-                                </a>
-
-                            </div>
+                            
 
                             <button
 

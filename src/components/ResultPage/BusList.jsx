@@ -4,18 +4,15 @@ function BusList({ buses }) {
 
     return (
 
-        <div>
+        <div className="d-flex flex-column gap-4">
 
             {
 
                 buses.map((bus) => (
 
                     <BusCard
-
                         key={bus.busScheduleId}
-
                         bus={bus}
-
                     />
 
                 ))
@@ -24,7 +21,7 @@ function BusList({ buses }) {
 
         </div>
 
-    )
+    );
 
 }
 

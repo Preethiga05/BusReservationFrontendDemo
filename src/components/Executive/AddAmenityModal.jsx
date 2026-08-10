@@ -1,14 +1,10 @@
 import { useState } from "react";
-import "./ExecutiveCss/AddAmenityModal.css";
 import AmenityService from "../../services/AmenityService";
 
 function AddAmenityModal({
-
     show,
-
     close,
     refreshAmenities
-
 }) {
 
     const [amenityName, setAmenityName] = useState("");
@@ -19,142 +15,143 @@ function AddAmenityModal({
 
     const handleSave = async () => {
 
-    try {
+        try {
 
-        const amenity = {
+            const amenity = {
 
-            amenityName,
+                amenityName,
 
-            description
+                description
 
-        };
+            };
 
-        await AmenityService.addAmenity(amenity);
+            await AmenityService.addAmenity(amenity);
 
-        setAmenityName("");
+            setAmenityName("");
 
-        setDescription("");
+            setDescription("");
 
-        await refreshAmenities();
+            await refreshAmenities();
 
-        close();
+            close();
 
-    }
+        }
 
-    catch (err) {
+        catch (err) {
 
-        console.log(err);
+            console.log(err);
 
-    }
+        }
 
-};
-
+    };
 
     return (
 
-        <div className="application-modal-overlay">
+        <div
+            className="modal fade show d-block"
+            tabIndex="-1"
+        >
 
-            <div className="application-modal">
+            <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                <button
+                <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                    className="close-modal-btn"
-
-                    onClick={close}
-
-                >
-
-                    <i className="bi bi-x-lg"></i>
-
-                </button>
-
-                <div className="modal-header-section">
-
-                    <div className="application-icon">
-
-                        <i className="bi bi-stars"></i>
-
-                    </div>
-
-                    <h3>
-
-                        Add Amenity
-
-                    </h3>
-
-                    <p>
-
-                        Create a new amenity available for buses.
-
-                    </p>
-
-                </div>
-
-                <div className="application-details">
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Amenity Name
-
-                        </label>
-
-                        <input
-
-                            type="text"
-
-                            className="form-control"
-
-                            placeholder="Enter Amenity Name"
-
-                            value={amenityName}
-
-                            onChange={(e) => setAmenityName(e.target.value)}
-
-                        />
-
-                    </div>
-
-                    <div className="detail-item">
-
-                        <label>
-
-                            Description
-
-                        </label>
-
-                        <textarea
-
-                            className="form-control"
-
-                            rows="4"
-
-                            placeholder="Enter Description"
-
-                            value={description}
-
-                            onChange={(e) => setDescription(e.target.value)}
-
-                        />
-
-                    </div>
-
-                </div>
-
-                <div className="modal-footer">
+                    {/* Close Button */}
 
                     <button
-
-                        className="btn btn-primary"
-
-                        onClick={handleSave}
-
+                        type="button"
+                        className="btn-close position-absolute top-0 end-0 m-4"
+                        onClick={close}
                     >
-
-                        Save Amenity
-
                     </button>
+
+
+                    {/* Header */}
+
+                    <div className="text-center mb-4">
+
+                        <div
+                            className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style={{
+                                width: "75px",
+                                height: "75px"
+                            }}
+                        >
+
+                            <i className="bi bi-stars fs-2"></i>
+
+                        </div>
+
+                        <h3 className="fw-semibold mb-2">
+                            Add Amenity
+                        </h3>
+
+                        <p className="text-secondary mb-0">
+                            Create a new amenity available for buses.
+                        </p>
+
+                    </div>
+
+
+                    {/* Form */}
+
+                    <div className="row g-4">
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-secondary">
+                                Amenity Name
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Amenity Name"
+                                value={amenityName}
+                                onChange={(e) =>
+                                    setAmenityName(e.target.value)
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-secondary">
+                                Description
+                            </label>
+
+                            <textarea
+                                className="form-control"
+                                rows="4"
+                                placeholder="Enter Description"
+                                value={description}
+                                onChange={(e) =>
+                                    setDescription(e.target.value)
+                                }
+                            />
+
+                        </div>
+
+                    </div>
+
+
+                    {/* Footer */}
+
+                    <div className="d-flex justify-content-end mt-4">
+
+                        <button
+                            type="button"
+                            className="btn btn-primary px-4"
+                            onClick={handleSave}
+                        >
+
+                            Save Amenity
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -164,6 +161,5 @@ function AddAmenityModal({
 
     );
 }
-
 
 export default AddAmenityModal;

@@ -1,25 +1,9 @@
-.hero-section{
+.hero-section {
     min-height: 520px;
-    background-image:
-        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
-        url("../assets/bus-banner.jpg");
+
+    background-image: url("http://localhost:8080/api/hero/image");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-}
-
-.hero-title{
-    color: white;
-    font-size: 58px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.hero-description{
-    color: white;
-    font-size: 22px;
-    line-height: 1.7;
-    margin-bottom: 50px;
 }

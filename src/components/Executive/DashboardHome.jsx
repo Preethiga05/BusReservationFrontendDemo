@@ -1,91 +1,121 @@
 import DashboardCard from "../RusableComponents/DashboardCard";
-import "./ExecutiveCss/DashboardHome.css";
 import { useEffect, useState } from "react";
 import DashboardService from "../../services/DashboardService";
+
 function DashboardHome({ setSelectedMenu }) {
+
     const username = localStorage.getItem("username") || "Executive";
+
     const [showWelcome, setShowWelcome] = useState(true);
+
     const [dashboard, setDashboard] = useState(null);
+
+
     useEffect(() => {
 
-    getDashboardOverview();
+        getDashboardOverview();
 
-}, []);
-const getDashboardOverview = async () => {
+    }, []);
 
-    try {
 
-        const response = await DashboardService.getDashboardOverview();
+    const getDashboardOverview = async () => {
 
-        console.log(response.data);
+        try {
 
-        setDashboard(response.data);
+            const response =
+                await DashboardService.getDashboardOverview();
+
+            console.log(response.data);
+
+            setDashboard(response.data);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
+
+
+    if (!dashboard) {
+
+        return (
+
+            <div className="text-center mt-5">
+
+                <h5>
+                    Loading Dashboard...
+                </h5>
+
+            </div>
+
+        );
 
     }
 
-    catch (err) {
-
-        console.log(err);
-
-    }
-
-};
-if (!dashboard) {
-
-    return (
-
-        <div className="text-center mt-5">
-
-            <h5>Loading Dashboard...</h5>
-
-        </div>
-
-    );
-
-}
 
     return (
 
         <div className="container-fluid p-4">
-            <div className="dashboard-home">
+
+            {/* Welcome Banner */}
 
             {
+
                 showWelcome &&
 
-                <div className="welcome-banner">
+                <div className="bg-primary text-white rounded-4 p-4 mb-4 shadow">
 
-                    <div>
+                    <div className="d-flex justify-content-between align-items-center">
 
-                        <h3>
+                        <div>
 
-                            👋 Welcome Back, {username}!
+                            <h3 className="fw-bold mb-2">
 
-                        </h3>
+                                👋 Welcome Back, {username}!
 
-                        <p>
+                            </h3>
 
-                            We're glad to see you again.
-                            Manage your FastX platform efficiently.
+                            <p className="mb-0 text-white-50">
 
-                        </p>
+                                We're glad to see you again.
+                                Manage your FastX platform efficiently.
+
+                            </p>
+
+                        </div>
+
+
+                        <button
+
+                            type="button"
+
+                            className="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
+
+                            style={{
+                                width: "42px",
+                                height: "42px"
+                            }}
+
+                            onClick={() => setShowWelcome(false)}
+
+                        >
+
+                            <i className="bi bi-x-lg"></i>
+
+                        </button>
 
                     </div>
-
-                    <button
-
-                        className="close-banner-btn"
-
-                        onClick={() => setShowWelcome(false)}
-
-                    >
-
-                        <i className="bi bi-x-lg"></i>
-
-                    </button>
 
                 </div>
 
             }
+
+
+            {/* Dashboard Cards */}
 
             <div className="row g-4">
 
@@ -101,11 +131,14 @@ if (!dashboard) {
 
                         color="#2563EB"
 
-                        onClick={() => setSelectedMenu("applications")}
+                        onClick={() =>
+                            setSelectedMenu("applications")
+                        }
 
                     />
 
                 </div>
+
 
                 <div className="col-lg-3">
 
@@ -119,11 +152,14 @@ if (!dashboard) {
 
                         color="#10B981"
 
-                        onClick={() => setSelectedMenu("operators")}
+                        onClick={() =>
+                            setSelectedMenu("operators")
+                        }
 
                     />
 
                 </div>
+
 
                 <div className="col-lg-3">
 
@@ -137,11 +173,14 @@ if (!dashboard) {
 
                         color="#F59E0B"
 
-                        onClick={() => setSelectedMenu("passengers")}
+                        onClick={() =>
+                            setSelectedMenu("passengers")
+                        }
 
                     />
 
                 </div>
+
 
                 <div className="col-lg-3">
 
@@ -155,13 +194,16 @@ if (!dashboard) {
 
                         color="#8B5CF6"
 
-                        onClick={() => setSelectedMenu("routes")}
+                        onClick={() =>
+                            setSelectedMenu("routes")
+                        }
 
                     />
 
                 </div>
 
             </div>
+
 
             <div className="row g-4 mt-2">
 
@@ -177,11 +219,14 @@ if (!dashboard) {
 
                         color="#06B6D4"
 
-                        onClick={() => setSelectedMenu("amenities")}
+                        onClick={() =>
+                            setSelectedMenu("amenities")
+                        }
 
                     />
 
                 </div>
+
 
                 <div className="col-lg-3">
 
@@ -199,6 +244,7 @@ if (!dashboard) {
 
                 </div>
 
+
                 <div className="col-lg-3">
 
                     <DashboardCard
@@ -214,6 +260,7 @@ if (!dashboard) {
                     />
 
                 </div>
+
 
                 <div className="col-lg-3">
 
@@ -232,7 +279,7 @@ if (!dashboard) {
                 </div>
 
             </div>
-            </div>
+
 
             {/* Recent Applications */}
 

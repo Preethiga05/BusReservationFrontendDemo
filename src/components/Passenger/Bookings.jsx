@@ -1,10 +1,7 @@
-
-import "./PassengerCss/Bookings.css";
 import BookingDetailsModal from "./BookingDetailsModal";
 import TicketModal from "./TicketModal";
 import { useEffect, useState } from "react";
 import BookingService from "../../services/BookingService";
-
 
 function Bookings() {
 
@@ -13,16 +10,20 @@ function Bookings() {
     const [statusFilter, setStatusFilter] = useState("ALL");
 
     const [selectedBooking, setSelectedBooking] = useState(null);
+
     const [showTicket, setShowTicket] = useState(false);
 
     const [ticketBooking, setTicketBooking] = useState(null);
 
     const [bookings, setBookings] = useState([]);
+
+
     useEffect(() => {
 
         loadBookings();
 
     }, []);
+
 
     async function loadBookings() {
 
@@ -45,6 +46,7 @@ function Bookings() {
 
     }
 
+
     const filteredBookings = bookings.filter((booking) => {
 
         const matchesSearch =
@@ -59,6 +61,7 @@ function Bookings() {
                 .toLowerCase()
                 .includes(search.toLowerCase());
 
+
         const matchesStatus =
 
             statusFilter === "ALL"
@@ -67,6 +70,7 @@ function Bookings() {
 
             booking.bookingStatus === statusFilter;
 
+
         return matchesSearch && matchesStatus;
 
     });
@@ -74,11 +78,13 @@ function Bookings() {
 
     return (
 
-        <div className="bookings-page">
+        <div className="container-fluid">
+
+            {/* Header */}
 
             <div className="d-flex justify-content-between align-items-center mb-4">
 
-                <h3>
+                <h3 className="text-primary fw-bold mb-0">
 
                     My Bookings
 
@@ -86,7 +92,10 @@ function Bookings() {
 
             </div>
 
-            <div className="booking-toolbar">
+
+            {/* Toolbar */}
+
+            <div className="d-flex align-items-center gap-3 flex-wrap mb-4">
 
                 <input
 
@@ -94,21 +103,32 @@ function Bookings() {
 
                     className="form-control"
 
+                    style={{ maxWidth: "400px" }}
+
                     placeholder="Search Booking Reference..."
 
                     value={search}
 
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) =>
+                        setSearch(e.target.value)
+                    }
 
                 />
 
-                <div className="booking-filters">
+
+                <div className="d-flex gap-2 flex-wrap">
 
                     <button
 
-                        className={`filter-btn ${statusFilter === "ALL" ? "active" : ""}`}
+                        className={
+                            statusFilter === "ALL"
+                                ? "btn btn-primary rounded-pill px-4"
+                                : "btn btn-outline-primary rounded-pill px-4"
+                        }
 
-                        onClick={() => setStatusFilter("ALL")}
+                        onClick={() =>
+                            setStatusFilter("ALL")
+                        }
 
                     >
 
@@ -116,11 +136,18 @@ function Bookings() {
 
                     </button>
 
+
                     <button
 
-                        className={`filter-btn ${statusFilter === "CONFIRMED" ? "active" : ""}`}
+                        className={
+                            statusFilter === "CONFIRMED"
+                                ? "btn btn-primary rounded-pill px-4"
+                                : "btn btn-outline-primary rounded-pill px-4"
+                        }
 
-                        onClick={() => setStatusFilter("CONFIRMED")}
+                        onClick={() =>
+                            setStatusFilter("CONFIRMED")
+                        }
 
                     >
 
@@ -128,11 +155,18 @@ function Bookings() {
 
                     </button>
 
+
                     <button
 
-                        className={`filter-btn ${statusFilter === "COMPLETED" ? "active" : ""}`}
+                        className={
+                            statusFilter === "COMPLETED"
+                                ? "btn btn-primary rounded-pill px-4"
+                                : "btn btn-outline-primary rounded-pill px-4"
+                        }
 
-                        onClick={() => setStatusFilter("COMPLETED")}
+                        onClick={() =>
+                            setStatusFilter("COMPLETED")
+                        }
 
                     >
 
@@ -140,11 +174,18 @@ function Bookings() {
 
                     </button>
 
+
                     <button
 
-                        className={`filter-btn ${statusFilter === "CANCELLED" ? "active" : ""}`}
+                        className={
+                            statusFilter === "CANCELLED"
+                                ? "btn btn-primary rounded-pill px-4"
+                                : "btn btn-outline-primary rounded-pill px-4"
+                        }
 
-                        onClick={() => setStatusFilter("CANCELLED")}
+                        onClick={() =>
+                            setStatusFilter("CANCELLED")
+                        }
 
                     >
 
@@ -156,7 +197,10 @@ function Bookings() {
 
             </div>
 
-            <div className="row mt-4 g-4">
+
+            {/* Booking Cards */}
+
+            <div className="row g-4">
 
                 {
 
@@ -170,150 +214,198 @@ function Bookings() {
 
                         >
 
-                            <div className="booking-card">
-                                <div className="booking-card-header">
+                            <div className="card h-100 border rounded-4 shadow-sm">
 
-                                    <div>
+                                <div className="card-body p-4">
 
-                                        <h5>
 
-                                            {booking.bookingReference}
+                                    {/* Card Header */}
 
-                                        </h5>
+                                    <div className="d-flex justify-content-between align-items-start">
 
-                                        <p className="bus-name">
+                                        <div>
 
-                                            {booking.busName}
+                                            <h5 className="text-primary fw-bold mb-1">
 
-                                        </p>
+                                                {booking.bookingReference}
 
-                                    </div>
+                                            </h5>
 
-                                    <span
+                                            <p className="text-secondary mb-0">
 
-                                        className={`booking-status ${booking.bookingStatus.toLowerCase()}`}
+                                                {booking.busName}
 
-                                    >
+                                            </p>
 
-                                        {booking.bookingStatus}
+                                        </div>
 
-                                    </span>
-
-                                </div>
-
-                                <hr />
-
-                                <div className="journey-route">
-
-                                    <i className="bi bi-geo-alt-fill"></i>
-
-                                    <span>
-
-                                        {booking.originCity}
-
-                                    </span>
-
-                                    <i className="bi bi-arrow-right route-arrow"></i>
-
-                                    <span>
-
-                                        {booking.destinationCity}
-
-                                    </span>
-
-                                </div>
-
-                                <div className="booking-details">
-
-                                    <div>
-
-                                        <label>
-
-                                            Journey Date
-
-                                        </label>
-
-                                        <p>
-
-                                            {booking.journeyDate}
-
-                                        </p>
-
-                                    </div>
-
-                                    <div>
-
-                                        <label>
-
-                                            Tickets
-
-                                        </label>
-
-                                        <p>
-
-                                            {booking.numberOfTickets}
-
-                                        </p>
-
-                                    </div>
-
-                                    <div>
-
-                                        <label>
-
-                                            Total Fare
-
-                                        </label>
-
-                                        <p>
-
-                                            ₹ {booking.totalFare}
-
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                                <div className="payment-section">
-
-                                    <div>
-
-                                        <label>
-
-                                            Payment
-
-                                        </label>
 
                                         <span
 
-                                            className={`payment-status ${booking.paymentStatus.toLowerCase()}`}
+                                            className={
+                                                `badge rounded-pill px-3 py-2 ${
+                                                    booking.bookingStatus === "CONFIRMED"
+                                                        ? "bg-success"
+                                                        : booking.bookingStatus === "COMPLETED"
+                                                            ? "bg-primary"
+                                                            : "bg-danger"
+                                                }`
+                                            }
 
                                         >
 
-                                            {booking.paymentStatus}
+                                            {booking.bookingStatus}
 
                                         </span>
 
                                     </div>
 
-                                    <button
 
-                                        className="btn btn-primary"
+                                    <hr />
 
-                                        onClick={() =>
 
-                                            setSelectedBooking(booking)
+                                    {/* Journey Route */}
 
-                                        }
+                                    <div className="d-flex align-items-center gap-2 text-primary fw-semibold mb-4">
 
-                                    >
+                                        <i className="bi bi-geo-alt-fill"></i>
 
-                                        <i className="bi bi-eye-fill me-2"></i>
+                                        <span>
 
-                                        View Details
+                                            {booking.originCity}
 
-                                    </button>
+                                        </span>
+
+                                        <i className="bi bi-arrow-right text-primary"></i>
+
+                                        <span>
+
+                                            {booking.destinationCity}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    {/* Booking Details */}
+
+                                    <div className="row g-3 mb-4">
+
+                                        <div className="col-md-4">
+
+                                            <div className="bg-light rounded-3 p-3 h-100">
+
+                                                <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                    Journey Date
+
+                                                </label>
+
+                                                <p className="mb-0 fw-semibold">
+
+                                                    {booking.journeyDate}
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="col-md-4">
+
+                                            <div className="bg-light rounded-3 p-3 h-100">
+
+                                                <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                    Tickets
+
+                                                </label>
+
+                                                <p className="mb-0 fw-semibold">
+
+                                                    {booking.numberOfTickets}
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="col-md-4">
+
+                                            <div className="bg-light rounded-3 p-3 h-100">
+
+                                                <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                    Total Fare
+
+                                                </label>
+
+                                                <p className="mb-0 fw-semibold">
+
+                                                    ₹ {booking.totalFare}
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* Payment */}
+
+                                    <div className="border-top pt-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                                        <div>
+
+                                            <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                Payment
+
+                                            </label>
+
+                                            <span
+
+                                                className={
+                                                    `badge rounded-pill px-3 py-2 ${
+                                                        booking.paymentStatus === "SUCCESS"
+                                                            ? "bg-success"
+                                                            : "bg-danger"
+                                                    }`
+                                                }
+
+                                            >
+
+                                                {booking.paymentStatus}
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <button
+
+                                            className="btn btn-primary"
+
+                                            onClick={() =>
+                                                setSelectedBooking(
+                                                    booking
+                                                )
+                                            }
+
+                                        >
+
+                                            <i className="bi bi-eye-fill me-2"></i>
+
+                                            View Details
+
+                                        </button>
+
+                                    </div>
 
                                 </div>
 
@@ -327,6 +419,9 @@ function Bookings() {
 
             </div>
 
+
+            {/* Booking Details Modal */}
+
             {
 
                 selectedBooking &&
@@ -335,11 +430,15 @@ function Bookings() {
 
                     booking={selectedBooking}
 
-                    close={() => setSelectedBooking(null)}
+                    close={() =>
+                        setSelectedBooking(null)
+                    }
 
                     openTicket={() => {
 
-                        setTicketBooking(selectedBooking);
+                        setTicketBooking(
+                            selectedBooking
+                        );
 
                         setSelectedBooking(null);
 
@@ -347,13 +446,19 @@ function Bookings() {
 
                     }}
 
-                    openCancel={() => console.log("Cancel Booking")}
+                    openCancel={() =>
+                        console.log("Cancel Booking")
+                    }
 
                 />
 
-
             }
+
+
+            {/* Ticket Modal */}
+
             {
+
                 showTicket &&
 
                 <TicketModal

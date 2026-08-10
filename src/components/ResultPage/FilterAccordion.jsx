@@ -1,15 +1,9 @@
-import "./ResultPageCss/FilterAccordion.css";
-
 function FilterAccordion({
 
     title,
-
     icon,
-
     filterKey,
-
     activeFilter,
-
     setActiveFilter
 
 }) {
@@ -18,10 +12,11 @@ function FilterAccordion({
 
     return (
 
-        <div className="filter-card">
+        <div className="border rounded-3 overflow-hidden mb-3">
 
             <div
-                className="filter-header"
+                className="d-flex justify-content-between align-items-center p-3"
+                style={{ cursor: "pointer" }}
                 onClick={() =>
                     setActiveFilter(
                         isOpen
@@ -31,11 +26,17 @@ function FilterAccordion({
                 }
             >
 
-                <div className="filter-left">
+                <div className="d-flex align-items-center gap-2">
 
-                    <i className={`bi ${icon}`}></i>
+                    <i
+                        className={`bi ${icon} text-primary fs-5`}
+                    ></i>
 
-                    <span>{title}</span>
+                    <span className="fw-semibold fs-5">
+
+                        {title}
+
+                    </span>
 
                 </div>
 
@@ -52,11 +53,12 @@ function FilterAccordion({
             {
                 isOpen &&
 
-                <div className="filter-body">
+                <div className="p-3 border-top bg-light">
 
                     Content will come here
 
                 </div>
+
             }
 
         </div>

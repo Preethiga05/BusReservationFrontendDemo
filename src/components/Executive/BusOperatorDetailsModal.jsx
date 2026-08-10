@@ -1,165 +1,270 @@
-import "./ExecutiveCss/BusOperatorDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
 import BusOperatorService from "../../services/BusOperatorService";
 
-function BusOperatorDetailsModal({ operator, close, refreshBusOperators }) {
+function BusOperatorDetailsModal({
+    operator,
+    close,
+    refreshBusOperators
+}) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     if (!operator) return null;
 
     const isActive = operator.status === "ACTIVE";
+
+
     const changeBusOperatorStatus = async () => {
 
-    try {
+        try {
 
-        if(isActive){
+            if (isActive) {
 
-            await BusOperatorService
-                .deactivateBusOperator(
-                    operator.busOperatorId
-                );
+                await BusOperatorService
+                    .deactivateBusOperator(
+                        operator.busOperatorId
+                    );
+
+            }
+
+            else {
+
+                await BusOperatorService
+                    .activateBusOperator(
+                        operator.busOperatorId
+                    );
+
+            }
+
+            await refreshBusOperators();
+
+            setShowConfirmation(false);
+
+            close();
 
         }
 
-        else{
+        catch (err) {
 
-            await BusOperatorService
-                .activateBusOperator(
-                    operator.busOperatorId
-                );
+            console.log(err);
 
         }
 
-        await refreshBusOperators();
+    };
 
-        setShowConfirmation(false);
-
-        close();
-
-    }
-
-    catch(err){
-
-        console.log(err);
-
-    }
-
-};
 
     return (
+
         <>
-            <div className="application-modal-overlay">
 
-                <div className="application-modal">
+            {/* Bus Operator Details Modal */}
 
-                    <button
-                        className="close-modal-btn"
-                        onClick={close}
-                    >
-                        <i className="bi bi-x-lg"></i>
-                    </button>
+            <div
+                className="modal fade show d-block"
+                tabIndex="-1"
+            >
 
-                    <div className="modal-header-section">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                        <div className="application-icon">
-                            <i className="bi bi-buildings-fill"></i>
-                        </div>
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                        <h3>Bus Operator Details</h3>
-
-                        <p>
-                            View approved bus operator information.
-                        </p>
-
-                    </div>
-
-                    <div className="application-details">
-
-                        <div className="detail-item">
-                            <label>Company Name</label>
-                            <span>{operator.companyName}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Owner Name</label>
-                            <span>{operator.ownerName}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Email</label>
-                            <span>{operator.email}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Phone Number</label>
-                            <span>{operator.phoneNumber}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Licence Number</label>
-                            <span>{operator.licenceNumber}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Company Address</label>
-                            <span>{operator.companyAddress}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Registered By</label>
-                            <span>{operator.executiveName}</span>
-                        </div>
-
-                        <div className="detail-item">
-                            <label>Status</label>
-
-                            {
-                                isActive ?
-
-                                    <span className="badge bg-success">
-                                        Active
-                                    </span>
-
-                                    :
-
-                                    <span className="badge bg-danger">
-                                        Inactive
-                                    </span>
-                            }
-
-                        </div>
-
-                    </div>
-
-                    <div className="modal-footer justify-content-end">
+                        {/* Close Button */}
 
                         <button
-
-                            className={
-                                isActive
-                                    ? "btn btn-danger"
-                                    : "btn btn-success"
-                            }
-
-                            onClick={() => setShowConfirmation(true)}
-
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-4"
+                            onClick={close}
                         >
-
-                            {
-                                isActive
-                                    ? "Deactivate Operator"
-                                    : "Activate Operator"
-                            }
-
                         </button>
+
+
+                        {/* Header */}
+
+                        <div className="text-center mb-4">
+
+                            <div
+                                className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style={{
+                                    width: "75px",
+                                    height: "75px"
+                                }}
+                            >
+
+                                <i className="bi bi-buildings-fill fs-2"></i>
+
+                            </div>
+
+                            <h3 className="fw-semibold mb-2">
+                                Bus Operator Details
+                            </h3>
+
+                            <p className="text-secondary mb-0">
+                                View approved bus operator information.
+                            </p>
+
+                        </div>
+
+
+                        {/* Operator Details */}
+
+                        <div className="row g-4">
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Company Name
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.companyName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Owner Name
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.ownerName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Email
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.email}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Phone Number
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.phoneNumber}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Licence Number
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.licenceNumber}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Company Address
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.companyAddress}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Registered By
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {operator.executiveName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Status
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+
+                                    {
+                                        isActive
+
+                                            ?
+
+                                            <span className="badge bg-success">
+                                                Active
+                                            </span>
+
+                                            :
+
+                                            <span className="badge bg-danger">
+                                                Inactive
+                                            </span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Footer */}
+
+                        <div className="d-flex justify-content-end mt-4">
+
+                            <button
+                                className={
+                                    isActive
+                                        ? "btn btn-danger"
+                                        : "btn btn-success"
+                                }
+                                onClick={() =>
+                                    setShowConfirmation(true)
+                                }
+                            >
+
+                                {
+                                    isActive
+                                        ? "Deactivate Operator"
+                                        : "Activate Operator"
+                                }
+
+                            </button>
+
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
+
+
+            {/* Confirmation Modal */}
 
             <ConfirmationModal
 
@@ -211,13 +316,16 @@ The operator will regain access to:
                         : "btn-success"
                 }
 
-                onCancel={() => setShowConfirmation(false)}
+                onCancel={() =>
+                    setShowConfirmation(false)
+                }
 
                 onConfirm={changeBusOperatorStatus}
 
             />
 
         </>
+
     );
 
 }

@@ -1,6 +1,3 @@
-import "./ReusableComponentsCss/DashboardCard.css";
-
-
 function DashboardCard({
 
     title,
@@ -14,42 +11,63 @@ function DashboardCard({
     return (
 
         <div
-            className="dashboard-card"
+            className="bg-white rounded-4 p-4 shadow-sm h-100"
             style={{
                 borderLeft: `6px solid ${color}`
             }}
         >
 
-            <div className="card-top">
+            {/* Top */}
+
+            <div className="d-flex justify-content-between align-items-start">
 
                 <div>
 
-                    <h6>{title}</h6>
+                    <h6 className="text-secondary fw-semibold mb-2">
 
-                    <h2>{count}</h2>
+                        {title}
+
+                    </h6>
+
+                    <h2 className="fw-bold mb-0">
+
+                        {count}
+
+                    </h2>
 
                 </div>
 
                 <i
                     className={`bi ${icon}`}
                     style={{
-                        color: color
+                        color: color,
+                        fontSize: "2.4rem"
                     }}
                 ></i>
 
             </div>
 
-            <div className="card-bottom">
 
-                <span>
+            {/* Bottom */}
 
-                   View
+            <div className="d-flex justify-content-between align-items-center mt-4">
+
+                <span className="text-secondary small">
+
+                    View
 
                 </span>
 
                 <button
 
-                    className="card-arrow"
+                    type="button"
+
+                    className="btn btn-light rounded-circle d-flex justify-content-center align-items-center"
+
+                    style={{
+                        width: "40px",
+                        height: "40px"
+                    }}
 
                     onClick={onClick}
 

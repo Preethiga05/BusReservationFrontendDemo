@@ -1,33 +1,29 @@
 import { useState } from "react";
-import "./ResultPageCss/FilterSidebar.css";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-
 
 function FilterSidebar({
 
     selectedPriceRange,
-
     setSelectedPriceRange,
 
     selectedBusTypes,
-
     setSelectedBusTypes,
+
     selectedDepartureTimes,
-
     setSelectedDepartureTimes,
+
     selectedArrivalTimes,
-
     setSelectedArrivalTimes,
-    selectedOperators,
 
+    selectedOperators,
     setSelectedOperators,
 
     operatorOptions,
+
     amenities,
 
     selectedAmenities,
-
     setSelectedAmenities,
 
     applyFilters
@@ -50,7 +46,9 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
+
     const handleBusType = (type) => {
 
         if (selectedBusTypes.includes(type)) {
@@ -77,7 +75,9 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
+
     const handleDepartureTime = (value) => {
 
         if (selectedDepartureTimes.includes(value)) {
@@ -104,7 +104,8 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
 
     const handleArrivalTime = (value) => {
 
@@ -132,7 +133,9 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
+
     const handleOperator = (operator) => {
 
         if (selectedOperators.includes(operator)) {
@@ -159,7 +162,9 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
+
     const handleAmenity = (amenityId) => {
 
         if (selectedAmenities.includes(amenityId)) {
@@ -186,7 +191,8 @@ function FilterSidebar({
 
         }
 
-    }
+    };
+
 
     const departureOptions = [
 
@@ -220,6 +226,7 @@ function FilterSidebar({
 
     ];
 
+
     const arrivalOptions = [
 
         {
@@ -252,13 +259,14 @@ function FilterSidebar({
 
     ];
 
-console.log("Amenities:", amenities);
 
     return (
 
-        <div className="filter-sidebar">
+        <div className="bg-white border border-primary-subtle rounded-4 p-4 shadow-sm">
 
-            <h3 className="filter-title">
+            {/* Filter Title */}
+
+            <h3 className="d-flex justify-content-center align-items-center gap-2 text-primary fw-bold fs-3 mb-4 pb-3 border-bottom">
 
                 <i className="bi bi-funnel-fill"></i>
 
@@ -266,69 +274,80 @@ console.log("Amenities:", amenities);
 
             </h3>
 
-            {/* Price */}
 
-            <div className="filter-card">
+            {/* ================= PRICE ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("price")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-currency-rupee"></i>
+                        <i className="bi bi-currency-rupee text-primary fs-5"></i>
 
-                        <span>Price</span>
+                        <span className="fw-semibold fs-5">
+
+                            Price
+
+                        </span>
 
                     </div>
 
-                    <i className={`bi ${activeFilter === "price" ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+                    <i
+                        className={`bi ${
+                            activeFilter === "price"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
+                    ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "price" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="price-filter">
+                        <div className="d-flex justify-content-between align-items-center mb-4">
 
-                            <div className="price-values">
+                            <span className="bg-primary-subtle text-primary px-3 py-2 rounded-3 fw-semibold">
 
-                                <span>
+                                ₹{selectedPriceRange[0]}
 
-                                    ₹{selectedPriceRange[0]}
+                            </span>
 
-                                </span>
+                            <span className="bg-primary-subtle text-primary px-3 py-2 rounded-3 fw-semibold">
 
-                                <span>
+                                ₹{selectedPriceRange[1]}
 
-                                    ₹{selectedPriceRange[1]}
-
-                                </span>
-
-                            </div>
-
-                            <Slider
-
-                                range
-
-                                min={0}
-
-                                max={5000}
-
-                                step={50}
-
-                                value={selectedPriceRange}
-
-                                onChange={(value) => setSelectedPriceRange(value)}
-
-                            />
-
+                            </span>
 
                         </div>
+
+
+                        <Slider
+
+                            range
+
+                            min={0}
+
+                            max={5000}
+
+                            step={50}
+
+                            value={selectedPriceRange}
+
+                            onChange={(value) =>
+                                setSelectedPriceRange(value)
+                            }
+
+                        />
 
                     </div>
 
@@ -336,95 +355,118 @@ console.log("Amenities:", amenities);
 
             </div>
 
-            {/* Bus Type */}
 
-            <div className="filter-card">
+            {/* ================= BUS TYPE ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("busType")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-bus-front-fill"></i>
+                        <i className="bi bi-bus-front-fill text-primary fs-5"></i>
 
-                        <span>Bus Type</span>
+                        <span className="fw-semibold fs-5">
+
+                            Bus Type
+
+                        </span>
 
                     </div>
 
                     <i
-                        className={`bi ${activeFilter === "busType"
-                            ? "bi-chevron-up"
-                            : "bi-chevron-down"
-                            }`}
+                        className={`bi ${
+                            activeFilter === "busType"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
                     ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "busType" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="chip-group">
+                        <div className="d-flex flex-wrap gap-2">
 
                             <button
                                 type="button"
-                                className={`filter-chip ${selectedBusTypes.includes("SLEEPER_AC")
-                                    ? "selected-chip"
-                                    : ""
-                                    }`}
-                                onClick={() => handleBusType("SLEEPER_AC")}
+                                className={`btn rounded-pill ${
+                                    selectedBusTypes.includes("SLEEPER_AC")
+                                        ? "btn-primary"
+                                        : "btn-outline-primary"
+                                }`}
+                                onClick={() =>
+                                    handleBusType("SLEEPER_AC")
+                                }
                             >
 
-                                <i className="bi bi-moon-stars-fill"></i>
+                                <i className="bi bi-moon-stars-fill me-2"></i>
 
                                 Sleeper AC
 
                             </button>
 
+
                             <button
                                 type="button"
-                                className={`filter-chip ${selectedBusTypes.includes("SLEEPER_NON_AC")
-                                    ? "selected-chip"
-                                    : ""
-                                    }`}
-                                onClick={() => handleBusType("SLEEPER_NON_AC")}
+                                className={`btn rounded-pill ${
+                                    selectedBusTypes.includes("SLEEPER_NON_AC")
+                                        ? "btn-primary"
+                                        : "btn-outline-primary"
+                                }`}
+                                onClick={() =>
+                                    handleBusType("SLEEPER_NON_AC")
+                                }
                             >
 
-                                <i className="bi bi-moon"></i>
+                                <i className="bi bi-moon me-2"></i>
 
                                 Sleeper Non AC
 
                             </button>
 
+
                             <button
                                 type="button"
-                                className={`filter-chip ${selectedBusTypes.includes("SEATER_AC")
-                                    ? "selected-chip"
-                                    : ""
-                                    }`}
-                                onClick={() => handleBusType("SEATER_AC")}
+                                className={`btn rounded-pill ${
+                                    selectedBusTypes.includes("SEATER_AC")
+                                        ? "btn-primary"
+                                        : "btn-outline-primary"
+                                }`}
+                                onClick={() =>
+                                    handleBusType("SEATER_AC")
+                                }
                             >
 
-                                <i className="bi bi-person-fill"></i>
+                                <i className="bi bi-person-fill me-2"></i>
 
                                 Seater AC
 
                             </button>
 
+
                             <button
                                 type="button"
-                                className={`filter-chip ${selectedBusTypes.includes("SEATER_NON_AC")
-                                    ? "selected-chip"
-                                    : ""
-                                    }`}
-                                onClick={() => handleBusType("SEATER_NON_AC")}
+                                className={`btn rounded-pill ${
+                                    selectedBusTypes.includes("SEATER_NON_AC")
+                                        ? "btn-primary"
+                                        : "btn-outline-primary"
+                                }`}
+                                onClick={() =>
+                                    handleBusType("SEATER_NON_AC")
+                                }
                             >
 
-                                <i className="bi bi-person"></i>
+                                <i className="bi bi-person me-2"></i>
 
                                 Seater Non AC
 
@@ -438,61 +480,94 @@ console.log("Amenities:", amenities);
 
             </div>
 
-            {/* Departure */}
 
-            <div className="filter-card">
+            {/* ================= DEPARTURE ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("departure")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-clock-fill"></i>
+                        <i className="bi bi-clock-fill text-primary fs-5"></i>
 
-                        <span>Departure Time</span>
+                        <span className="fw-semibold fs-5">
+
+                            Departure Time
+
+                        </span>
 
                     </div>
 
-                    <i className={`bi ${activeFilter === "departure" ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+                    <i
+                        className={`bi ${
+                            activeFilter === "departure"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
+                    ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "departure" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="time-card-group">
+                        <div className="row g-2">
 
                             {
 
                                 departureOptions.map(option => (
 
-                                    <button
-
+                                    <div
+                                        className="col-6"
                                         key={option.value}
-
-                                        type="button"
-
-                                        className={`time-card ${selectedDepartureTimes.includes(option.value)
-                                            ? "selected-time-card"
-                                            : ""
-                                            }`}
-
-                                        onClick={() => handleDepartureTime(option.value)}
-
                                     >
 
-                                        <i className={`bi ${option.icon}`}></i>
+                                        <button
 
-                                        <h5>{option.label}</h5>
+                                            type="button"
 
-                                        <small>{option.time}</small>
+                                            className={`btn w-100 h-100 py-3 ${
+                                                selectedDepartureTimes.includes(option.value)
+                                                    ? "btn-primary"
+                                                    : "btn-outline-primary"
+                                            }`}
 
-                                    </button>
+                                            onClick={() =>
+                                                handleDepartureTime(
+                                                    option.value
+                                                )
+                                            }
+
+                                        >
+
+                                            <i
+                                                className={`bi ${option.icon} d-block fs-4 mb-2`}
+                                            ></i>
+
+                                            <strong className="d-block">
+
+                                                {option.label}
+
+                                            </strong>
+
+                                            <small>
+
+                                                {option.time}
+
+                                            </small>
+
+                                        </button>
+
+                                    </div>
 
                                 ))
 
@@ -506,61 +581,94 @@ console.log("Amenities:", amenities);
 
             </div>
 
-            {/* Arrival */}
 
-            <div className="filter-card">
+            {/* ================= ARRIVAL ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("arrival")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-clock-history"></i>
+                        <i className="bi bi-clock-history text-primary fs-5"></i>
 
-                        <span>Arrival Time</span>
+                        <span className="fw-semibold fs-5">
+
+                            Arrival Time
+
+                        </span>
 
                     </div>
 
-                    <i className={`bi ${activeFilter === "arrival" ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+                    <i
+                        className={`bi ${
+                            activeFilter === "arrival"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
+                    ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "arrival" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="time-card-group">
+                        <div className="row g-2">
 
                             {
 
                                 arrivalOptions.map(option => (
 
-                                    <button
-
+                                    <div
+                                        className="col-6"
                                         key={option.value}
-
-                                        type="button"
-
-                                        className={`time-card ${selectedArrivalTimes.includes(option.value)
-                                            ? "selected-time-card"
-                                            : ""
-                                            }`}
-
-                                        onClick={() => handleArrivalTime(option.value)}
-
                                     >
 
-                                        <i className={`bi ${option.icon}`}></i>
+                                        <button
 
-                                        <h5>{option.label}</h5>
+                                            type="button"
 
-                                        <small>{option.time}</small>
+                                            className={`btn w-100 h-100 py-3 ${
+                                                selectedArrivalTimes.includes(option.value)
+                                                    ? "btn-primary"
+                                                    : "btn-outline-primary"
+                                            }`}
 
-                                    </button>
+                                            onClick={() =>
+                                                handleArrivalTime(
+                                                    option.value
+                                                )
+                                            }
+
+                                        >
+
+                                            <i
+                                                className={`bi ${option.icon} d-block fs-4 mb-2`}
+                                            ></i>
+
+                                            <strong className="d-block">
+
+                                                {option.label}
+
+                                            </strong>
+
+                                            <small>
+
+                                                {option.time}
+
+                                            </small>
+
+                                        </button>
+
+                                    </div>
 
                                 ))
 
@@ -574,34 +682,47 @@ console.log("Amenities:", amenities);
 
             </div>
 
-            {/* Operator */}
 
-            <div className="filter-card">
+            {/* ================= OPERATOR ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("operator")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-buildings-fill"></i>
+                        <i className="bi bi-buildings-fill text-primary fs-5"></i>
 
-                        <span>Bus Operator</span>
+                        <span className="fw-semibold fs-5">
+
+                            Bus Operator
+
+                        </span>
 
                     </div>
 
-                    <i className={`bi ${activeFilter === "operator" ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+                    <i
+                        className={`bi ${
+                            activeFilter === "operator"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
+                    ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "operator" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="chip-group">
+                        <div className="d-flex flex-wrap gap-2">
 
                             {
 
@@ -613,19 +734,19 @@ console.log("Amenities:", amenities);
 
                                         type="button"
 
-                                        className={`filter-chip ${selectedOperators.includes(operator)
+                                        className={`btn rounded-pill ${
+                                            selectedOperators.includes(operator)
+                                                ? "btn-primary"
+                                                : "btn-outline-primary"
+                                        }`}
 
-                                            ? "selected-chip"
-
-                                            : ""
-
-                                            }`}
-
-                                        onClick={() => handleOperator(operator)}
+                                        onClick={() =>
+                                            handleOperator(operator)
+                                        }
 
                                     >
 
-                                        <i className="bi bi-buildings-fill"></i>
+                                        <i className="bi bi-buildings-fill me-2"></i>
 
                                         {operator}
 
@@ -643,51 +764,83 @@ console.log("Amenities:", amenities);
 
             </div>
 
-            {/* Amenities */}
 
-            <div className="filter-card">
+            {/* ================= AMENITIES ================= */}
+
+            <div className="border rounded-3 overflow-hidden mb-3">
 
                 <div
-                    className="filter-header"
+                    className="d-flex justify-content-between align-items-center p-3"
+                    style={{ cursor: "pointer" }}
                     onClick={() => toggleFilter("amenities")}
                 >
 
-                    <div className="filter-heading">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-gift-fill"></i>
+                        <i className="bi bi-gift-fill text-primary fs-5"></i>
 
-                        <span>Amenities</span>
+                        <span className="fw-semibold fs-5">
+
+                            Amenities
+
+                        </span>
 
                     </div>
 
-                    <i className={`bi ${activeFilter === "amenities" ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+                    <i
+                        className={`bi ${
+                            activeFilter === "amenities"
+                                ? "bi-chevron-up"
+                                : "bi-chevron-down"
+                        } text-primary`}
+                    ></i>
 
                 </div>
+
 
                 {
 
                     activeFilter === "amenities" &&
 
-                    <div className="filter-body">
+                    <div className="border-top bg-light p-3">
 
-                        <div className="chip-group">
+                        <div className="d-flex flex-wrap gap-2">
 
-                            {amenities.map((amenity) => (
+                            {
 
-                                <button
-                                    key={amenity.amenityId}
-                                    type="button"
-                                    className={`filter-chip ${selectedAmenities.includes(amenity.amenityId)
-                                            ? "selected-chip"
-                                            : ""
+                                amenities.map((amenity) => (
+
+                                    <button
+
+                                        key={amenity.amenityId}
+
+                                        type="button"
+
+                                        className={`btn rounded-pill ${
+                                            selectedAmenities.includes(
+                                                amenity.amenityId
+                                            )
+                                                ? "btn-primary"
+                                                : "btn-outline-primary"
                                         }`}
-                                    onClick={() => handleAmenity(amenity.amenityId)}
-                                >
-                                    <i className="bi bi-gift-fill"></i>
-                                    {amenity.amenityName}
-                                </button>
 
-                            ))}
+                                        onClick={() =>
+                                            handleAmenity(
+                                                amenity.amenityId
+                                            )
+                                        }
+
+                                    >
+
+                                        <i className="bi bi-gift-fill me-2"></i>
+
+                                        {amenity.amenityName}
+
+                                    </button>
+
+                                ))
+
+                            }
 
                         </div>
 
@@ -696,31 +849,43 @@ console.log("Amenities:", amenities);
                 }
 
             </div>
+
+
+            {/* ================= APPLY ================= */}
+
             <button
 
-                className="apply-filter-btn"
+                className="btn btn-primary w-100 py-3 fw-semibold fs-5 mb-2"
 
                 onClick={applyFilters}
 
             >
 
-                <i className="bi bi-funnel-fill"></i>
+                <i className="bi bi-funnel-fill me-2"></i>
 
                 Apply Filters
 
             </button>
 
+
+            {/* ================= CLEAR ================= */}
+
             <button
 
-                className="clear-btn"
+                className="btn btn-outline-primary w-100 py-3 fw-semibold fs-5"
 
                 onClick={() => {
 
                     setSelectedPriceRange([0, 5000]);
+
                     setSelectedBusTypes([]);
+
                     setSelectedDepartureTimes([]);
+
                     setSelectedArrivalTimes([]);
+
                     setSelectedOperators([]);
+
                     setSelectedAmenities([]);
 
                     setTimeout(() => {
@@ -733,7 +898,7 @@ console.log("Amenities:", amenities);
 
             >
 
-                <i className="bi bi-arrow-clockwise"></i>
+                <i className="bi bi-arrow-clockwise me-2"></i>
 
                 Clear Filters
 
@@ -741,7 +906,7 @@ console.log("Amenities:", amenities);
 
         </div>
 
-    )
+    );
 
 }
 

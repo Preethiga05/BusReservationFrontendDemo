@@ -1,47 +1,119 @@
-import "./SeatsCss/SeatGrid.css";
 function SeatLegend() {
 
     return (
 
-        <div className="legend">
+        <div className="d-flex flex-wrap align-items-center gap-4">
 
-            <div className="legend-item">
+            {/* Available */}
 
-                <span className="legend-box available"></span>
+            <div className="d-flex align-items-center gap-2">
 
-                <span>Available</span>
+                <span
+                    className="border border-primary bg-white rounded-2"
+                    style={{
+                        width: "22px",
+                        height: "22px"
+                    }}
+                ></span>
 
-            </div>
+                <span className="fw-semibold">
 
-            <div className="legend-item">
+                    Available
 
-                <span className="legend-box selected"></span>
-
-                <span>Selected</span>
-
-            </div>
-
-            <div className="legend-item">
-
-                <span className="legend-box booked"></span>
-
-                <span>Booked</span>
+                </span>
 
             </div>
 
-            <div className="legend-item">
 
-                <span className="legend-box female"></span>
+            {/* Selected */}
 
-                <span>Female Reserved</span>
+            <div className="d-flex align-items-center gap-2">
+
+                <span
+                    className="bg-primary border border-primary rounded-2"
+                    style={{
+                        width: "22px",
+                        height: "22px"
+                    }}
+                ></span>
+
+                <span className="fw-semibold">
+
+                    Selected
+
+                </span>
 
             </div>
 
-            <div className="legend-item">
 
-                <span className="legend-box window"></span>
+            {/* Booked */}
 
-                <span>Window Seat</span>
+            <div className="d-flex align-items-center gap-2">
+
+                <span
+                    className="bg-secondary border border-secondary rounded-2"
+                    style={{
+                        width: "22px",
+                        height: "22px"
+                    }}
+                ></span>
+
+                <span className="fw-semibold">
+
+                    Booked
+
+                </span>
+
+            </div>
+
+
+            {/* Female Reserved */}
+
+            <div className="d-flex align-items-center gap-2">
+
+                <span
+                    className="bg-danger border border-danger rounded-2"
+                    style={{
+                        width: "22px",
+                        height: "22px"
+                    }}
+                ></span>
+
+                <span className="fw-semibold">
+
+                    Female Reserved
+
+                </span>
+
+            </div>
+
+
+            {/* Window Seat */}
+
+            <div className="d-flex align-items-center gap-2">
+
+                <span
+                    className="bg-info border border-info rounded-2 d-flex justify-content-center align-items-center"
+                    style={{
+                        width: "22px",
+                        height: "22px"
+                    }}
+                >
+
+                    <i
+                        className="bi bi-window-sidebar text-white"
+                        style={{
+                            fontSize: "12px"
+                        }}
+                    ></i>
+
+                </span>
+
+                <span className="fw-semibold">
+
+                    Window Seat
+
+                </span>
 
             </div>
 

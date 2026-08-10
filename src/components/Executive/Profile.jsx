@@ -1,44 +1,74 @@
-import "./ExecutiveCss/Profile.css";
 import { useEffect, useState } from "react";
 import ExecutiveService from "../../services/ExecutiveService";
+import UpdateProfileModal from "./UpdateProfileModal";
 
-function ExecutiveProfile() {
+function Profile() {
 
     const [executive, setExecutive] = useState(null);
 
-    useEffect(() => {
+    const [loading, setLoading] = useState(true);
 
-        getExecutiveProfile();
+    const [showUpdateModal, setShowUpdateModal] =
+        useState(false);
 
-    }, []);
 
-    const getExecutiveProfile = async () => {
+    const loadProfile = async () => {
 
         try {
 
-            const response = await ExecutiveService.getProfile();
+            setLoading(true);
 
-            console.log(response.data);
+            const response =
+                await ExecutiveService.getMyProfile();
 
-            setExecutive(response.data);
+            console.log(
+                "Executive Profile:",
+                response.data
+            );
+
+            setExecutive(
+                response.data
+            );
 
         }
+        catch (error) {
 
-        catch (err) {
+            console.error(
+                "Failed to load executive profile:",
+                error
+            );
 
-            console.log(err);
+        }
+        finally {
+
+            setLoading(false);
 
         }
 
     };
 
-    if (!executive) {
+
+    useEffect(() => {
+
+        loadProfile();
+
+    }, []);
+
+
+    if (loading) {
 
         return (
 
-            <div className="text-center mt-5">
+            <div className="text-center py-5">
 
-                <h5>Loading Profile...</h5>
+                <div
+                    className="spinner-border text-primary"
+                    role="status"
+                ></div>
+
+                <p className="mt-3 text-muted">
+                    Loading profile...
+                </p>
 
             </div>
 
@@ -46,144 +76,209 @@ function ExecutiveProfile() {
 
     }
 
+
+    if (!executive) {
+
+        return (
+
+            <div className="alert alert-danger">
+
+                Unable to load executive profile.
+
+            </div>
+
+        );
+
+    }
+
+
     return (
 
-        <div className="profile-page">
+        <>
 
-            <div className="page-header">
+            <div className="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold mb-1">
 
                         My Profile
 
                     </h2>
 
-                    <p>
+                    <p className="text-muted mb-0">
 
-                        View your personal information.
+                        View and update your account details.
 
                     </p>
 
                 </div>
 
-            </div>
 
-            <div className="profile-card">
+                <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                        setShowUpdateModal(true)
+                    }
+                >
 
-                <div className="profile-avatar">
+                    <i className="bi bi-pencil-square me-2"></i>
 
-                    <i className="bi bi-person-circle"></i>
+                    Update Profile
 
-                </div>
-
-                <div className="profile-details">
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Full Name
-
-                        </label>
-
-                        <span>
-
-                            {executive.name}
-
-                        </span>
-
-                    </div>
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Employee Code
-
-                        </label>
-
-                        <span>
-
-                            {executive.employeeCode}
-
-                        </span>
-
-                    </div>
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Job Title
-
-                        </label>
-
-                        <span>
-
-                            {executive.jobTitle}
-
-                        </span>
-
-                    </div>
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Phone Number
-
-                        </label>
-
-                        <span>
-
-                            {executive.phoneNumber}
-
-                        </span>
-
-                    </div>
-
-                    <div className="profile-item">
-
-                        <label>
-
-                            Gender
-
-                        </label>
-
-                        <span>
-
-                            {executive.gender}
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div className="profile-footer">
-
-                    <button
-
-                        className="btn btn-primary"
-
-                    >
-
-                        <i className="bi bi-pencil-square"></i>
-
-                        {" "}Edit Profile
-
-                    </button>
-
-                </div>
+                </button>
 
             </div>
 
-        </div>
+
+            <div className="card border-0 shadow-sm">
+
+                <div className="card-body p-4">
+
+                    <div className="row g-4">
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Username
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.username}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Email
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.email}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Name
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.name}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Employee Code
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.employeeCode}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Job Title
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.jobTitle}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Phone Number
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.phoneNumber}
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-md-6">
+
+                            <label className="form-label fw-semibold text-muted">
+
+                                Gender
+
+                            </label>
+
+                            <div className="form-control bg-light">
+
+                                {executive.gender}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {showUpdateModal && (
+
+                <UpdateProfileModal
+                    executive={executive}
+                    close={() =>
+                        setShowUpdateModal(false)
+                    }
+                    onProfileUpdated={loadProfile}
+                />
+
+            )}
+
+        </>
 
     );
 
 }
 
-export default ExecutiveProfile;
+export default Profile;

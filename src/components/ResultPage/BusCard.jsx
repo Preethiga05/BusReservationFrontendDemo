@@ -1,229 +1,374 @@
-import "./ResultPageCss/BusCard.css";
 import { useState } from "react";
 import { amenityIcons } from "../../utils/amenityIcons";
 import { useNavigate } from "react-router";
 
 function BusCard({ bus }) {
+
     const navigate = useNavigate();
-    const departureDate = new Date(bus.departureDateTime);
-    const arrivalDate = new Date(bus.arrivalDateTime);
-    const [activeSection, setActiveSection] = useState(null);
 
-    const departureTime = departureDate.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    const departureDate =
+        new Date(bus.departureDateTime);
 
-    const arrivalTime = arrivalDate.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    const arrivalDate =
+        new Date(bus.arrivalDateTime);
 
-    const departureDay = departureDate.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short"
-    });
+    const [activeSection, setActiveSection] =
+        useState(null);
 
-    const arrivalDay = arrivalDate.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short"
-    });
+    const departureTime =
+        departureDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
+    const arrivalTime =
+        arrivalDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+    const departureDay =
+        departureDate.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short"
+        });
+
+    const arrivalDay =
+        arrivalDate.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short"
+        });
 
     return (
 
-        <div className="bus-card">
+        <div className="bg-white rounded-4 p-4 mb-4 shadow-sm">
 
-            <div className="bus-main-row">
+            {/* Main Row */}
+
+            <div className="row align-items-center g-4">
 
                 {/* Bus Info */}
 
-                <div className="bus-info">
+                <div className="col-xl-3 col-lg-12">
 
-                    <div className="bus-logo">
+                    <div className="d-flex align-items-center gap-3">
 
-                        <i className="bi bi-bus-front-fill"></i>
+                        <div
+                            className="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                            style={{
+                                width: "75px",
+                                height: "75px"
+                            }}
+                        >
 
-                    </div>
+                            <i className="bi bi-bus-front-fill fs-1"></i>
 
-                    <div>
+                        </div>
 
-                        <h4>{bus.busName}</h4>
+                        <div>
 
-                        <p>{bus.busOperator}</p>
+                            <h4 className="fw-bold mb-1">
 
-                        <span className="bus-type">
+                                {bus.busName}
 
-                            {bus.busType.replaceAll("_", " ")}
+                            </h4>
 
-                        </span>
+                            <p className="text-secondary mb-2">
 
-                    </div>
+                                {bus.busOperator}
 
-                </div>
+                            </p>
 
-                {/* Journey */}
+                            <span className="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">
 
-                <div className="journey-info">
+                                {bus.busType.replaceAll("_", " ")}
 
-                    <div>
-
-                        <h3>{departureTime}</h3>
-
-                        <small>{departureDay}</small>
-
-                    </div>
-
-                    <div className="journey-middle">
-
-                        <p>{bus.journeyDuration}</p>
-
-                        <div className="journey-line">
+                            </span>
 
                         </div>
 
                     </div>
 
-                    <div>
+                </div>
 
-                        <h3>{arrivalTime}</h3>
 
-                        <small>{arrivalDay}</small>
+                {/* Journey */}
+
+                <div className="col-xl-4 col-lg-6">
+
+                    <div className="row align-items-center text-center">
+
+                        <div className="col-3">
+
+                            <h3 className="fw-bold mb-1">
+
+                                {departureTime}
+
+                            </h3>
+
+                            <small className="text-secondary">
+
+                                {departureDay}
+
+                            </small>
+
+                        </div>
+
+
+                        <div className="col-6">
+
+                            <p className="fw-bold text-secondary mb-2">
+
+                                {bus.journeyDuration}
+
+                            </p>
+
+                            <div className="d-flex align-items-center">
+
+                                <div className="flex-grow-1 border-top border-primary border-2"></div>
+
+                                <i className="bi bi-arrow-right text-primary fs-4 mx-2"></i>
+
+                                <div className="flex-grow-1 border-top border-primary border-2"></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-3">
+
+                            <h3 className="fw-bold mb-1">
+
+                                {arrivalTime}
+
+                            </h3>
+
+                            <small className="text-secondary">
+
+                                {arrivalDay}
+
+                            </small>
+
+                        </div>
 
                     </div>
 
                 </div>
 
+
                 {/* Fare */}
 
-                <div className="fare-info">
+                <div className="col-xl-2 col-lg-2 text-center">
 
-                    <small>Starting From</small>
+                    <small className="text-secondary d-block">
 
-                    <h3>₹ {bus.fare}</h3>
+                        Starting From
+
+                    </small>
+
+                    <h3 className="text-success fw-bold mb-0">
+
+                        ₹ {bus.fare}
+
+                    </h3>
 
                 </div>
+
 
                 {/* Seats */}
 
-                <div className="seat-info">
+                <div className="col-xl-1 col-lg-2 text-center">
 
-                    <h4>{bus.availableSeats}</h4>
+                    <h4 className="text-primary fw-bold mb-0">
 
-                    <small>Seats Left</small>
+                        {bus.availableSeats}
+
+                    </h4>
+
+                    <small className="text-secondary">
+
+                        Seats Left
+
+                    </small>
 
                 </div>
 
+
                 {/* Button */}
 
-                <div className="button-info">
+                <div className="col-xl-2 col-lg-2 text-center">
 
                     <button
-                        className="btn btn-primary"
+
+                        className="btn btn-primary rounded-pill px-4 py-3 fw-semibold"
+
                         onClick={() =>
-                            navigate("/seat-selection", {
-                                state: {
-                                    bus
+                            navigate(
+                                "/seat-selection",
+                                {
+                                    state: {
+                                        bus
+                                    }
                                 }
-                            })
+                            )
                         }
+
                     >
+
                         View Seats
+
                     </button>
 
                 </div>
 
             </div>
-            <hr className="bus-divider" />
 
-            <div className="bus-footer">
 
-                <div
-                    className="footer-item"
-                    onClick={() =>
-                        setActiveSection(
+            <hr className="my-4" />
+
+
+            {/* Footer */}
+
+            <div className="row g-3">
+
+                {/* Reviews */}
+
+                <div className="col-md-6">
+
+                    <div
+
+                        className={`d-flex justify-content-between align-items-center p-3 rounded-3 border ${
                             activeSection === "reviews"
-                                ? null
-                                : "reviews"
-                        )
-                    }
-                >
+                                ? "border-primary bg-primary bg-opacity-10"
+                                : "bg-light"
+                        }`}
 
-                    <div className="footer-left">
+                        onClick={() =>
+                            setActiveSection(
+                                activeSection === "reviews"
+                                    ? null
+                                    : "reviews"
+                            )
+                        }
 
-                        <i className="bi bi-star-fill"></i>
+                        style={{
+                            cursor: "pointer"
+                        }}
 
-                        <span>Reviews</span>
+                    >
+
+                        <div className="d-flex align-items-center gap-2">
+
+                            <i className="bi bi-star-fill text-success fs-5"></i>
+
+                            <span className="fw-semibold">
+
+                                Reviews
+
+                            </span>
+
+                        </div>
+
+                        <i
+                            className={`bi ${
+                                activeSection === "reviews"
+                                    ? "bi-chevron-up"
+                                    : "bi-chevron-down"
+                            } text-primary`}
+                        ></i>
 
                     </div>
-
-                    <i
-                        className={`bi ${activeSection === "reviews"
-                            ? "bi-chevron-up"
-                            : "bi-chevron-down"
-                            }`}
-                    ></i>
 
                 </div>
 
-                <div
-                    className="footer-item"
-                    onClick={() =>
-                        setActiveSection(
+
+                {/* Amenities */}
+
+                <div className="col-md-6">
+
+                    <div
+
+                        className={`d-flex justify-content-between align-items-center p-3 rounded-3 border ${
                             activeSection === "amenities"
-                                ? null
-                                : "amenities"
-                        )
-                    }
-                >
+                                ? "border-primary bg-primary bg-opacity-10"
+                                : "bg-light"
+                        }`}
 
-                    <div className="footer-left">
+                        onClick={() =>
+                            setActiveSection(
+                                activeSection === "amenities"
+                                    ? null
+                                    : "amenities"
+                            )
+                        }
 
-                        <i className="bi bi-gift-fill"></i>
+                        style={{
+                            cursor: "pointer"
+                        }}
 
-                        <span>Amenities</span>
+                    >
+
+                        <div className="d-flex align-items-center gap-2">
+
+                            <i className="bi bi-gift-fill text-success fs-5"></i>
+
+                            <span className="fw-semibold">
+
+                                Amenities
+
+                            </span>
+
+                        </div>
+
+                        <i
+                            className={`bi ${
+                                activeSection === "amenities"
+                                    ? "bi-chevron-up"
+                                    : "bi-chevron-down"
+                            } text-primary`}
+                        ></i>
 
                     </div>
-
-                    <i
-                        className={`bi ${activeSection === "amenities"
-                            ? "bi-chevron-up"
-                            : "bi-chevron-down"
-                            }`}
-                    ></i>
 
                 </div>
 
             </div>
 
+
+            {/* Reviews Panel */}
+
             {
                 activeSection === "reviews" && (
 
-                    <div className="expand-panel">
+                    <div className="bg-light border rounded-3 p-4 mt-3 text-center">
 
-                        <div className="empty-content">
+                        <i className="bi bi-chat-square-text text-secondary fs-1"></i>
 
-                            <i className="bi bi-chat-square-text"></i>
+                        <h5 className="fw-semibold mt-3">
 
-                            <h5>No Reviews Yet</h5>
+                            No Reviews Yet
 
-                            <p>
+                        </h5>
 
-                                Be the first passenger to review this journey.
+                        <p className="text-secondary mb-0">
 
-                            </p>
+                            Be the first passenger to review this journey.
 
-                        </div>
+                        </p>
 
                     </div>
 
                 )
             }
 
+
+            {/* Amenities Panel */}
+
             {
                 activeSection === "amenities" && (
 
-                    <div className="expand-panel">
+                    <div className="bg-light border rounded-3 p-4 mt-3">
 
                         {
 
@@ -231,26 +376,35 @@ function BusCard({ bus }) {
 
                                 ?
 
-                                <div className="amenities-grid">
+                                <div className="d-flex flex-wrap gap-3">
 
                                     {
 
-                                        bus.amenities.map((amenity, index) => (
+                                        bus.amenities.map(
+                                            (amenity, index) => (
 
-                                            <div
-                                                key={index}
-                                                className="amenity-card"
-                                            >
+                                                <div
+                                                    key={index}
+                                                    className="bg-white border rounded-3 px-3 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                                >
 
-                                                <i
-                                                    className={`bi ${amenityIcons[amenity] || "bi-check-circle-fill"}`}
-                                                ></i>
+                                                    <i
+                                                        className={`bi ${
+                                                            amenityIcons[amenity]
+                                                                || "bi-check-circle-fill"
+                                                        } text-primary`}
+                                                    ></i>
 
-                                                <span>{amenity}</span>
+                                                    <span className="fw-semibold">
 
-                                            </div>
+                                                        {amenity}
 
-                                        ))
+                                                    </span>
+
+                                                </div>
+
+                                            )
+                                        )
 
                                     }
 
@@ -258,13 +412,17 @@ function BusCard({ bus }) {
 
                                 :
 
-                                <div className="empty-content">
+                                <div className="text-center">
 
-                                    <i className="bi bi-gift"></i>
+                                    <i className="bi bi-gift text-secondary fs-1"></i>
 
-                                    <h5>No Amenities Available</h5>
+                                    <h5 className="fw-semibold mt-3">
 
-                                    <p>
+                                        No Amenities Available
+
+                                    </h5>
+
+                                    <p className="text-secondary mb-0">
 
                                         No amenities have been added for this bus.
 

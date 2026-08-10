@@ -1,112 +1,234 @@
-import { useState } from "react";
-import "./ExecutiveCss/ExecutiveSidebar.css";
-
 function ExecutiveSidebar({
-
     selectedMenu,
-
     setSelectedMenu
-
 }) {
-
-    const [collapsed, setCollapsed] = useState(false);
 
     return (
 
-        <div className={`executive-sidebar ${collapsed ? "collapsed" : ""}`}>
+        <div className="bg-primary h-100">
 
-            <div className="sidebar-header">
+            <ul className="list-unstyled mb-0">
 
-                <button
-                    className="collapse-btn"
-                    onClick={() => setCollapsed(!collapsed)}
-                >
-                    <i className="bi bi-list"></i>
-                </button>
-
-                {!collapsed &&
-
-                    <h3>FastX</h3>
-
-                }
-
-            </div>
-
-            <ul className="sidebar-menu">
+                {/* Dashboard */}
 
                 <li
-                    onClick={() => setSelectedMenu("dashboard")}
-                    className={selectedMenu === "dashboard" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("dashboard")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-grid-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "dashboard"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Dashboard</span>}
+                        <i className="bi bi-grid-fill fs-5"></i>
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </div>
 
                 </li>
 
+
+                {/* Applications */}
+
                 <li
-                    onClick={() => setSelectedMenu("applications")}
-                    className={selectedMenu === "applications" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("applications")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-file-earmark-text-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "applications"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Applications</span>}
+                        <i className="bi bi-file-earmark-text-fill fs-5"></i>
+
+                        <span>
+                            Applications
+                        </span>
+
+                    </div>
 
                 </li>
 
+
+                {/* Bus Operators */}
+
                 <li
-                    onClick={() => setSelectedMenu("operators")}
-                    className={selectedMenu === "operators" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("operators")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-buildings-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "operators"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Bus Operators</span>}
+                        <i className="bi bi-buildings-fill fs-5"></i>
+
+                        <span>
+                            Bus Operators
+                        </span>
+
+                    </div>
 
                 </li>
 
+
+                {/* Amenities */}
+
                 <li
-                    onClick={() => setSelectedMenu("amenities")}
-                    className={selectedMenu === "amenities" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("amenities")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-stars"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "amenities"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Amenities</span>}
+                        <i className="bi bi-stars fs-5"></i>
+
+                        <span>
+                            Amenities
+                        </span>
+
+                    </div>
 
                 </li>
 
+
+                {/* Routes */}
+
                 <li
-                    onClick={() => setSelectedMenu("routes")}
-                    className={selectedMenu === "routes" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("routes")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-signpost-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "routes"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Routes</span>}
+                        <i className="bi bi-signpost-fill fs-5"></i>
+
+                        <span>
+                            Routes
+                        </span>
+
+                    </div>
 
                 </li>
+
+
+                {/* Passengers */}
+
                 <li
-                    onClick={() => setSelectedMenu("passengers")}
-                    className={selectedMenu === "passengers" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("passengers")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-people-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+                            px-3 py-3
+                            rounded-3
+                            ${selectedMenu === "passengers"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Passengers</span>}
+                        <i className="bi bi-people-fill fs-5"></i>
+
+                        <span>
+                            Passengers
+                        </span>
+
+                    </div>
 
                 </li>
 
+
+                {/* Profile */}
+
                 <li
-                    onClick={() => setSelectedMenu("reports")}
-                    className={selectedMenu === "reports" ? "active-menu" : ""}
+                    onClick={() =>
+                        setSelectedMenu("profile")
+                    }
+                    className="px-3 py-2"
                 >
 
-                    <i className="bi bi-bar-chart-fill"></i>
+                    <div
+                        className={
+                            `d-flex align-items-center gap-3
+            px-3 py-3
+            rounded-3
+            ${selectedMenu === "profile"
+                                ? "bg-white text-primary"
+                                : "text-white"
+                            }`
+                        }
+                    >
 
-                    {!collapsed && <span>Reports</span>}
+                        <i className="bi bi-person-circle fs-5"></i>
+
+                        <span>
+                            Profile
+                        </span>
+
+                    </div>
 
                 </li>
 

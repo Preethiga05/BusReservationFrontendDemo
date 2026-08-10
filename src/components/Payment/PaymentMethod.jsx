@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./PaymentCss/PaymentMethod.css";
 import BookingService from "../../services/BookingService";
 import BookingPassengerService from "../../services/BookingPassengerService";
 import { useNavigate } from "react-router";
@@ -60,31 +59,38 @@ function PaymentMethod({
 
             // Create Booking
 
-            const bookingResponse = await BookingService.addBooking({
+            const bookingResponse =
+                await BookingService.addBooking({
 
-                busScheduleId: bus.busScheduleId,
+                    busScheduleId:
+                        bus.busScheduleId,
 
-                seatIds: selectedSeats.map(
+                    seatIds:
+                        selectedSeats.map(
+                            seat => seat.seatId
+                        )
 
-                    seat => seat.seatId
+                });
 
-                )
+            const booking =
+                bookingResponse.data;
 
-            });
-
-            const booking = bookingResponse.data;
             console.log(booking);
 
             // Save Travellers
+
             console.log(passengers);
 
-            await BookingPassengerService.addPassengers({
+            await BookingPassengerService
+                .addPassengers({
 
-                bookingId: booking.bookingId,
+                    bookingId:
+                        booking.bookingId,
 
-                passengers: passengers
+                    passengers:
+                        passengers
 
-            });
+                });
 
             // Navigate to Ticket
 
@@ -122,14 +128,19 @@ function PaymentMethod({
 
     }
 
-
     return (
 
-        <div className="payment-method-card">
+        <div
+            className="bg-white rounded-4 overflow-hidden shadow-sm"
+        >
 
-            <div className="payment-method-header">
+            {/* Header */}
 
-                <h3>
+            <div
+                className="bg-primary text-white p-3"
+            >
+
+                <h3 className="mb-0 fs-4 fw-bold">
 
                     <i className="bi bi-credit-card-2-front-fill me-2"></i>
 
@@ -139,7 +150,10 @@ function PaymentMethod({
 
             </div>
 
-            <div className="payment-method-body">
+
+            {/* Body */}
+
+            <div className="p-4">
 
                 {
 
@@ -149,19 +163,43 @@ function PaymentMethod({
 
                             key={method.id}
 
-                            className={`payment-option ${paymentMethod === method.id ? "active" : ""}`}
+                            className={`
+                                d-flex
+                                justify-content-between
+                                align-items-center
+                                p-3
+                                mb-3
+                                rounded-3
+                                border
+                                ${paymentMethod === method.id
+                                    ? "border-primary bg-primary bg-opacity-10"
+                                    : "border-light-subtle"
+                                }
+                            `}
 
                             onClick={() =>
-                                setPaymentMethod(method.id)
+                                setPaymentMethod(
+                                    method.id
+                                )
                             }
+
+                            style={{
+                                cursor: "pointer"
+                            }}
 
                         >
 
-                            <div className="payment-option-left">
+                            <div
+                                className="d-flex align-items-center gap-3"
+                            >
 
-                                <i className={`bi ${method.icon}`}></i>
+                                <i
+                                    className={`bi ${method.icon} text-primary fs-4`}
+                                ></i>
 
-                                <span>
+                                <span
+                                    className="fw-semibold text-dark"
+                                >
 
                                     {method.title}
 
@@ -173,7 +211,9 @@ function PaymentMethod({
 
                                 paymentMethod === method.id &&
 
-                                <i className="bi bi-check-circle-fill payment-check"></i>
+                                <i
+                                    className="bi bi-check-circle-fill text-primary fs-5"
+                                ></i>
 
                             }
 
@@ -183,10 +223,17 @@ function PaymentMethod({
 
                 }
 
+
+                {/* Pay Button */}
+
                 <button
-                    className="pay-btn"
+
+                    className="btn btn-primary w-100 py-3 mt-2 fw-bold fs-5"
+
                     onClick={handlePayment}
+
                     disabled={loading}
+
                 >
 
                     {
@@ -195,11 +242,26 @@ function PaymentMethod({
 
                             ?
 
-                            "Processing Payment..."
+                            <>
+
+                                <span
+                                    className="spinner-border spinner-border-sm me-2"
+                                    role="status"
+                                ></span>
+
+                                Processing Payment...
+
+                            </>
 
                             :
 
-                            `Pay ₹ ${fareSummary.totalFare}`
+                            <>
+
+                                <i className="bi bi-credit-card-fill me-2"></i>
+
+                                Pay ₹ {fareSummary.totalFare}
+
+                            </>
 
                     }
 

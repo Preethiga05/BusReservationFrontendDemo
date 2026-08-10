@@ -1,45 +1,57 @@
-import "./ExecutiveCss/ApplicationDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
 import BusOperatorApplicationService from "../../services/BusOperatorApplicationService";
 
 function ApplicationDetailsModal({
-
     application,
-
     close,
     refreshApplications
-
 }) {
 
-    if (!application) return null;
     const [showApproveConfirmation, setShowApproveConfirmation] = useState(false);
 
     const [showRejectModal, setShowRejectModal] = useState(false);
 
     const [remarks, setRemarks] = useState("");
-    const approveApplication = async () => {
 
-        try {
 
+    if (!application) return null;
+
+
+   const approveApplication = async () => {
+
+    console.log("APPROVE CLICKED");
+
+    try {
+
+        console.log(
+            "Approving application:",
+            application.applicationId
+        );
+
+        const response =
             await BusOperatorApplicationService
-                .approveApplication(application.applicationId);
+                .approveApplication(
+                    application.applicationId
+                );
 
-            await refreshApplications();
+        console.log("APPROVE RESPONSE:", response);
 
-            setShowApproveConfirmation(false);
+        await refreshApplications();
 
-            close();
+        setShowApproveConfirmation(false);
 
-        }
+        close();
 
-        catch (err) {
+    }
 
-            console.log(err);
+    catch (err) {
 
-        }
+        console.log("APPROVE ERROR:", err);
 
-    };
+    }
+
+};
     const rejectApplication = async () => {
 
         try {
@@ -65,210 +77,339 @@ function ApplicationDetailsModal({
         }
 
     };
+
+
     console.log(application);
+
     console.log(application.applicationStatus);
 
+
     return (
+
         <>
 
-            <div className="application-modal-overlay">
+            {/* Application Details Modal */}
 
-                <div className="application-modal">
+            <div
+                className="modal fade show d-block"
+                tabIndex="-1"
+            >
 
-                    <button
-                        className="close-modal-btn"
-                        onClick={close}
-                    >
-                        <i className="bi bi-x-lg"></i>
-                    </button>
+                <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                    <div className="modal-header-section">
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                        <div className="application-icon">
-
-                            <i className="bi bi-buildings-fill"></i>
-
-                        </div>
-
-                        <h3>Bus Operator Application</h3>
-
-                        <p>
-                            Review the submitted application details.
-                        </p>
-
-                    </div>
-
-                    <div className="application-details">
-
-                        <div className="detail-item">
-
-                            <label>Owner Name</label>
-
-                            <span>{application.ownerName}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Company Name</label>
-
-                            <span>{application.companyName}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Email</label>
-
-                            <span>{application.email}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Phone Number</label>
-
-                            <span>{application.phoneNumber}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Licence Number</label>
-
-                            <span>{application.licenceNumber}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Gender</label>
-
-                            <span>{application.gender}</span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>Company Address</label>
-
-                            <span>{application.companyAddress}</span>
-
-                        </div>
-
-                    </div>
-
-                    <div className="modal-footer">
+                        {/* Close Button */}
 
                         <button
-                            className="btn btn-outline-danger"
-                            onClick={() => setShowRejectModal(true)}
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-4"
+                            onClick={close}
                         >
-                            Reject
                         </button>
 
-                        <button
-                            className="btn btn-outline-success"
-                            onClick={() => setShowApproveConfirmation(true)}
-                        >
-                            Approve
-                        </button>
+
+                        {/* Header */}
+
+                        <div className="text-center mb-4">
+
+                            <div
+                                className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style={{
+                                    width: "75px",
+                                    height: "75px"
+                                }}
+                            >
+
+                                <i className="bi bi-buildings-fill fs-2"></i>
+
+                            </div>
+
+                            <h3 className="fw-semibold mb-2">
+                                Bus Operator Application
+                            </h3>
+
+                            <p className="text-secondary mb-0">
+                                Review the submitted application details.
+                            </p>
+
+                        </div>
+
+
+                        {/* Application Details */}
+
+                        <div className="row g-4">
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Owner Name
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.ownerName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Company Name
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.companyName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Email
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.email}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Phone Number
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.phoneNumber}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Licence Number
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.licenceNumber}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Gender
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.gender}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Company Address
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {application.companyAddress}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Footer */}
+
+                        <div className="d-flex justify-content-end gap-3 mt-4">
+
+                            <button
+                                className="btn btn-outline-danger"
+                                onClick={() =>
+                                    setShowRejectModal(true)
+                                }
+                            >
+                                Reject
+                            </button>
+
+
+                            <button
+                                className="btn btn-outline-success"
+                                onClick={() =>
+                                    setShowApproveConfirmation(true)
+                                }
+                            >
+                                Approve
+                            </button>
+
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
+
+
+            {/* Approve Confirmation */}
+
             <ConfirmationModal
+
                 show={showApproveConfirmation}
+
                 title="Approve Application"
+
                 message={`Are you sure you want to approve "${application.companyName}"?
 
 A new Bus Operator account will be created automatically.
 
 The operator can then log in and start managing buses.`}
+
                 confirmButtonText="Approve"
+
                 confirmButtonClass="btn-success"
-                onCancel={() => setShowApproveConfirmation(false)}
+
+                onCancel={() =>
+                    setShowApproveConfirmation(false)
+                }
+
                 onConfirm={approveApplication}
+
             />
+
+
+            {/* Reject Modal */}
+
             {
                 showRejectModal &&
 
-                <div className="application-modal-overlay">
+                <div
+                    className="modal fade show d-block"
+                    tabIndex="-1"
+                >
 
-                    <div className="application-modal">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                        <button
-                            className="close-modal-btn"
-                            onClick={() => {
-                                setShowRejectModal(false);
-                                setRemarks("");
-                            }}
-                        >
-                            <i className="bi bi-x-lg"></i>
-                        </button>
+                        <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                        <div className="modal-header-section">
-
-                            <div className="application-icon">
-
-                                <i className="bi bi-x-circle-fill"></i>
-
-                            </div>
-
-                            <h3>Reject Application</h3>
-
-                            <p>
-                                Please provide a reason for rejecting this application.
-                            </p>
-
-                        </div>
-
-                        <div className="application-details">
-
-                            <div className="detail-item">
-
-                                <label>Remarks</label>
-
-                                <textarea
-                                    className="form-control"
-                                    rows="4"
-                                    placeholder="Enter rejection remarks..."
-                                    value={remarks}
-                                    onChange={(e) => setRemarks(e.target.value)}
-                                />
-
-                            </div>
-
-                        </div>
-
-                        <div className="modal-footer">
+                            {/* Close Button */}
 
                             <button
-                                className="btn btn-secondary"
+                                type="button"
+                                className="btn-close position-absolute top-0 end-0 m-4"
                                 onClick={() => {
+
                                     setShowRejectModal(false);
+
                                     setRemarks("");
+
                                 }}
                             >
-                                Cancel
                             </button>
 
-                            <button
-                                className="btn btn-danger"
-                                onClick={rejectApplication}
-                                disabled={!remarks.trim()}
-                            >
-                                Reject
-                            </button>
+
+                            {/* Header */}
+
+                            <div className="text-center mb-4">
+
+                                <div
+                                    className="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{
+                                        width: "75px",
+                                        height: "75px"
+                                    }}
+                                >
+
+                                    <i className="bi bi-x-circle-fill fs-2"></i>
+
+                                </div>
+
+                                <h3 className="fw-semibold mb-2">
+                                    Reject Application
+                                </h3>
+
+                                <p className="text-secondary mb-0">
+                                    Please provide a reason for rejecting this application.
+                                </p>
+
+                            </div>
+
+
+                            {/* Remarks */}
+
+                            <div className="row">
+
+                                <div className="col-12">
+
+                                    <label className="form-label fw-semibold text-secondary">
+                                        Remarks
+                                    </label>
+
+                                    <textarea
+                                        className="form-control"
+                                        rows="4"
+                                        placeholder="Enter rejection remarks..."
+                                        value={remarks}
+                                        onChange={(e) =>
+                                            setRemarks(e.target.value)
+                                        }
+                                    />
+
+                                </div>
+
+                            </div>
+
+
+                            {/* Footer */}
+
+                            <div className="d-flex justify-content-end gap-3 mt-4">
+
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={() => {
+
+                                        setShowRejectModal(false);
+
+                                        setRemarks("");
+
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+
+
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={rejectApplication}
+                                    disabled={!remarks.trim()}
+                                >
+                                    Reject
+                                </button>
+
+                            </div>
 
                         </div>
 
                     </div>
 
                 </div>
+
             }
+
         </>
 
     );

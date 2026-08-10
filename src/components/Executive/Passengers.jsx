@@ -1,85 +1,99 @@
-import "./ExecutiveCss/Passengers.css";
-
 import PassengerDetailsModal from "./PassengerDetailsModal";
 import { useEffect, useState } from "react";
 import PassengerService from "../../services/PassengerService";
+
 function Passengers() {
 
     const [search, setSearch] = useState("");
+
     const [selectedPassenger, setSelectedPassenger] = useState(null);
 
     const [passengers, setPassengers] = useState([]);
+
+
     useEffect(() => {
 
-    getAllPassengers();
+        getAllPassengers();
 
-}, []);
-const getAllPassengers = async () => {
+    }, []);
 
-    try {
 
-        const response = await PassengerService.getAllPassengers();
+    const getAllPassengers = async () => {
 
-        console.log(response.data);
+        try {
 
-        setPassengers(response.data);
+            const response =
+                await PassengerService.getAllPassengers();
 
-    }
+            console.log(response.data);
 
-    catch (err) {
+            setPassengers(response.data);
 
-        console.log(err);
+        }
 
-    }
+        catch (err) {
 
-};
-const filteredPassengers = passengers.filter(passenger =>
+            console.log(err);
 
-    passenger.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
+        }
 
-    ||
+    };
 
-    passenger.username
-        .toLowerCase()
-        .includes(search.toLowerCase())
 
-);
-const getPassengerById = async (passengerId) => {
+    const filteredPassengers = passengers.filter(passenger =>
 
-    try {
+        passenger.name
+            .toLowerCase()
+            .includes(search.toLowerCase())
 
-        const response = await PassengerService.getPassengerById(passengerId);
+        ||
 
-        console.log(response.data);
+        passenger.username
+            .toLowerCase()
+            .includes(search.toLowerCase())
 
-        setSelectedPassenger(response.data);
+    );
 
-    }
 
-    catch (err) {
+    const getPassengerById = async (passengerId) => {
 
-        console.log(err);
+        try {
 
-    }
+            const response =
+                await PassengerService.getPassengerById(passengerId);
 
-};
+            console.log(response.data);
+
+            setSelectedPassenger(response.data);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
+
+
     return (
 
-        <div className="passengers-page">
+        <div className="p-4">
 
-            <div className="page-header">
+            {/* Page Header */}
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold text-dark mb-1">
 
                         Passengers
 
                     </h2>
 
-                    <p>
+                    <p className="text-secondary mb-0">
 
                         Manage registered passengers across the FastX platform.
 
@@ -87,19 +101,24 @@ const getPassengerById = async (passengerId) => {
 
                 </div>
 
-                <div className="page-actions">
+
+                <div className="d-flex align-items-center gap-3">
 
                     <input
 
                         type="text"
 
-                        className="form-control search-box"
+                        className="form-control"
+
+                        style={{ width: "260px" }}
 
                         placeholder="Search Passenger..."
 
                         value={search}
 
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
 
                     />
 
@@ -107,11 +126,14 @@ const getPassengerById = async (passengerId) => {
 
             </div>
 
-            <div className="table-card">
 
-                <table className="table table-hover align-middle">
+            {/* Table Card */}
 
-                    <thead>
+            <div className="bg-white rounded-4 shadow-sm p-4">
+
+                <table className="table table-hover align-middle mb-0">
+
+                    <thead className="table-light">
 
                         <tr>
 
@@ -131,6 +153,7 @@ const getPassengerById = async (passengerId) => {
 
                     </thead>
 
+
                     <tbody>
 
                         {
@@ -139,13 +162,21 @@ const getPassengerById = async (passengerId) => {
 
                                 <tr key={passenger.passengerId}>
 
-                                    <td>{index + 1}</td>
+                                    <td>
+                                        {index + 1}
+                                    </td>
 
-                                    <td>{passenger.name}</td>
+                                    <td>
+                                        {passenger.name}
+                                    </td>
 
-                                    <td>{passenger.username}</td>
+                                    <td>
+                                        {passenger.username}
+                                    </td>
 
-                                    <td>{passenger.phoneNumber}</td>
+                                    <td>
+                                        {passenger.phoneNumber}
+                                    </td>
 
                                     <td>
 
@@ -155,7 +186,7 @@ const getPassengerById = async (passengerId) => {
 
                                                 ?
 
-                                                <span className="active-status">
+                                                <span className="badge bg-success-subtle text-success-emphasis rounded-pill px-3 py-2">
 
                                                     Active
 
@@ -163,7 +194,7 @@ const getPassengerById = async (passengerId) => {
 
                                                 :
 
-                                                <span className="inactive-status">
+                                                <span className="badge bg-danger-subtle text-danger-emphasis rounded-pill px-3 py-2">
 
                                                     Inactive
 
@@ -179,7 +210,12 @@ const getPassengerById = async (passengerId) => {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={() => getPassengerById(passenger.passengerId)}
+                                            onClick={() =>
+                                                getPassengerById(
+                                                    passenger.passengerId
+                                                )
+                                            }
+
                                         >
 
                                             View
@@ -197,15 +233,19 @@ const getPassengerById = async (passengerId) => {
                     </tbody>
 
                 </table>
+
+
                 <PassengerDetailsModal
 
-    passenger={selectedPassenger}
+                    passenger={selectedPassenger}
 
-    close={() => setSelectedPassenger(null)}
+                    close={() =>
+                        setSelectedPassenger(null)
+                    }
 
-    refreshPassengers={getAllPassengers}
+                    refreshPassengers={getAllPassengers}
 
-/>
+                />
 
             </div>
 

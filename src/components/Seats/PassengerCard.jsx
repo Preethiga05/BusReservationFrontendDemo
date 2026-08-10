@@ -1,50 +1,65 @@
 function PassengerCard({
 
     index,
-
     passenger,
-
     updatePassenger
 
 }) {
 
     return (
 
-        <div className="passenger-card">
+        <div className="card border-0 shadow rounded-4 overflow-hidden mb-4">
 
-            <div className="passenger-card-header">
+            {/* Header */}
 
-                <div>
+            <div className="card-header bg-primary text-white border-0 p-3">
 
-                    <h4>
+                <div className="d-flex justify-content-between align-items-center">
 
-                        Passenger {index + 1}
+                    <div>
 
-                    </h4>
+                        <h4 className="mb-1 fw-bold">
 
-                    <span>
+                            Passenger {index + 1}
 
-                        Seat {passenger.seatNumber}
+                        </h4>
 
-                    </span>
+                        <span className="small">
 
-                </div>
+                            Seat {passenger.seatNumber}
 
-                <div className="seat-badge">
+                        </span>
 
-                    {passenger.seatNumber}
+                    </div>
+
+                    <div
+                        className="bg-white bg-opacity-25 rounded-circle d-flex justify-content-center align-items-center fw-bold"
+                        style={{
+                            width: "52px",
+                            height: "52px"
+                        }}
+                    >
+
+                        {passenger.seatNumber}
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <div className="passenger-card-body">
+
+            {/* Body */}
+
+            <div className="card-body p-4">
 
                 <div className="row">
 
+                    {/* Full Name */}
+
                     <div className="col-md-6 mb-3">
 
-                        <label className="form-label">
+                        <label className="form-label fw-semibold">
 
                             Full Name
 
@@ -60,7 +75,7 @@ function PassengerCard({
 
                             value={passenger.fullName}
 
-                            onChange={(e)=>
+                            onChange={(e) =>
 
                                 updatePassenger(
 
@@ -78,9 +93,12 @@ function PassengerCard({
 
                     </div>
 
+
+                    {/* Age */}
+
                     <div className="col-md-3 mb-3">
 
-                        <label className="form-label">
+                        <label className="form-label fw-semibold">
 
                             Age
 
@@ -96,7 +114,7 @@ function PassengerCard({
 
                             value={passenger.age}
 
-                            onChange={(e)=>
+                            onChange={(e) =>
 
                                 updatePassenger(
 
@@ -114,9 +132,12 @@ function PassengerCard({
 
                     </div>
 
+
+                    {/* Gender */}
+
                     <div className="col-md-3 mb-3">
 
-                        <label className="form-label">
+                        <label className="form-label fw-semibold">
 
                             Gender
 
@@ -128,7 +149,7 @@ function PassengerCard({
 
                             value={passenger.gender}
 
-                            onChange={(e)=>
+                            onChange={(e) =>
 
                                 updatePassenger(
 

@@ -1,234 +1,266 @@
-import "./ExecutiveCss/PassengerDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
 import PassengerService from "../../services/PassengerService";
 
 function PassengerDetailsModal({
-
     passenger,
-
     close,
     refreshPassengers
-
 }) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
-    
 
     if (!passenger) return null;
 
     const isActive = passenger.status === "ACTIVE";
+
+
     const changePassengerStatus = async () => {
 
-    console.log("Clicked");
+        console.log("Clicked");
 
-    console.log(passenger);
+        console.log(passenger);
 
-    console.log(isActive);
+        console.log(isActive);
 
-    try {
+        try {
 
-        if (isActive) {
+            if (isActive) {
 
-            console.log("Calling deactivate");
+                console.log("Calling deactivate");
 
-            await PassengerService.deactivatePassenger(
-                passenger.passengerId
-            );
+                await PassengerService.deactivatePassenger(
+                    passenger.passengerId
+                );
 
-        } else {
+            }
 
-            console.log("Calling activate");
+            else {
 
-            await PassengerService.activatePassenger(
-                passenger.passengerId
-            );
+                console.log("Calling activate");
+
+                await PassengerService.activatePassenger(
+                    passenger.passengerId
+                );
+
+            }
+
+            console.log("API Success");
+
+            await refreshPassengers();
+
+            setShowConfirmation(false);
+
+            close();
 
         }
 
-        console.log("API Success");
+        catch (err) {
 
-        await refreshPassengers();
+            console.log(err);
 
-        setShowConfirmation(false);
+        }
 
-        close();
+    };
 
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-    }
-
-};
 
     return (
 
         <>
 
-            <div className="application-modal-overlay">
+            {/* Passenger Details Modal */}
 
-                <div className="application-modal">
+            <div
+                className="modal fade show d-block"
+                tabIndex="-1"
+            >
 
-                    <button
+                <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                        className="close-modal-btn"
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                        onClick={close}
+                        {/* Close Button */}
 
-                    >
+                        <button
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-4"
+                            onClick={close}
+                        >
+                        </button>
 
-                        <i className="bi bi-x-lg"></i>
 
-                    </button>
+                        {/* Header */}
 
-                    <div className="modal-header-section">
+                        <div className="text-center mb-4">
 
-                        <div className="application-icon">
+                            <div
+                                className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style={{
+                                    width: "75px",
+                                    height: "75px"
+                                }}
+                            >
 
-                            <i className="bi bi-person-fill"></i>
+                                <i className="bi bi-person-fill fs-2"></i>
 
-                        </div>
+                            </div>
 
-                        <h3>
+                            <h3 className="fw-semibold mb-2">
+                                Passenger Details
+                            </h3>
 
-                            Passenger Details
-
-                        </h3>
-
-                        <p>
-
-                            View registered passenger information.
-
-                        </p>
-
-                    </div>
-
-                    <div className="application-details">
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Name
-
-                            </label>
-
-                            <span>
-
-                                {passenger.name}
-
-                            </span>
+                            <p className="text-secondary mb-0">
+                                View registered passenger information.
+                            </p>
 
                         </div>
 
-                        <div className="detail-item">
 
-                            <label>
+                        {/* Passenger Details */}
 
-                                Username
+                        <div className="row g-4">
 
-                            </label>
+                            <div className="col-md-6">
 
-                            <span>
+                                <label className="form-label fw-semibold text-secondary">
+                                    Name
+                                </label>
 
-                                {passenger.username}
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.name}
+                                </div>
 
-                            </span>
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Username
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.username}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Phone Number
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.phoneNumber}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Emergency Contact
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.emergencyContact}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Date of Birth
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.dob}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Gender
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.gender}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Address
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {passenger.address}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Status
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+
+                                    {
+
+                                        isActive
+
+                                            ?
+
+                                            <span className="badge bg-success">
+                                                Active
+                                            </span>
+
+                                            :
+
+                                            <span className="badge bg-danger">
+                                                Inactive
+                                            </span>
+
+                                    }
+
+                                </div>
+
+                            </div>
 
                         </div>
 
-                        <div className="detail-item">
 
-                            <label>
+                        {/* Footer */}
 
-                                Phone Number
+                        <div className="d-flex justify-content-end mt-4">
 
-                            </label>
+                            <button
 
-                            <span>
+                                className={
+                                    isActive
+                                        ? "btn btn-danger"
+                                        : "btn btn-success"
+                                }
 
-                                {passenger.phoneNumber}
+                                onClick={() =>
+                                    setShowConfirmation(true)
+                                }
 
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Emergency Contact
-
-                            </label>
-
-                            <span>
-
-                                {passenger.emergencyContact}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Date of Birth
-
-                            </label>
-
-                            <span>
-
-                                {passenger.dob}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Gender
-
-                            </label>
-
-                            <span>
-
-                                {passenger.gender}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Address
-
-                            </label>
-
-                            <span>
-
-                                {passenger.address}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Status
-
-                            </label>
-
-                            <span>
+                            >
 
                                 {
 
@@ -236,65 +268,17 @@ function PassengerDetailsModal({
 
                                         ?
 
-                                        <span className="badge bg-success">
-
-                                            Active
-
-                                        </span>
+                                        "Deactivate Passenger"
 
                                         :
 
-                                        <span className="badge bg-danger">
-
-                                            Inactive
-
-                                        </span>
+                                        "Activate Passenger"
 
                                 }
 
-                            </span>
+                            </button>
 
                         </div>
-
-                    </div>
-
-                    <div className="modal-footer justify-content-end">
-
-                        <button
-
-                            className={
-
-                                isActive
-
-                                    ?
-
-                                    "btn btn-danger"
-
-                                    :
-
-                                    "btn btn-success"
-
-                            }
-
-                            onClick={() => setShowConfirmation(true)}
-
-                        >
-
-                            {
-
-                                isActive
-
-                                    ?
-
-                                    "Deactivate Passenger"
-
-                                    :
-
-                                    "Activate Passenger"
-
-                            }
-
-                        </button>
 
                     </div>
 
@@ -302,22 +286,17 @@ function PassengerDetailsModal({
 
             </div>
 
+
+            {/* Confirmation Modal */}
+
             <ConfirmationModal
 
                 show={showConfirmation}
 
                 title={
-
                     isActive
-
-                        ?
-
-                        "Deactivate Passenger"
-
-                        :
-
-                        "Activate Passenger"
-
+                        ? "Deactivate Passenger"
+                        : "Activate Passenger"
                 }
 
                 message={
@@ -331,11 +310,8 @@ function PassengerDetailsModal({
 The passenger will no longer be able to:
 
 • Login
-
 • Book Tickets
-
 • Cancel Bookings
-
 • Update Profile
 
 This action can be reversed later.`
@@ -347,44 +323,26 @@ This action can be reversed later.`
 The passenger will regain access to:
 
 • Login
-
 • Book Tickets
-
 • Cancel Bookings
-
 • Update Profile`
-
                 }
 
                 confirmButtonText={
-
                     isActive
-
-                        ?
-
-                        "Deactivate"
-
-                        :
-
-                        "Activate"
-
+                        ? "Deactivate"
+                        : "Activate"
                 }
 
                 confirmButtonClass={
-
                     isActive
-
-                        ?
-
-                        "btn-danger"
-
-                        :
-
-                        "btn-success"
-
+                        ? "btn-danger"
+                        : "btn-success"
                 }
 
-                onCancel={() => setShowConfirmation(false)}
+                onCancel={() =>
+                    setShowConfirmation(false)
+                }
 
                 onConfirm={changePassengerStatus}
 

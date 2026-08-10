@@ -1,16 +1,11 @@
-import "./ExecutiveCss/AmenityDetailsModal.css";
 import { useState } from "react";
 import ConfirmationModal from "../RusableComponents/ConfirmationModal";
 import AmenityService from "../../services/AmenityService";
 
 function AmenityDetailsModal({
-
     amenity,
-
     close,
-
     refreshAmenities
-
 }) {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -59,148 +54,137 @@ function AmenityDetailsModal({
 
         <>
 
-            <div className="application-modal-overlay">
+            <div
+                className="modal fade show d-block"
+                tabIndex="-1"
+            >
 
-                <div className="application-modal">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
 
-                    <button
-                        className="close-modal-btn"
-                        onClick={close}
-                    >
-                        <i className="bi bi-x-lg"></i>
-                    </button>
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-4">
 
-                    <div className="modal-header-section">
-
-                        <div className="application-icon">
-
-                            <i className="bi bi-stars"></i>
-
-                        </div>
-
-                        <h3>
-
-                            Amenity Details
-
-                        </h3>
-
-                        <p>
-
-                            View amenity information.
-
-                        </p>
-
-                    </div>
-
-                    <div className="application-details">
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Amenity Name
-
-                            </label>
-
-                            <span>
-
-                                {amenity.amenityName}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Description
-
-                            </label>
-
-                            <span>
-
-                                {amenity.description}
-
-                            </span>
-
-                        </div>
-
-                        <div className="detail-item">
-
-                            <label>
-
-                                Status
-
-                            </label>
-
-                            <span>
-
-                                {
-
-                                    isActive
-
-                                        ?
-
-                                        <span className="badge bg-success">
-
-                                            Active
-
-                                        </span>
-
-                                        :
-
-                                        <span className="badge bg-danger">
-
-                                            Inactive
-
-                                        </span>
-
-                                }
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                    <div className="modal-footer justify-content-end">
+                        {/* Close Button */}
 
                         <button
-
-                            className={
-
-                                isActive
-
-                                    ?
-
-                                    "btn btn-danger"
-
-                                    :
-
-                                    "btn btn-success"
-
-                            }
-
-                            onClick={() => setShowConfirmation(true)}
-
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-4"
+                            onClick={close}
                         >
-
-                            {
-
-                                isActive
-
-                                    ?
-
-                                    "Deactivate Amenity"
-
-                                    :
-
-                                    "Activate Amenity"
-
-                            }
-
                         </button>
+
+
+                        {/* Header */}
+
+                        <div className="text-center mb-4">
+
+                            <div
+                                className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style={{
+                                    width: "75px",
+                                    height: "75px"
+                                }}
+                            >
+
+                                <i className="bi bi-stars fs-2"></i>
+
+                            </div>
+
+                            <h3 className="fw-semibold mb-2">
+                                Amenity Details
+                            </h3>
+
+                            <p className="text-secondary mb-0">
+                                View amenity information.
+                            </p>
+
+                        </div>
+
+
+                        {/* Amenity Details */}
+
+                        <div className="row g-4">
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Amenity Name
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {amenity.amenityName}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Description
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+                                    {amenity.description}
+                                </div>
+
+                            </div>
+
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold text-secondary">
+                                    Status
+                                </label>
+
+                                <div className="bg-light rounded-3 p-3">
+
+                                    {
+                                        isActive
+
+                                            ?
+
+                                            <span className="badge bg-success">
+                                                Active
+                                            </span>
+
+                                            :
+
+                                            <span className="badge bg-danger">
+                                                Inactive
+                                            </span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Footer */}
+
+                        <div className="d-flex justify-content-end mt-4">
+
+                            <button
+                                className={
+                                    isActive
+                                        ? "btn btn-danger"
+                                        : "btn btn-success"
+                                }
+                                onClick={() =>
+                                    setShowConfirmation(true)
+                                }
+                            >
+
+                                {
+                                    isActive
+                                        ? "Deactivate Amenity"
+                                        : "Activate Amenity"
+                                }
+
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -208,26 +192,20 @@ function AmenityDetailsModal({
 
             </div>
 
+
+            {/* Confirmation Modal */}
+
             <ConfirmationModal
 
                 show={showConfirmation}
 
                 title={
-
                     isActive
-
-                        ?
-
-                        "Deactivate Amenity"
-
-                        :
-
-                        "Activate Amenity"
-
+                        ? "Deactivate Amenity"
+                        : "Activate Amenity"
                 }
 
                 message={
-
                     isActive
 
                         ?
@@ -243,38 +221,23 @@ This action can be reversed later.`
                         `Are you sure you want to activate "${amenity.amenityName}"?
 
 This amenity will be available while adding or updating buses.`
-
                 }
 
                 confirmButtonText={
-
                     isActive
-
-                        ?
-
-                        "Deactivate"
-
-                        :
-
-                        "Activate"
-
+                        ? "Deactivate"
+                        : "Activate"
                 }
 
                 confirmButtonClass={
-
                     isActive
-
-                        ?
-
-                        "btn-danger"
-
-                        :
-
-                        "btn-success"
-
+                        ? "btn-danger"
+                        : "btn-success"
                 }
 
-                onCancel={() => setShowConfirmation(false)}
+                onCancel={() =>
+                    setShowConfirmation(false)
+                }
 
                 onConfirm={changeAmenityStatus}
 

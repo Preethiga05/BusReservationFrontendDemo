@@ -1,5 +1,3 @@
-import "./ExecutiveCss/BusOperators.css";
-
 import BusOperatorDetailsModal from "./BusOperatorDetailsModal";
 import { useEffect, useState } from "react";
 import BusOperatorService from "../../services/BusOperatorService";
@@ -13,11 +11,15 @@ function BusOperators() {
     const [filteredOperators, setFilteredOperators] = useState([]);
 
     const [search, setSearch] = useState("");
+
+
     useEffect(() => {
 
         getAllBusOperators();
 
     }, []);
+
+
     const getAllBusOperators = async () => {
 
         try {
@@ -38,6 +40,8 @@ function BusOperators() {
         }
 
     };
+
+
     useEffect(() => {
 
         const filtered = operators.filter(operator =>
@@ -57,22 +61,28 @@ function BusOperators() {
         setFilteredOperators(filtered);
 
     }, [search, operators]);
+
+
     console.log(filteredOperators);
+
+
     return (
 
-        <div className="bus-operators-page">
+        <div className="p-4">
 
-            <div className="page-header">
+            {/* Page Header */}
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold text-dark mb-1">
 
                         Bus Operators
 
                     </h2>
 
-                    <p>
+                    <p className="text-secondary mb-0">
 
                         Manage approved bus operators registered with FastX.
 
@@ -80,27 +90,26 @@ function BusOperators() {
 
                 </div>
 
+
                 <input
-
                     type="text"
-
-                    className="form-control search-box"
-
+                    className="form-control"
+                    style={{ width: "280px" }}
                     placeholder="Search Company..."
-
                     value={search}
-
                     onChange={(e) => setSearch(e.target.value)}
-
                 />
 
             </div>
 
-            <div className="table-card">
 
-                <table className="table table-hover align-middle">
+            {/* Table Card */}
 
-                    <thead>
+            <div className="bg-white rounded-4 shadow-sm p-4">
+
+                <table className="table table-hover align-middle mb-0">
+
+                    <thead className="table-light">
 
                         <tr>
 
@@ -120,6 +129,7 @@ function BusOperators() {
 
                     </thead>
 
+
                     <tbody>
 
                         {
@@ -129,27 +139,19 @@ function BusOperators() {
                                 <tr key={operator.busOperatorId}>
 
                                     <td>
-
                                         {index + 1}
-
                                     </td>
 
                                     <td>
-
                                         {operator.companyName}
-
                                     </td>
 
                                     <td>
-
                                         {operator.busOperatorName}
-
                                     </td>
 
                                     <td>
-
                                         {operator.phoneNumber}
-
                                     </td>
 
                                     <td>
@@ -160,7 +162,7 @@ function BusOperators() {
 
                                                 ?
 
-                                                <span className="active-status">
+                                                <span className="badge bg-success-subtle text-success-emphasis rounded-pill px-3 py-2">
 
                                                     Active
 
@@ -168,7 +170,7 @@ function BusOperators() {
 
                                                 :
 
-                                                <span className="inactive-status">
+                                                <span className="badge bg-danger-subtle text-danger-emphasis rounded-pill px-3 py-2">
 
                                                     Inactive
 
@@ -194,7 +196,9 @@ function BusOperators() {
                                                                 operator.busOperatorId
                                                             );
 
-                                                    setSelectedOperator(response.data);
+                                                    setSelectedOperator(
+                                                        response.data
+                                                    );
 
                                                 }
 
@@ -225,6 +229,7 @@ function BusOperators() {
                 </table>
 
             </div>
+
 
             <BusOperatorDetailsModal
 

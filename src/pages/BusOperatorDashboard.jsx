@@ -16,7 +16,14 @@ import Profile from "../components/BusOperator/Profile";
 
 function BusOperatorDashboard() {
 
-    const [activeMenu, setActiveMenu] = useState("dashboard");
+    const [activeMenu, setActiveMenu] = useState(
+        localStorage.getItem("activeMenu") || "dashboard"
+    );
+
+    const handleMenuChange = (menu) => {
+        setActiveMenu(menu);
+        localStorage.setItem("activeMenu", menu);
+    };
 
     return (
 
@@ -31,79 +38,49 @@ function BusOperatorDashboard() {
                     <div className="col-lg-2 p-0">
 
                         <Sidebar
-
                             activeMenu={activeMenu}
-
-                            setActiveMenu={setActiveMenu}
-
+                            setActiveMenu={handleMenuChange}
                         />
 
                     </div>
 
                     <div
-
                         className="col-lg-10"
-
                         style={{
-
-                            background:"#f4f8fc",
-
-                            minHeight:"100vh",
-
-                            padding:"30px"
-
+                            background: "#f4f8fc",
+                            minHeight: "100vh",
+                            padding: "30px"
                         }}
-
                     >
 
                         {
-
-                            activeMenu==="dashboard"
-
+                            activeMenu === "dashboard"
                             &&
-
-                            <DashboardHome/>
-
+                            <DashboardHome />
                         }
 
                         {
-
-                            activeMenu==="buses"
-
+                            activeMenu === "buses"
                             &&
-
-                            <Buses/>
-
+                            <Buses />
                         }
 
                         {
-
-                            activeMenu==="schedules"
-
+                            activeMenu === "schedules"
                             &&
-
-                            <BusSchedules/>
-
+                            <BusSchedules />
                         }
 
                         {
-
-                            activeMenu==="bookings"
-
+                            activeMenu === "bookings"
                             &&
-
-                            <Bookings/>
-
+                            <Bookings />
                         }
 
                         {
-
-                            activeMenu==="profile"
-
+                            activeMenu === "profile"
                             &&
-
-                            <Profile/>
-
+                            <Profile />
                         }
 
                     </div>
@@ -115,7 +92,6 @@ function BusOperatorDashboard() {
         </>
 
     );
-
 }
 
 export default BusOperatorDashboard;

@@ -1,76 +1,70 @@
 import { useEffect, useState } from "react";
-import BusOperatorService from "../../services/BusOperatorService";
-
+import ExecutiveService from "../../services/ExecutiveService";
 
 function UpdateProfileModal({
-    show,
-    operator,
+    executive,
     close,
     onProfileUpdated
 }) {
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [companyName, setCompanyName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [gender, setGender] = useState("");
-    const [companyAddress, setCompanyAddress] = useState("");
+    const [username, setUsername] =
+        useState("");
 
-    const [loading, setLoading] = useState(false);
+    const [password, setPassword] =
+        useState("");
+
+    const [email, setEmail] =
+        useState("");
+
+    const [name, setName] =
+        useState("");
+
+    const [jobTitle, setJobTitle] =
+        useState("");
+
+    const [phoneNumber, setPhoneNumber] =
+        useState("");
+
+    const [gender, setGender] =
+        useState("");
+
+    const [loading, setLoading] =
+        useState(false);
 
 
     useEffect(() => {
 
-        if (operator) {
-
-
-            console.log("========== OPERATOR PROFILE ==========");
-        console.log("Complete operator object:", operator);
-        console.log("Username:", operator.username);
-        console.log("Operator Name:", operator.busOperatorName);
-        console.log("Company Name:", operator.companyName);
-        console.log("Licence Number:", operator.licenceNumber);
-        console.log("Phone Number:", operator.phoneNumber);
-        console.log("Gender:", operator.gender);
-        console.log("Company Address:", operator.companyAddress);
-        console.log("Status:", operator.status);
-        console.log("======================================");
+        if (executive) {
 
             setUsername(
-                operator.username || ""
+                executive.username || ""
+            );
+
+            setEmail(
+                executive.email || ""
+            );
+
+            setName(
+                executive.name || ""
+            );
+
+            setJobTitle(
+                executive.jobTitle || ""
+            );
+
+            setPhoneNumber(
+                executive.phoneNumber || ""
+            );
+
+            setGender(
+                executive.gender || ""
             );
 
             setPassword("");
 
-            setName(
-                operator.busOperatorName || ""
-            );
-
-            setCompanyName(
-                operator.companyName || ""
-            );
-
-            setPhoneNumber(
-                operator.phoneNumber || ""
-            );
-
-            setGender(
-                operator.gender || ""
-            );
-
-            setCompanyAddress(
-                operator.companyAddress || ""
-            );
-
         }
 
-    }, [operator]);
-
-
-    if (!show) {
-        return null;
-    }
+    }, [executive]);
 
 
     const updateProfile = async () => {
@@ -85,38 +79,38 @@ function UpdateProfileModal({
 
                 password: password,
 
-                busOperatorName: name,
+                email: email,
 
-                companyName: companyName,
+                name: name,
+
+                jobTitle: jobTitle,
 
                 phoneNumber: phoneNumber,
 
-                gender: gender,
-
-                companyAddress: companyAddress
+                gender: gender
 
             };
 
 
             console.log(
-                "Updating profile:",
+                "Updating Executive Profile:",
                 profileData
             );
 
 
             const response =
-                await BusOperatorService.updateProfile(
+                await ExecutiveService.updateProfile(
                     profileData
                 );
 
 
             console.log(
-                "Profile updated:",
+                "Executive Profile Updated:",
                 response.data
             );
 
 
-            onProfileUpdated();
+            await onProfileUpdated();
 
             close();
 
@@ -124,7 +118,7 @@ function UpdateProfileModal({
         catch (error) {
 
             console.error(
-                "Failed to update profile:",
+                "Failed to update executive profile:",
                 error
             );
 
@@ -143,18 +137,18 @@ function UpdateProfileModal({
         <div
             className="modal fade show d-block"
             tabIndex="-1"
-            role="dialog"
+            style={{
+                backgroundColor:
+                    "rgba(0,0,0,0.5)"
+            }}
         >
 
             <div
-                className="modal-dialog modal-dialog-scrollable modal-lg"
-                role="document"
+                className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
             >
 
                 <div className="modal-content">
 
-
-                    {/* Modal Header */}
 
                     <div className="modal-header">
 
@@ -168,7 +162,7 @@ function UpdateProfileModal({
 
                             <p className="text-muted mb-0">
 
-                                Update your account and company information.
+                                Update your account details.
 
                             </p>
 
@@ -179,23 +173,19 @@ function UpdateProfileModal({
                             type="button"
                             className="btn-close"
                             onClick={close}
-                            disabled={loading}
-                            aria-label="Close"
                         ></button>
 
                     </div>
 
 
-                    {/* Scrollable Modal Body */}
-
                     <div className="modal-body">
 
-                        <div className="row">
+                        <div className="row g-3">
 
 
                             {/* Username */}
 
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
@@ -219,7 +209,7 @@ function UpdateProfileModal({
 
                             {/* Password */}
 
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
@@ -241,20 +231,44 @@ function UpdateProfileModal({
 
                                 <small className="text-muted">
 
-                                    Leave blank to keep the current password.
+                                    Leave blank to keep your current password.
 
                                 </small>
 
                             </div>
 
 
-                            {/* Operator Name */}
+                            {/* Email */}
 
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
-                                    Operator Name
+                                    Email
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    value={email}
+                                    onChange={(e) =>
+                                        setEmail(
+                                            e.target.value
+                                        )
+                                    }
+                                />
+
+                            </div>
+
+
+                            {/* Name */}
+
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+
+                                    Name
 
                                 </label>
 
@@ -272,37 +286,13 @@ function UpdateProfileModal({
                             </div>
 
 
-                            {/* Company Name */}
+                            {/* Employee Code */}
 
-                            <div className="col-md-6 mb-3">
-
-                                <label className="form-label fw-semibold">
-
-                                    Company Name
-
-                                </label>
-
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={companyName}
-                                    onChange={(e) =>
-                                        setCompanyName(
-                                            e.target.value
-                                        )
-                                    }
-                                />
-
-                            </div>
-
-
-                            {/* Licence Number */}
-
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
-                                    Licence Number
+                                    Employee Code
 
                                 </label>
 
@@ -310,23 +300,44 @@ function UpdateProfileModal({
                                     type="text"
                                     className="form-control"
                                     value={
-                                        operator?.licenceNumber || ""
+                                        executive.employeeCode
                                     }
                                     disabled
                                 />
 
                                 <small className="text-muted">
 
-                                    Licence number cannot be changed.
+                                    Employee code cannot be changed.
 
                                 </small>
 
                             </div>
 
 
-                            {/* Phone Number */}
 
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
+
+                                <label className="form-label fw-semibold">
+                                    Job Title
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={executive.jobTitle || ""}
+                                    disabled
+                                />
+
+                                <small className="text-muted">
+                                    Job title cannot be changed.
+                                </small>
+
+                            </div>
+
+
+                            {/* Phone */}
+
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
@@ -350,7 +361,7 @@ function UpdateProfileModal({
 
                             {/* Gender */}
 
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-6">
 
                                 <label className="form-label fw-semibold">
 
@@ -390,37 +401,10 @@ function UpdateProfileModal({
 
                             </div>
 
-
-                            {/* Company Address */}
-
-                            <div className="col-12 mb-3">
-
-                                <label className="form-label fw-semibold">
-
-                                    Company Address
-
-                                </label>
-
-                                <textarea
-                                    rows="4"
-                                    className="form-control"
-                                    value={companyAddress}
-                                    onChange={(e) =>
-                                        setCompanyAddress(
-                                            e.target.value
-                                        )
-                                    }
-                                ></textarea>
-
-                            </div>
-
-
                         </div>
 
                     </div>
 
-
-                    {/* Modal Footer */}
 
                     <div className="modal-footer">
 
@@ -470,7 +454,6 @@ function UpdateProfileModal({
                         </button>
 
                     </div>
-
 
                 </div>
 

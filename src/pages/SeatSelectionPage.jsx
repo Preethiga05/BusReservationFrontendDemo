@@ -9,6 +9,9 @@ import SeatService from "../services/SeatService";
 
 import "../css/SeatSelectionPage.css";
 
+import { useDispatch, useSelector } from "react-redux"
+import { clearSeats } from "../actions/SeatAction"
+
 function SeatSelectionPage() {
 
     const navigate = useNavigate();
@@ -19,21 +22,27 @@ function SeatSelectionPage() {
 
     const [seats, setSeats] = useState([]);
 
-    const [selectedSeats, setSelectedSeats] = useState([]);
+const dispatch = useDispatch();
 
-    useEffect(() => {
+const selectedSeats = useSelector(
+    state => state.seat.selectedSeats
+);
 
-        if (!bus) {
+   useEffect(() => {
 
-            navigate("/search-results");
+    if (!bus) {
 
-            return;
+        navigate("/search-results");
 
-        }
+        return;
 
-        loadSeats();
+    }
 
-    }, []);
+    dispatch(clearSeats());
+
+    loadSeats();
+
+}, []);
 
     async function loadSeats() {
 
@@ -216,10 +225,6 @@ function SeatSelectionPage() {
 
                                     seats={seats}
 
-                                    selectedSeats={selectedSeats}
-
-                                    setSelectedSeats={setSelectedSeats}
-
                                 />
 
                             </div>
@@ -233,8 +238,6 @@ function SeatSelectionPage() {
                         <FareSummary
 
                             bus={bus}
-
-                            selectedSeats={selectedSeats}
 
                         />
 

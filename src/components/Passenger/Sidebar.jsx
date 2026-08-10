@@ -1,5 +1,3 @@
-import "./PassengerCss/Sidebar.css";
-
 function Sidebar({
 
     activeMenu,
@@ -30,15 +28,16 @@ function Sidebar({
 
     ];
 
+
     return (
 
-        <div className="sidebar">
-
-            <h4 className="sidebar-title">
-
-                Passenger
-
-            </h4>
+        <div
+            className="bg-primary p-3 position-sticky top-0"
+            style={{
+                width: "250px",
+                minHeight: "calc(100vh - 72px)"
+            }}
+        >
 
             {
 
@@ -48,7 +47,13 @@ function Sidebar({
 
                         key={menu.id}
 
-                        className={`sidebar-btn ${activeMenu === menu.id ? "active" : ""}`}
+                        className={
+                            `btn w-100 d-flex align-items-center gap-3 text-start mb-2 py-3 px-3 rounded-3 ${
+                                activeMenu === menu.id
+                                    ? "btn-primary bg-primary border border-light"
+                                    : "btn-link text-white text-decoration-none"
+                            }`
+                        }
 
                         onClick={() => setActiveMenu(menu.id)}
 

@@ -1,6 +1,4 @@
-import "./ExecutiveCss/Amenities.css";
 import AddAmenityModal from "./AddAmenityModal";
-
 import AmenityDetailsModal from "./AmenityDetailsModal";
 import { useEffect, useState } from "react";
 import AmenityService from "../../services/AmenityService";
@@ -8,17 +6,23 @@ import AmenityService from "../../services/AmenityService";
 function Amenities() {
 
     const [search, setSearch] = useState("");
+
     const [showAddModal, setShowAddModal] = useState(false);
+
     const [selectedAmenity, setSelectedAmenity] = useState(null);
 
     const [amenities, setAmenities] = useState([]);
 
     const [filteredAmenities, setFilteredAmenities] = useState([]);
+
+
     useEffect(() => {
 
         getAllAmenities();
 
     }, []);
+
+
     const getAllAmenities = async () => {
 
         try {
@@ -40,6 +44,8 @@ function Amenities() {
         }
 
     };
+
+
     useEffect(() => {
 
         const filtered = amenities.filter((amenity) =>
@@ -53,6 +59,8 @@ function Amenities() {
         setFilteredAmenities(filtered);
 
     }, [search, amenities]);
+
+
     const getAmenityById = async (amenityId) => {
 
         try {
@@ -72,21 +80,25 @@ function Amenities() {
         }
 
     };
+
+
     return (
 
-        <div className="amenities-page">
+        <div className="p-4">
 
-            <div className="page-header">
+            {/* Page Header */}
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
 
-                    <h2>
+                    <h2 className="fw-bold text-dark mb-1">
 
                         Amenities
 
                     </h2>
 
-                    <p>
+                    <p className="text-secondary mb-0">
 
                         Manage bus amenities available across the FastX platform.
 
@@ -94,13 +106,18 @@ function Amenities() {
 
                 </div>
 
-                <div className="page-actions">
+
+                {/* Page Actions */}
+
+                <div className="d-flex align-items-center gap-3">
 
                     <input
 
                         type="text"
 
-                        className="form-control search-box"
+                        className="form-control"
+
+                        style={{ width: "260px" }}
 
                         placeholder="Search Amenity..."
 
@@ -128,9 +145,12 @@ function Amenities() {
 
             </div>
 
-            <div className="table-card">
 
-                <table className="table table-hover align-middle">
+            {/* Table Card */}
+
+            <div className="bg-white rounded-4 shadow-sm p-4">
+
+                <table className="table table-hover align-middle mb-0">
 
                     <thead>
 
@@ -149,6 +169,7 @@ function Amenities() {
                         </tr>
 
                     </thead>
+
 
                     <tbody>
 
@@ -172,7 +193,7 @@ function Amenities() {
 
                                                 ?
 
-                                                <span className="active-status">
+                                                <span className="badge bg-success-subtle text-success-emphasis rounded-pill px-3 py-2">
 
                                                     Active
 
@@ -180,7 +201,7 @@ function Amenities() {
 
                                                 :
 
-                                                <span className="inactive-status">
+                                                <span className="badge bg-danger-subtle text-danger-emphasis rounded-pill px-3 py-2">
 
                                                     Inactive
 
@@ -196,7 +217,9 @@ function Amenities() {
 
                                             className="btn btn-primary btn-sm"
 
-                                            onClick={() => getAmenityById(amenity.amenityId)}
+                                            onClick={() =>
+                                                getAmenityById(amenity.amenityId)
+                                            }
 
                                         >
 
@@ -215,6 +238,8 @@ function Amenities() {
                     </tbody>
 
                 </table>
+
+
                 <AddAmenityModal
 
                     show={showAddModal}
@@ -224,6 +249,8 @@ function Amenities() {
                     refreshAmenities={getAllAmenities}
 
                 />
+
+
                 <AmenityDetailsModal
 
                     amenity={selectedAmenity}
@@ -233,6 +260,7 @@ function Amenities() {
                     refreshAmenities={getAllAmenities}
 
                 />
+
             </div>
 
         </div>

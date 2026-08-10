@@ -1,50 +1,65 @@
-import "./PassengerCss/PassengerCard.css";
-
 function PassengerCard({
-
     index,
-
     passenger,
-
     updatePassenger
-
 }) {
 
     return (
 
-        <div className="passenger-card">
+        <div className="card border-0 rounded-4 shadow-sm overflow-hidden mb-4">
 
-            <div className="passenger-card-header">
+            {/* Header */}
 
-                <div>
+            <div className="card-header bg-primary text-white border-0 p-3">
 
-                    <h4>
+                <div className="d-flex justify-content-between align-items-center">
 
-                        Passenger {index + 1}
+                    <div>
 
-                    </h4>
+                        <h4 className="mb-1 fw-bold">
 
-                    <span>
+                            Passenger {index + 1}
 
-                        Seat {passenger.seatNumber}
+                        </h4>
 
-                    </span>
+                        <span className="small">
 
-                </div>
+                            Seat {passenger.seatNumber}
 
-                <div className="seat-badge">
+                        </span>
 
-                    {passenger.seatNumber}
+                    </div>
+
+
+                    {/* Seat Badge */}
+
+                    <div
+                        className="rounded-circle bg-white bg-opacity-25 d-flex align-items-center justify-content-center fw-bold"
+                        style={{
+                            width: "52px",
+                            height: "52px",
+                            fontSize: "18px"
+                        }}
+                    >
+
+                        {passenger.seatNumber}
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <div className="passenger-card-body">
+
+            {/* Body */}
+
+            <div className="card-body p-4">
+
+                {/* Full Name */}
 
                 <div className="mb-3">
 
-                    <label className="form-label">
+                    <label className="form-label fw-semibold text-primary">
 
                         Full Name
 
@@ -78,11 +93,14 @@ function PassengerCard({
 
                 </div>
 
+
+                {/* Age & Gender */}
+
                 <div className="row">
 
                     <div className="col-md-6 mb-3">
 
-                        <label className="form-label">
+                        <label className="form-label fw-semibold text-primary">
 
                             Age
 
@@ -116,9 +134,10 @@ function PassengerCard({
 
                     </div>
 
+
                     <div className="col-md-6 mb-3">
 
-                        <label className="form-label">
+                        <label className="form-label fw-semibold text-primary">
 
                             Gender
 

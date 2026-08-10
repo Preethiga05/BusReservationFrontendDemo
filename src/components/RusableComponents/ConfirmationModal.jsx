@@ -1,19 +1,11 @@
-import "./ReusableComponentsCss/ConfirmationModal.css";
-
 function ConfirmationModal({
 
     show,
-
     title,
-
     message,
-
     confirmButtonText,
-
     confirmButtonClass,
-
     onConfirm,
-
     onCancel
 
 }) {
@@ -22,55 +14,84 @@ function ConfirmationModal({
 
     return (
 
-        <div className="confirmation-overlay">
+        <div
+            className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
+            style={{ zIndex: 99999 }}
+        >
 
-            <div className="confirmation-modal">
+            <div
+                className="modal-dialog modal-dialog-centered"
+                style={{ maxWidth: "500px", width: "100%" }}
+            >
 
-                <div className="confirmation-header">
+                <div className="modal-content rounded-4 shadow-lg">
 
-                    <h3>
+                    {/* Header */}
 
-                        {title}
+                    <div className="modal-header">
 
-                    </h3>
+                        <h5 className="modal-title fw-bold">
 
-                </div>
+                            {title}
 
-                <div className="confirmation-body">
+                        </h5>
 
-                    <p style={{ whiteSpace: "pre-line" }}>
+                    </div>
 
-                        {message}
 
-                    </p>
+                    {/* Body */}
 
-                </div>
+                    <div className="modal-body">
 
-                <div className="confirmation-footer">
+                        <p
+                            className="mb-0 text-secondary"
+                            style={{
+                                whiteSpace: "pre-line",
+                                lineHeight: "1.8"
+                            }}
+                        >
 
-                    <button
+                            {message}
 
-                        className="btn btn-outline-secondary"
+                        </p>
 
-                        onClick={onCancel}
+                    </div>
 
-                    >
 
-                        Cancel
+                    {/* Footer */}
 
-                    </button>
+                    <div className="modal-footer">
 
-                    <button
+                        <button
 
-                        className={`btn ${confirmButtonClass}`}
+                            type="button"
 
-                        onClick={onConfirm}
+                            className="btn btn-outline-secondary"
 
-                    >
+                            onClick={onCancel}
 
-                        {confirmButtonText}
+                        >
 
-                    </button>
+                            Cancel
+
+                        </button>
+
+
+                        <button
+
+                            type="button"
+
+                            className={`btn ${confirmButtonClass}`}
+
+                            onClick={onConfirm}
+
+                        >
+
+                            {confirmButtonText}
+
+                        </button>
+
+                    </div>
 
                 </div>
 

@@ -1,15 +1,8 @@
-import "./PassengerCss/BookingSummary.css";
-
 function BookingSummary({
-
     bus,
-
     selectedSeats,
-
     passengers,
-
     continuePayment
-
 }) {
 
     const fare = Number(bus?.fare ?? 0);
@@ -28,13 +21,19 @@ function BookingSummary({
 
     );
 
+
     return (
 
-        <div className="booking-summary-card">
+        <div
+            className="card border-0 rounded-4 shadow-sm position-sticky"
+            style={{ top: "20px" }}
+        >
 
-            <div className="booking-summary-header">
+            {/* Header */}
 
-                <h3>
+            <div className="card-header bg-primary text-white border-0 rounded-top-4 p-3">
+
+                <h3 className="mb-0 fs-5 fw-bold">
 
                     <i className="bi bi-receipt me-2"></i>
 
@@ -44,17 +43,23 @@ function BookingSummary({
 
             </div>
 
-            <div className="booking-summary-body">
 
-                <div className="summary-item">
+            {/* Body */}
 
-                    <span>
+            <div className="card-body p-4">
+
+
+                {/* Bus */}
+
+                <div className="d-flex justify-content-between align-items-start mb-3">
+
+                    <span className="text-secondary">
 
                         Bus
 
                     </span>
 
-                    <strong>
+                    <strong className="text-primary text-end ms-3">
 
                         {bus.busName}
 
@@ -62,15 +67,18 @@ function BookingSummary({
 
                 </div>
 
-                <div className="summary-item">
 
-                    <span>
+                {/* Route */}
+
+                <div className="d-flex justify-content-between align-items-start mb-3">
+
+                    <span className="text-secondary">
 
                         Route
 
                     </span>
 
-                    <strong>
+                    <strong className="text-primary text-end ms-3">
 
                         {bus.source}
 
@@ -82,15 +90,18 @@ function BookingSummary({
 
                 </div>
 
-                <div className="summary-item">
 
-                    <span>
+                {/* Seats */}
+
+                <div className="d-flex justify-content-between align-items-start mb-3">
+
+                    <span className="text-secondary">
 
                         Seats
 
                     </span>
 
-                    <strong>
+                    <strong className="text-primary text-end ms-3">
 
                         {
 
@@ -110,15 +121,18 @@ function BookingSummary({
 
                 </div>
 
-                <div className="summary-item">
 
-                    <span>
+                {/* Passengers */}
+
+                <div className="d-flex justify-content-between align-items-start mb-3">
+
+                    <span className="text-secondary">
 
                         Passengers
 
                     </span>
 
-                    <strong>
+                    <strong className="text-primary">
 
                         {selectedSeats.length}
 
@@ -126,17 +140,21 @@ function BookingSummary({
 
                 </div>
 
+
                 <hr />
 
-                <div className="summary-total">
 
-                    <span>
+                {/* Total */}
+
+                <div className="d-flex justify-content-between align-items-center my-4">
+
+                    <span className="fs-5 fw-bold text-primary">
 
                         Total Fare
 
                     </span>
 
-                    <strong>
+                    <strong className="fs-4 text-primary">
 
                         ₹ {totalFare}
 
@@ -144,9 +162,12 @@ function BookingSummary({
 
                 </div>
 
+
+                {/* Continue Payment */}
+
                 <button
 
-                    className="continue-payment-btn"
+                    className="btn btn-primary w-100 py-3 rounded-3 fw-semibold"
 
                     disabled={!isValid}
 

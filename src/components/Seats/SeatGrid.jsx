@@ -1,151 +1,114 @@
-import "./SeatsCss/SeatGrid.css";
+import { useDispatch, useSelector } from "react-redux"
+
+import {addSeat,removeSeat} from "../../actions/SeatAction"
 
 function SeatGrid({
 
     busType,
-
-    seats,
-
-    selectedSeats,
-
-    setSelectedSeats
+    seats
 
 }) {
+    const dispatch = useDispatch();
+
+    const selectedSeats = useSelector(
+        state => state.seat.selectedSeats
+    );
 
     const isSleeper =
-
         busType === "SLEEPER_AC" ||
-
         busType === "SLEEPER_NON_AC";
 
+
     const lowerDeck = seats.filter(
-
         seat => seat.deck === "LOWER"
-
     );
 
     const upperDeck = seats.filter(
-
         seat => seat.deck === "UPPER"
-
     );
+
 
     function isSelected(seatId) {
 
         return selectedSeats.some(
-
             seat => seat.seatId === seatId
-
         );
 
     }
 
+
     function handleSeatClick(seat) {
 
-        if (
+    if (seat.seatStatus === "BOOKED") {
 
-            seat.seatStatus === "BOOKED"
+        return;
 
-        ) {
+    }
 
-            return;
+    if (isSelected(seat.seatId)) {
+
+        dispatch(removeSeat(seat.seatId));
+
+    }
+
+    else {
+
+        dispatch(addSeat(seat));
+
+    }
+
+}
+
+
+    function seatClass(seat) {
+
+        let classes =
+            "btn d-flex align-items-center justify-content-center position-relative fw-bold p-0";
+
+        if (seat.seatStatus === "BOOKED") {
+
+            classes +=
+                " bg-secondary text-white border-secondary";
 
         }
 
-        if (
+        else if (isSelected(seat.seatId)) {
 
-            isSelected(seat.seatId)
-
-        ) {
-
-            setSelectedSeats(
-
-                selectedSeats.filter(
-
-                    s => s.seatId !== seat.seatId
-
-                )
-
-            );
+            classes +=
+                " bg-primary text-white border-primary";
 
         }
 
         else {
 
-            setSelectedSeats(
-
-                [
-
-                    ...selectedSeats,
-
-                    seat
-
-                ]
-
-            );
+            classes +=
+                " bg-white text-primary border-primary";
 
         }
+
+        return classes;
 
     }
 
-    function seatClass(seat) {
-
-        let cls = "seat";
-
-        if (
-
-            seat.seatStatus === "BOOKED"
-
-        ) {
-
-            cls += " booked";
-
-        }
-
-        if (
-
-            isSelected(seat.seatId)
-
-        ) {
-
-            cls += " selected";
-
-        }
-
-        return cls;
-
-    }
 
     function createRows(
-
         seatList,
-
         seatsPerRow
-
     ) {
 
         const rows = [];
 
         for (
-
             let i = 0;
-
             i < seatList.length;
-
             i += seatsPerRow
-
         ) {
 
             rows.push(
-
                 seatList.slice(
-
                     i,
-
                     i + seatsPerRow
-
                 )
-
             );
 
         }
@@ -154,73 +117,131 @@ function SeatGrid({
 
     }
 
+
     const lowerRows = createRows(
-
         lowerDeck,
-
         isSleeper ? 3 : 4
-
     );
 
     const upperRows = createRows(
-
         upperDeck,
-
         isSleeper ? 3 : 4
-
     );
 
-    function renderSeat(seat, windowSeat = false) {
+
+    function renderSeat(
+        seat,
+        windowSeat = false
+    ) {
 
         if (!seat) {
 
             return (
 
-                <div className="seat-empty"></div>
+                <div
+                    style={{
+                        width: "60px",
+                        height: "60px"
+                    }}
+                ></div>
 
             );
 
         }
 
+
+        const selected =
+            isSelected(seat.seatId);
+
+        const booked =
+            seat.seatStatus === "BOOKED";
+
+
         return (
 
             <button
 
+                type="button"
+
                 className={seatClass(seat)}
 
+                disabled={booked}
+
                 onClick={() =>
-
                     handleSeatClick(seat)
-
                 }
+
+                style={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "14px",
+                    borderWidth: "2px",
+                    boxShadow: selected
+                        ? "0 8px 20px rgba(13,110,253,.25)"
+                        : "0 5px 12px rgba(13,110,253,.10)"
+                }}
 
             >
 
                 {
-
                     windowSeat &&
 
-                    <i className="bi bi-window-sidebar window-icon"></i>
+                    <i
 
+                        className="bi bi-window-sidebar position-absolute"
+
+                        style={{
+                            top: "5px",
+                            left: "5px",
+                            fontSize: "12px",
+                            color: selected
+                                ? "white"
+                                : "#0d6efd"
+                        }}
+
+                    ></i>
                 }
+
 
                 {
+                    booked &&
 
-                    seat.seatStatus === "BOOKED" &&
+                    <i
 
-                    <i className="bi bi-lock-fill lock-icon"></i>
+                        className="bi bi-lock-fill position-absolute"
 
+                        style={{
+                            top: "5px",
+                            right: "5px",
+                            fontSize: "12px"
+                        }}
+
+                    ></i>
                 }
+
 
                 {
+                    selected &&
 
-                    isSelected(seat.seatId) &&
+                    <i
 
-                    <i className="bi bi-check-circle-fill check-icon"></i>
+                        className="bi bi-check-circle-fill position-absolute"
 
+                        style={{
+                            top: "5px",
+                            right: "5px",
+                            fontSize: "13px"
+                        }}
+
+                    ></i>
                 }
 
-                <span>
+
+                <span
+                    style={{
+                        marginTop: "10px"
+                    }}
+                >
 
                     {seat.seatNumber}
 
@@ -231,29 +252,54 @@ function SeatGrid({
         );
 
     }
-        function renderDeck(rows, deckName) {
+
+
+    function renderDeck(
+        rows,
+        deckName
+    ) {
 
         return (
 
-            <div className="deck-card">
+            <div
+                className="card border-0 shadow-sm rounded-4 overflow-hidden h-100"
+            >
 
-                <div className="deck-header">
+                {/* Deck Header */}
 
-                    <h4>
+                <div className="card-header bg-primary-subtle border-0 d-flex justify-content-between align-items-center px-4 py-3">
+
+                    <h4 className="mb-0 text-primary fw-bold fs-5">
 
                         {deckName}
 
                     </h4>
 
+                    <div
+                        className="bg-primary rounded-pill"
+                        style={{
+                            width: "42px",
+                            height: "4px"
+                        }}
+                    ></div>
+
                 </div>
 
-                {
 
+                {/* Driver */}
+
+                {
                     deckName === "Lower Deck" &&
 
-                    <div className="driver-container">
+                    <div className="d-flex justify-content-end px-4 pt-3">
 
-                        <div className="driver-box">
+                        <div
+                            className="d-flex align-items-center justify-content-center gap-2 bg-primary-subtle text-primary border border-primary-subtle rounded-3 fw-bold"
+                            style={{
+                                width: "120px",
+                                height: "48px"
+                            }}
+                        >
 
                             <i className="bi bi-steering-wheel"></i>
 
@@ -262,157 +308,157 @@ function SeatGrid({
                         </div>
 
                     </div>
-
                 }
 
-                <div className="deck-body">
+
+                {/* Deck Body */}
+
+                <div
+                    className="p-4 overflow-auto"
+                >
 
                     {
 
                         rows.map(
-
-                            (
-
-                                row,
-
-                                index
-
-                            ) => (
+                            (row, index) => (
 
                                 <div
-
                                     key={index}
-
-                                    className="seat-row"
-
+                                    className="d-flex align-items-center justify-content-between mb-4"
                                 >
 
                                     {
 
-                                        isSleeper ?
+                                        isSleeper
 
-                                        (
+                                            ?
 
-                                            <>
+                                            (
 
-                                                {/* Left Window */}
+                                                <>
 
-                                                {
-
-                                                    renderSeat(
-
-                                                        row[0],
-
-                                                        true
-
-                                                    )
-
-                                                }
-
-                                                <div className="seat-aisle"></div>
-
-                                                <div className="right-side">
+                                                    {/* Left Window */}
 
                                                     {
 
                                                         renderSeat(
-
-                                                            row[1],
-
-                                                            false
-
-                                                        )
-
-                                                    }
-
-                                                    {
-
-                                                        renderSeat(
-
-                                                            row[2],
-
-                                                            true
-
-                                                        )
-
-                                                    }
-
-                                                </div>
-
-                                            </>
-
-                                        )
-
-                                        :
-
-                                        (
-
-                                            <>
-
-                                                <div className="left-side">
-
-                                                    {
-
-                                                        renderSeat(
-
                                                             row[0],
-
                                                             true
-
                                                         )
 
                                                     }
 
-                                                    {
 
-                                                        renderSeat(
+                                                    {/* Aisle */}
 
-                                                            row[1]
+                                                    <div
+                                                        style={{
+                                                            width: "55px",
+                                                            flexShrink: 0
+                                                        }}
+                                                    ></div>
 
-                                                        )
 
-                                                    }
+                                                    {/* Right Side */}
 
-                                                </div>
+                                                    <div className="d-flex gap-3">
 
-                                                <div className="seat-aisle"></div>
+                                                        {
 
-                                                <div className="right-side">
+                                                            renderSeat(
+                                                                row[1],
+                                                                false
+                                                            )
 
-                                                    {
+                                                        }
 
-                                                        renderSeat(
+                                                        {
 
-                                                            row[2]
+                                                            renderSeat(
+                                                                row[2],
+                                                                true
+                                                            )
 
-                                                        )
+                                                        }
 
-                                                    }
+                                                    </div>
 
-                                                    {
+                                                </>
 
-                                                        renderSeat(
+                                            )
 
-                                                            row[3],
+                                            :
 
-                                                            true
+                                            (
 
-                                                        )
+                                                <>
 
-                                                    }
+                                                    {/* Left Side */}
 
-                                                </div>
+                                                    <div className="d-flex gap-3">
 
-                                            </>
+                                                        {
 
-                                        )
+                                                            renderSeat(
+                                                                row[0],
+                                                                true
+                                                            )
+
+                                                        }
+
+                                                        {
+
+                                                            renderSeat(
+                                                                row[1]
+                                                            )
+
+                                                        }
+
+                                                    </div>
+
+
+                                                    {/* Aisle */}
+
+                                                    <div
+                                                        style={{
+                                                            width: "55px",
+                                                            flexShrink: 0
+                                                        }}
+                                                    ></div>
+
+
+                                                    {/* Right Side */}
+
+                                                    <div className="d-flex gap-3">
+
+                                                        {
+
+                                                            renderSeat(
+                                                                row[2]
+                                                            )
+
+                                                        }
+
+                                                        {
+
+                                                            renderSeat(
+                                                                row[3],
+                                                                true
+                                                            )
+
+                                                        }
+
+                                                    </div>
+
+                                                </>
+
+                                            )
 
                                     }
 
                                 </div>
 
                             )
-
                         )
 
                     }
@@ -425,35 +471,47 @@ function SeatGrid({
 
     }
 
+
     return (
 
-        <div className="seat-grid-wrapper">
+        <div className="w-100">
 
-            <div className="deck-grid">
+            <div className="row g-4">
 
-                {
+                {/* Lower Deck */}
 
-                    renderDeck(
+                <div className="col-xl-6">
 
-                        lowerRows,
+                    {
 
-                        "Lower Deck"
+                        renderDeck(
+                            lowerRows,
+                            "Lower Deck"
+                        )
 
-                    )
+                    }
 
-                }
+                </div>
+
+
+                {/* Upper Deck */}
 
                 {
 
                     upperRows.length > 0 &&
 
-                    renderDeck(
+                    <div className="col-xl-6">
 
-                        upperRows,
+                        {
 
-                        "Upper Deck"
+                            renderDeck(
+                                upperRows,
+                                "Upper Deck"
+                            )
 
-                    )
+                        }
+
+                    </div>
 
                 }
 

@@ -8,14 +8,27 @@ import Bookings from "../components/Passenger/Bookings";
 import Profile from "../components/Passenger/Profile";
 import "../css/PassengerDashboard.css";
 
-
 function PassengerDashboard() {
 
-    const username = localStorage.getItem("username") || "Passenger";
+    const username =
+        localStorage.getItem("username") || "Passenger";
 
-    const [activeMenu, setActiveMenu] = useState("dashboard");
+    const [activeMenu, setActiveMenu] = useState(
+        localStorage.getItem("passengerActiveMenu") || "dashboard"
+    );
 
     const [showWelcome, setShowWelcome] = useState(true);
+
+    const changeMenu = (menu) => {
+
+        setActiveMenu(menu);
+
+        localStorage.setItem(
+            "passengerActiveMenu",
+            menu
+        );
+
+    };
 
     const renderContent = () => {
 
@@ -53,14 +66,13 @@ function PassengerDashboard() {
 
                     activeMenu={activeMenu}
 
-                    setActiveMenu={setActiveMenu}
+                    setActiveMenu={changeMenu}
 
                 />
 
                 <div className="passenger-content">
 
                     {
-
                         showWelcome &&
 
                         <div className="welcome-card">
@@ -91,15 +103,17 @@ function PassengerDashboard() {
 
                             <button
 
-                        className="close-banner-btn"
+                                className="close-banner-btn"
 
-                        onClick={() => setShowWelcome(false)}
+                                onClick={() =>
+                                    setShowWelcome(false)
+                                }
 
-                    >
+                            >
 
-                        <i className="bi bi-x-lg"></i>
+                                <i className="bi bi-x-lg"></i>
 
-                    </button>
+                            </button>
 
                         </div>
 

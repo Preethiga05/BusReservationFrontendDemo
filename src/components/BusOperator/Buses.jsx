@@ -38,9 +38,11 @@ function Buses() {
     }, []);
 
 
-    async function loadBuses() {
+   async function loadBuses() {
 
     try {
+
+        setLoading(true);
 
         const response =
             await BusService.getOwnBuses();
@@ -59,6 +61,15 @@ function Buses() {
             "Failed to load buses:",
             error
         );
+
+        setError(
+            "Failed to load buses."
+        );
+
+    }
+    finally {
+
+        setLoading(false);
 
     }
 

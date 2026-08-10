@@ -3,7 +3,7 @@ import WelcomePage from "./pages/WelcomePage"
 import SearchResultsPage from "./pages/SearchResultsPage";
 import PartnerWithFastX from "./pages/PartnerWithFastX";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BusOperatorDashboard from "./pages/BusOperatorDashboard";
 import Register from "./components/Auth/Register";
@@ -13,6 +13,8 @@ import PassengerDetailsPage from "./pages/PassengerDetailsPage";
 import SeatSelectionPage from "./pages/SeatSelectionPage";
 import PaymentPage from "./pages/PaymentPage";
 import TicketPage from "./pages/TicketPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import Executives from "./components/Admin/Executives";
 function App() {
 
     return (
@@ -43,7 +45,7 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ADMIN"]}
                         >
-                            <AdminDashboard />
+                            <AdminDashboardPage />
                         </ProtectedRoute>
                     }
                 />
@@ -111,6 +113,10 @@ function App() {
 
                     element={<SeatSelectionPage />}
 
+                />
+                <Route
+                    path="/admin/executives"
+                    element={<Executives />}
                 />
 
             </Routes>

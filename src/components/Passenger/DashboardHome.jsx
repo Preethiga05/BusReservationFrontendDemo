@@ -1,9 +1,5 @@
-import "./PassengerCss/DashboardHome.css";
 import { useEffect, useState } from "react";
-
 import PassengerService from "../../services/PassengerService";
-
-
 
 function DashboardHome() {
 
@@ -24,12 +20,12 @@ function DashboardHome() {
     const [recentBookings, setRecentBookings] = useState([]);
 
 
-
     useEffect(() => {
 
         loadDashboard();
 
     }, []);
+
 
     async function loadDashboard() {
 
@@ -72,88 +68,180 @@ function DashboardHome() {
 
     }
 
+
     return (
 
-        <div className="dashboard-home">
-            {/* Travel Summary */}
+        <div className="d-flex flex-column gap-4">
+
+
+            {/* ================= Travel Summary ================= */}
 
             <div>
 
-                <h4 className="section-title">
+                <h4 className="text-primary fw-bold mb-3">
 
                     Travel Summary
 
                 </h4>
 
+
                 <div className="row g-4">
 
+
+                    {/* Total Bookings */}
+
                     <div className="col-lg-3 col-md-6">
 
-                        <div className="summary-card">
+                        <div className="card h-100 text-center border rounded-4 shadow-sm">
 
-                            <div className="summary-icon">
+                            <div className="card-body p-4">
 
-                                <i className="bi bi-journal-check"></i>
+                                <div
+                                    className="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{
+                                        width: "65px",
+                                        height: "65px",
+                                        fontSize: "28px"
+                                    }}
+                                >
+
+                                    <i className="bi bi-journal-check"></i>
+
+                                </div>
+
+                                <h2 className="fw-bold text-primary mb-2">
+
+                                    {summary.totalBookings}
+
+                                </h2>
+
+                                <p className="text-secondary fw-medium mb-0">
+
+                                    Total Bookings
+
+                                </p>
 
                             </div>
-
-                            <h2>{summary.totalBookings}</h2>
-
-                            <p>Total Bookings</p>
 
                         </div>
 
                     </div>
 
+
+                    {/* Upcoming Trips */}
+
                     <div className="col-lg-3 col-md-6">
 
-                        <div className="summary-card">
+                        <div className="card h-100 text-center border rounded-4 shadow-sm">
 
-                            <div className="summary-icon">
+                            <div className="card-body p-4">
 
-                                <i className="bi bi-calendar-event"></i>
+                                <div
+                                    className="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{
+                                        width: "65px",
+                                        height: "65px",
+                                        fontSize: "28px"
+                                    }}
+                                >
+
+                                    <i className="bi bi-calendar-event"></i>
+
+                                </div>
+
+                                <h2 className="fw-bold text-primary mb-2">
+
+                                    {summary.upcomingTrips}
+
+                                </h2>
+
+                                <p className="text-secondary fw-medium mb-0">
+
+                                    Upcoming Trips
+
+                                </p>
 
                             </div>
-
-                            <h2>{summary.upcomingTrips}</h2>
-
-                            <p>Upcoming Trips</p>
 
                         </div>
 
                     </div>
 
+
+                    {/* Completed Trips */}
+
                     <div className="col-lg-3 col-md-6">
 
-                        <div className="summary-card">
+                        <div className="card h-100 text-center border rounded-4 shadow-sm">
 
-                            <div className="summary-icon">
+                            <div className="card-body p-4">
 
-                                <i className="bi bi-check-circle"></i>
+                                <div
+                                    className="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{
+                                        width: "65px",
+                                        height: "65px",
+                                        fontSize: "28px"
+                                    }}
+                                >
+
+                                    <i className="bi bi-check-circle"></i>
+
+                                </div>
+
+                                <h2 className="fw-bold text-primary mb-2">
+
+                                    {summary.completedTrips}
+
+                                </h2>
+
+                                <p className="text-secondary fw-medium mb-0">
+
+                                    Completed Trips
+
+                                </p>
 
                             </div>
-
-                            <h2>{summary.completedTrips}</h2>
-
-                            <p>Completed Trips</p>
 
                         </div>
 
                     </div>
 
+
+                    {/* Cancelled Trips */}
+
                     <div className="col-lg-3 col-md-6">
 
-                        <div className="summary-card">
+                        <div className="card h-100 text-center border rounded-4 shadow-sm">
 
-                            <div className="summary-icon">
+                            <div className="card-body p-4">
 
-                                <i className="bi bi-x-circle"></i>
+                                <div
+                                    className="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-3"
+                                    style={{
+                                        width: "65px",
+                                        height: "65px",
+                                        fontSize: "28px"
+                                    }}
+                                >
+
+                                    <i className="bi bi-x-circle"></i>
+
+                                </div>
+
+                                <h2 className="fw-bold text-primary mb-2">
+
+                                    {summary.cancelledTrips}
+
+                                </h2>
+
+                                <p className="text-secondary fw-medium mb-0">
+
+                                    Cancelled Trips
+
+                                </p>
 
                             </div>
-
-                            <h2>{summary.cancelledTrips}</h2>
-
-                            <p>Cancelled Trips</p>
 
                         </div>
 
@@ -163,249 +251,309 @@ function DashboardHome() {
 
             </div>
 
-            {/* Upcoming Journey */}
 
-            <div className="dashboard-card journey-card">
+            {/* ================= Upcoming Journey ================= */}
 
-                <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="card border-0 border-start border-primary border-4 rounded-4 shadow-sm">
 
-                    <h4 className="section-title mb-0">
+                <div className="card-body p-4">
 
-                        Upcoming Journey
 
-                    </h4>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+
+                        <h4 className="text-primary fw-bold mb-0">
+
+                            Upcoming Journey
+
+                        </h4>
+
+
+                        {
+
+                            upcomingJourney &&
+
+                            <span className="badge bg-success">
+
+                                {upcomingJourney.bookingStatus}
+
+                            </span>
+
+                        }
+
+                    </div>
+
 
                     {
 
-                        upcomingJourney &&
+                        upcomingJourney ?
 
-                        <span className="badge bg-success">
+                            <>
 
-                            {upcomingJourney.bookingStatus}
+                                <div className="fs-5 fw-bold text-primary">
 
-                        </span>
+                                    {upcomingJourney.originCity}
+
+                                    <i className="bi bi-arrow-right mx-3"></i>
+
+                                    {upcomingJourney.destinationCity}
+
+                                </div>
+
+
+                                <div className="row g-4 mt-2">
+
+
+                                    <div className="col-lg-3 col-md-6">
+
+                                        <div>
+
+                                            <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                Bus
+
+                                            </label>
+
+                                            <span className="fw-semibold">
+
+                                                {upcomingJourney.busName}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="col-lg-3 col-md-6">
+
+                                        <div>
+
+                                            <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                Travel Date
+
+                                            </label>
+
+                                            <span className="fw-semibold">
+
+                                                {upcomingJourney.journeyDate}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="col-lg-3 col-md-6">
+
+                                        <div>
+
+                                            <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                Departure
+
+                                            </label>
+
+                                            <span className="fw-semibold">
+
+                                                {
+
+                                                    new Date(
+
+                                                        upcomingJourney.departureDateTime
+
+                                                    ).toLocaleTimeString(
+
+                                                        [],
+
+                                                        {
+
+                                                            hour: "2-digit",
+
+                                                            minute: "2-digit"
+
+                                                        }
+
+                                                    )
+
+                                                }
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="col-lg-3 col-md-6">
+
+                                        <div>
+
+                                            <label className="d-block text-secondary small fw-semibold mb-1">
+
+                                                Seat
+
+                                            </label>
+
+                                            <span className="fw-semibold">
+
+                                                {
+
+                                                    upcomingJourney.seatNumbers &&
+
+                                                    upcomingJourney.seatNumbers.length > 0
+
+                                                        ?
+
+                                                        upcomingJourney.seatNumbers.join(", ")
+
+                                                        :
+
+                                                        "--"
+
+                                                }
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </>
+
+                            :
+
+                            <div className="text-center py-4">
+
+                                <i
+
+                                    className="bi bi-bus-front text-secondary"
+
+                                    style={{
+
+                                        fontSize: "3rem"
+
+                                    }}
+
+                                ></i>
+
+                                <h5 className="mt-3">
+
+                                    No Upcoming Trips
+
+                                </h5>
+
+                                <p className="text-muted mb-0">
+
+                                    Your next journey will appear here.
+
+                                </p>
+
+                            </div>
 
                     }
 
                 </div>
 
-                {
+            </div>
 
-                    upcomingJourney ?
 
-                        <>
+            {/* ================= Recent Bookings ================= */}
 
-                            <div className="route">
+            <div className="card border-0 rounded-4 shadow-sm">
 
-                                {upcomingJourney.originCity}
+                <div className="card-body p-4">
 
-                                <i className="bi bi-arrow-right mx-2"></i>
 
-                                {upcomingJourney.destinationCity}
+                    <div className="d-flex justify-content-between align-items-center mb-4">
 
-                            </div>
+                        <h4 className="text-primary fw-bold mb-0">
 
-                            <div className="info-row">
+                            Recent Bookings
 
-                                <div className="info-box">
+                        </h4>
 
-                                    <label>Bus</label>
+                    </div>
 
-                                    <span>
 
-                                        {upcomingJourney.busName}
+                    {
 
-                                    </span>
+                        recentBookings.length === 0 ?
 
-                                </div>
+                            <p className="text-center text-muted mb-0">
 
-                                <div className="info-box">
-
-                                    <label>Travel Date</label>
-
-                                    <span>
-
-                                        {upcomingJourney.journeyDate}
-
-                                    </span>
-
-                                </div>
-
-                                <div className="info-box">
-
-                                    <label>Departure</label>
-
-                                    <span>
-
-                                        {
-
-                                            new Date(
-
-                                                upcomingJourney.departureDateTime
-
-                                            ).toLocaleTimeString(
-
-                                                [],
-
-                                                {
-
-                                                    hour: "2-digit",
-
-                                                    minute: "2-digit"
-
-                                                }
-
-                                            )
-
-                                        }
-
-                                    </span>
-
-                                </div>
-
-                                <div className="info-box">
-
-                                    <label>Seat</label>
-
-                                    <span>
-                                        {
-                                            upcomingJourney.seatNumbers &&
-                                                upcomingJourney.seatNumbers.length > 0
-
-                                                ?
-
-                                                upcomingJourney.seatNumbers.join(", ")
-
-                                                :
-
-                                                "--"
-                                        }
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        </>
-
-                        :
-
-                        <div className="text-center py-4">
-
-                            <i
-
-                                className="bi bi-bus-front"
-
-                                style={{
-
-                                    fontSize: "3rem",
-
-                                    color: "#bdbdbd"
-
-                                }}
-
-                            ></i>
-
-                            <h5 className="mt-3">
-
-                                No Upcoming Trips
-
-                            </h5>
-
-                            <p className="text-muted">
-
-                                Your next journey will appear here.
+                                No bookings found.
 
                             </p>
 
-                        </div>
+                            :
 
-                }
+                            recentBookings.map(booking => (
 
-            </div>
+                                <div
 
-            {/* Recent Bookings */}
+                                    key={booking.bookingId}
 
-            <div className="dashboard-card">
-
-                <div className="d-flex justify-content-between align-items-center mb-4">
-
-                    <h4 className="section-title mb-0">
-
-                        Recent Bookings
-
-                    </h4>
-
-                </div>
-
-                {
-
-                    recentBookings.length === 0 ?
-
-                        <p className="text-center text-muted">
-
-                            No bookings found.
-
-                        </p>
-
-                        :
-
-                        recentBookings.map(booking => (
-
-                            <div
-
-                                key={booking.bookingId}
-
-                                className="booking-item"
-
-                            >
-
-                                <div>
-
-                                    <div className="booking-route">
-
-                                        {booking.originCity}
-
-                                        {" → "}
-
-                                        {booking.destinationCity}
-
-                                    </div>
-
-                                    <div className="booking-date">
-
-                                        {booking.journeyDate}
-
-                                    </div>
-
-                                </div>
-
-                                <span
-
-                                    className={`booking-status ${booking.bookingStatus === "CONFIRMED"
-
-                                        ? "status-confirmed"
-
-                                        : booking.bookingStatus === "CANCELLED"
-
-                                            ? "status-cancelled"
-
-                                            : "status-completed"
-
-                                        }`}
+                                    className="d-flex justify-content-between align-items-center py-3 border-bottom"
 
                                 >
 
-                                    {booking.bookingStatus}
+                                    <div>
 
-                                </span>
+                                        <div className="fw-semibold text-primary">
 
-                            </div>
+                                            {booking.originCity}
 
-                        ))
+                                            {" → "}
 
-                }
+                                            {booking.destinationCity}
+
+                                        </div>
+
+                                        <div className="text-secondary small">
+
+                                            {booking.journeyDate}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <span
+
+                                        className={
+
+                                            `badge rounded-pill px-3 py-2 ${
+                                                booking.bookingStatus === "CONFIRMED"
+
+                                                    ? "bg-success"
+
+                                                    : booking.bookingStatus === "CANCELLED"
+
+                                                        ? "bg-danger"
+
+                                                        : "bg-primary"
+                                            }`
+
+                                        }
+
+                                    >
+
+                                        {booking.bookingStatus}
+
+                                    </span>
+
+                                </div>
+
+                            ))
+
+                    }
+
+                </div>
 
             </div>
 

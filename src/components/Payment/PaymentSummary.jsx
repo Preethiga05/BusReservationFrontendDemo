@@ -1,5 +1,3 @@
-import "./PaymentCss/PaymentSummary.css";
-
 function PaymentSummary({
 
     bus,
@@ -10,47 +8,58 @@ function PaymentSummary({
 
 }) {
 
-    const departure = new Date(bus.departureDateTime);
+    const departure =
+        new Date(bus.departureDateTime);
 
-    const arrival = new Date(bus.arrivalDateTime);
+    const arrival =
+        new Date(bus.arrivalDateTime);
 
-    const departureTime = departure.toLocaleTimeString([], {
+    const departureTime =
+        departure.toLocaleTimeString([], {
 
-        hour: "2-digit",
+            hour: "2-digit",
 
-        minute: "2-digit"
+            minute: "2-digit"
 
-    });
+        });
 
-    const arrivalTime = arrival.toLocaleTimeString([], {
+    const arrivalTime =
+        arrival.toLocaleTimeString([], {
 
-        hour: "2-digit",
+            hour: "2-digit",
 
-        minute: "2-digit"
+            minute: "2-digit"
 
-    });
+        });
 
-    const journeyDate = departure.toLocaleDateString("en-IN", {
+    const journeyDate =
+        departure.toLocaleDateString("en-IN", {
 
-        weekday: "long",
+            weekday: "long",
 
-        day: "numeric",
+            day: "numeric",
 
-        month: "long",
+            month: "long",
 
-        year: "numeric"
+            year: "numeric"
 
-    });
+        });
 
     return (
 
-        <div className="payment-summary-card">
+        <div
+            className="bg-white rounded-4 overflow-hidden shadow-sm mb-4"
+        >
 
-            <div className="payment-summary-header">
+            {/* Header */}
+
+            <div
+                className="bg-primary text-white p-4 d-flex justify-content-between align-items-center"
+            >
 
                 <div>
 
-                    <h3>
+                    <h3 className="mb-1 fs-4 fw-bold">
 
                         <i className="bi bi-bus-front-fill me-2"></i>
 
@@ -58,7 +67,7 @@ function PaymentSummary({
 
                     </h3>
 
-                    <p>
+                    <p className="mb-0 opacity-75">
 
                         {bus.busOperator}
 
@@ -66,7 +75,9 @@ function PaymentSummary({
 
                 </div>
 
-                <span className="payment-bus-type">
+                <span
+                    className="badge bg-light text-primary rounded-pill px-3 py-2"
+                >
 
                     {bus.busType.replaceAll("_", " ")}
 
@@ -74,19 +85,28 @@ function PaymentSummary({
 
             </div>
 
-            <div className="payment-summary-body">
 
-                <div className="payment-route">
+            {/* Body */}
 
-                    <div className="route-city">
+            <div className="p-4">
 
-                        <h4>
+                {/* Route */}
+
+                <div
+                    className="d-flex justify-content-between align-items-center mb-4"
+                >
+
+                    {/* Departure */}
+
+                    <div className="text-center">
+
+                        <h4 className="text-primary fw-bold mb-1">
 
                             {departureTime}
 
                         </h4>
 
-                        <span>
+                        <span className="text-secondary">
 
                             {bus.source}
 
@@ -94,39 +114,57 @@ function PaymentSummary({
 
                     </div>
 
-                    <div className="payment-route-middle">
 
-                        <span>
+                    {/* Middle */}
+
+                    <div className="flex-grow-1 text-center px-4">
+
+                        <span className="fw-semibold text-dark">
 
                             {bus.journeyDuration}
 
                         </span>
 
-                        <div className="payment-route-line">
+                        <div
+                            className="d-flex align-items-center mt-2"
+                        >
 
-                            <span className="dot"></span>
+                            <div
+                                className="flex-grow-1 border-top border-primary"
+                            ></div>
 
-                            <div className="bus-icon">
+                            <div
+                                className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-2"
+                                style={{
+                                    width: "46px",
+                                    height: "46px"
+                                }}
+                            >
 
                                 <i className="bi bi-bus-front-fill"></i>
 
                             </div>
 
-                            <span className="dot"></span>
+                            <div
+                                className="flex-grow-1 border-top border-primary"
+                            ></div>
 
                         </div>
 
                     </div>
 
-                    <div className="route-city">
 
-                        <h4>
+                    {/* Arrival */}
+
+                    <div className="text-center">
+
+                        <h4 className="text-primary fw-bold mb-1">
 
                             {arrivalTime}
 
                         </h4>
 
-                        <span>
+                        <span className="text-secondary">
 
                             {bus.destination}
 
@@ -136,65 +174,87 @@ function PaymentSummary({
 
                 </div>
 
-                <div className="payment-info-grid">
 
-                    <div>
+                {/* Information */}
 
-                        <small>
+                <div className="row g-3">
 
-                            Journey Date
+                    <div className="col-md-4">
 
-                        </small>
+                        <div
+                            className="bg-light rounded-3 p-3 h-100"
+                        >
 
-                        <strong>
+                            <small className="d-block text-secondary mb-1">
 
-                            {journeyDate}
+                                Journey Date
 
-                        </strong>
+                            </small>
 
-                    </div>
+                            <strong className="text-dark">
 
-                    <div>
+                                {journeyDate}
 
-                        <small>
+                            </strong>
 
-                            Seats
-
-                        </small>
-
-                        <strong>
-
-                            {
-
-                                selectedSeats
-
-                                    .map(
-
-                                        seat => seat.seatNumber
-
-                                    )
-
-                                    .join(", ")
-
-                            }
-
-                        </strong>
+                        </div>
 
                     </div>
 
-                    <div>
 
-                        <small>
+                    <div className="col-md-4">
 
-                            Passengers
+                        <div
+                            className="bg-light rounded-3 p-3 h-100"
+                        >
 
-                        </small>
+                            <small className="d-block text-secondary mb-1">
 
-                        <strong>
+                                Seats
 
-                            {passengers.length}
+                            </small>
 
-                        </strong>
+                            <strong className="text-dark">
+
+                                {
+
+                                    selectedSeats
+
+                                        .map(
+                                            seat =>
+                                                seat.seatNumber
+                                        )
+
+                                        .join(", ")
+
+                                }
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="col-md-4">
+
+                        <div
+                            className="bg-light rounded-3 p-3 h-100"
+                        >
+
+                            <small className="d-block text-secondary mb-1">
+
+                                Passengers
+
+                            </small>
+
+                            <strong className="text-dark">
+
+                                {passengers.length}
+
+                            </strong>
+
+                        </div>
 
                     </div>
 

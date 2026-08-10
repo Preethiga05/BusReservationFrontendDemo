@@ -76,6 +76,19 @@ class BusOperatorService {
     );
 
 }
+updateProfile(profileData) {
+
+    return axios.put(
+
+        BASE_URL + "/update-profile",
+
+        profileData,
+
+        this.getToken()
+
+    );
+
+}
 
 }
 
